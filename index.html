@@ -507,6 +507,12 @@
   .comment:last-child { border-bottom: none; }
   .comment .who { font-weight: 700; margin-right: 6px; }
   .comment .when { color: var(--ink-soft); font-size: 0.72rem; }
+  .comment-delete {
+    float: right; border: none; background: none; cursor: pointer;
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.03em;
+    color: var(--ink-soft); text-transform: uppercase; padding: 0;
+  }
+  .comment-delete:hover { color: var(--ember); text-decoration: underline; }
   .comment-form { display: flex; gap: 6px; margin-top: 8px; }
   .comment-form input {
     flex: 1; border: 1px solid var(--line); border-radius: 7px; padding: 7px 10px;
@@ -525,6 +531,24 @@
     color: var(--ink-soft);
     font-size: 0.78rem;
   }
+  .admin-toggle {
+    display: inline; border: none; background: none; padding: 0; margin-left: 6px;
+    font: inherit; font-size: 0.72rem; color: var(--ink-soft); text-decoration: underline;
+    cursor: pointer;
+  }
+  .admin-toggle:hover { color: var(--ink); }
+  #adminStatus { font-weight: 700; }
+  .admin-form { display: inline-flex; gap: 6px; margin-left: 6px; vertical-align: middle; }
+  .admin-form input {
+    border: 1px solid var(--line); border-radius: 6px; padding: 3px 8px;
+    font-family: inherit; font-size: 0.75rem; background: var(--paper); color: var(--ink);
+    width: 140px;
+  }
+  .admin-form button {
+    border: 1px solid var(--line); border-radius: 6px; background: transparent; color: var(--ink);
+    font-family: inherit; font-size: 0.72rem; padding: 3px 8px; cursor: pointer;
+  }
+  .admin-form button:hover { border-color: var(--gilt); }
 
   @media (max-width: 560px) {
     .detail { width: 100vw; }
@@ -610,6 +634,12 @@
   <div class="wrap">
     Kindred is a growing library of well-known titles to prove out the matching idea — add your own picks as it grows.
     Votes and comments are shared live with anyone who can open this page.
+    <span id="adminStatus"></span>
+    <button type="button" id="adminToggle" class="admin-toggle"></button>
+    <span id="adminForm" class="admin-form" hidden>
+      <input type="password" id="adminInput" placeholder="Owner passphrase" autocomplete="off">
+      <button type="button" id="adminSubmit">Unlock</button>
+    </span>
   </div>
 </footer>
 
@@ -1591,6 +1621,49 @@
     try { localStorage.setItem(DISPLAY_NAME_KEY, n); } catch (e) { /* ignore */ }
   }
 
+  // Comment moderation: there are no accounts on this site, so "the
+  // original commenter" is tracked the same device-local way votes and
+  // favorites already are — when you post a comment, a random token for
+  // it is remembered here (and saved on the comment row itself), and only
+  // a browser holding that token — or one unlocked as the site owner
+  // below — sees a delete option for it.
+  var MY_COMMENTS_KEY = "tropeatlas_mycomments_v1";
+  function getMyComments() {
+    try { return JSON.parse(localStorage.getItem(MY_COMMENTS_KEY) || "{}"); } catch (e) { return {}; }
+  }
+  function setMyComments(map) {
+    try { localStorage.setItem(MY_COMMENTS_KEY, JSON.stringify(map)); } catch (e) { /* ignore */ }
+  }
+  function rememberMyComment(id, token) {
+    if (id == null) return;
+    var mine = getMyComments();
+    mine[id] = token;
+    setMyComments(mine);
+  }
+  function myCommentToken(id) { return getMyComments()[id] || null; }
+
+  // The site-owner ("or me") half of comment moderation. CHANGE THIS to a
+  // passphrase only you know, and change the matching value inside
+  // delete_comment() in supabase-schema.sql to the same thing. Anyone who
+  // views this page's source can read this value — same as the Supabase
+  // key above — so it's a lock against casual clicking, not real
+  // security; there's no login system here to do better than that.
+  var ADMIN_PASSPHRASE = "Lindsay0611!";
+  var ADMIN_KEY = "tropeatlas_admin_v1";
+  function isAdmin() {
+    try { return localStorage.getItem(ADMIN_KEY) === "1"; } catch (e) { return false; }
+  }
+  function tryUnlockAdmin(pass) {
+    if (pass && pass === ADMIN_PASSPHRASE) {
+      try { localStorage.setItem(ADMIN_KEY, "1"); } catch (e) { /* ignore */ }
+      return true;
+    }
+    return false;
+  }
+  function lockAdmin() {
+    try { localStorage.removeItem(ADMIN_KEY); } catch (e) { /* ignore */ }
+  }
+
   /* ============================= DB (votes + comments) ============================= */
   /* This used to be window.claude.use("db") — the Claude-artifact-only shared
      database. Deployed as a real site, that's swapped for Supabase (a free
@@ -1651,8 +1724,20 @@
             var doc = this;
             doc.get().then(onNext).catch(onError || function () {});
             var channel = client.channel("doc:" + path)
-              .on("postgres_changes", { event: "*", schema: "public", table: p.table, filter: "id=eq." + p.id }, function () {
-                doc.get().then(onNext).catch(onError || function () {});
+              .on("postgres_changes", { event: "*", schema: "public", table: p.table, filter: "id=eq." + p.id }, function (payload) {
+                // Supabase already ships the full changed row in the
+                // realtime payload — reuse it instead of firing a second
+                // SELECT round-trip just to learn what it already told us.
+                // That extra round-trip was the single biggest source of
+                // the vote/favorite "lag" between a click and it showing
+                // up live.
+                if (payload.eventType === "DELETE") {
+                  onNext({ exists: false, data: function () { return undefined; } });
+                } else if (payload.new && Object.keys(payload.new).length) {
+                  onNext({ exists: true, data: function () { return payload.new; } });
+                } else {
+                  doc.get().then(onNext).catch(onError || function () {});
+                }
               })
               .subscribe();
             return function () { client.removeChannel(channel); };
@@ -1666,27 +1751,72 @@
           add: function (obj) {
             var row = Object.assign({}, obj);
             if (p.filterCol) row[p.filterCol] = p.filterVal;
-            return client.from(p.table).insert(row).then(function (res) {
+            // .select() so the response includes the row Postgres just
+            // generated (its auto id, in particular) — callers that need
+            // to remember "which row is mine" (comment deletion) need that
+            // id back, which a plain insert() doesn't return.
+            return client.from(p.table).insert(row).select().then(function (res) {
               if (res.error) throw res.error;
+              var inserted = (res.data && res.data[0]) || null;
+              return { id: inserted ? inserted.id : null, data: function () { return inserted; } };
             });
           },
           orderBy: function (field, dir) { orderField = field; orderDesc = dir === "desc"; return api; },
           limit: function (n) { limitN = n; return api; },
           onSnapshot: function (onNext, onError) {
-            function fetchAndEmit() {
+            function fetchRows(cb) {
               var q = client.from(p.table).select("*");
               if (p.filterCol) q = q.eq(p.filterCol, p.filterVal);
               if (orderField) q = q.order(orderField, { ascending: !orderDesc });
               if (limitN) q = q.limit(limitN);
               q.then(function (res) {
                 if (res.error) { (onError || function () {})(res.error); return; }
-                onNext({ docs: res.data.map(function (row) { return { id: row.id, data: function () { return row; } }; }) });
+                cb(res.data);
               });
             }
-            fetchAndEmit();
             var filter = p.filterCol ? (p.filterCol + "=eq." + p.filterVal) : undefined;
             var channelOpts = { event: "*", schema: "public", table: p.table };
             if (filter) channelOpts.filter = filter;
+
+            // A whole-table, unfiltered, unordered subscription (tagvotes,
+            // favorites) doesn't need a fresh SELECT of up to `limit` rows
+            // every time ANY visitor votes on ANY title — the realtime
+            // payload already carries the one row that changed, so just
+            // patch the in-memory copy with it. Filtered/ordered queries
+            // (a match's comments) keep re-querying: order and a LIMIT
+            // can't be maintained correctly from a single row's payload.
+            if (!p.filterCol && !orderField) {
+              var map = {};
+              function emit() {
+                var docs = Object.keys(map).map(function (id) { return { id: id, data: function () { return map[id]; } }; });
+                onNext({ docs: docs });
+              }
+              fetchRows(function (rows) {
+                rows.forEach(function (row) { map[row.id] = row; });
+                emit();
+              });
+              var incChannel = client.channel("col:" + path + ":" + Math.random().toString(36).slice(2))
+                .on("postgres_changes", channelOpts, function (payload) {
+                  if (payload.eventType === "DELETE") {
+                    if (payload.old && payload.old.id != null) delete map[payload.old.id];
+                    emit();
+                  } else if (payload.new && payload.new.id != null) {
+                    map[payload.new.id] = payload.new;
+                    emit();
+                  } else {
+                    fetchRows(function (rows) { map = {}; rows.forEach(function (row) { map[row.id] = row; }); emit(); });
+                  }
+                })
+                .subscribe();
+              return function () { client.removeChannel(incChannel); };
+            }
+
+            function fetchAndEmit() {
+              fetchRows(function (rows) {
+                onNext({ docs: rows.map(function (row) { return { id: row.id, data: function () { return row; } }; }) });
+              });
+            }
+            fetchAndEmit();
             var channel = client.channel("col:" + path + ":" + Math.random().toString(36).slice(2))
               .on("postgres_changes", channelOpts, fetchAndEmit)
               .subscribe();
@@ -1694,6 +1824,25 @@
           }
         };
         return api;
+      },
+      // Calls a Postgres function (see supabase-schema.sql) — used for
+      // atomic vote/favorite increments so a click is one network
+      // round-trip instead of "read current count, then write new count".
+      rpc: function (name, args) {
+        return client.rpc(name, args).then(function (res) {
+          if (res.error) throw res.error;
+          return res.data;
+        });
+      },
+      // Deletes a single row by id from a top-level table. Used only as
+      // the pre-moderation fallback for comment deletion (see
+      // deleteComment below) — bypasses the doc()/collection() path
+      // parsing since this is the one place the app deletes by raw
+      // table + id.
+      deleteRow: function (table, id) {
+        return client.from(table).delete().eq("id", id).then(function (res) {
+          if (res.error) throw res.error;
+        });
       }
     };
   }
@@ -1714,8 +1863,14 @@
   }
 
   // Clicking the button you already picked undoes it; clicking the other one switches.
-  // Returns the new vote state ("up" | "down" | null) synchronously so the UI can
-  // update instantly, while the actual count change happens in the background.
+  // Returns the new vote state plus the up/down deltas synchronously so the
+  // UI can update instantly (both the "which button is highlighted" state
+  // and the displayed count), while the actual write happens in the
+  // background. The write itself is one atomic RPC call (see
+  // increment_match_votes in supabase-schema.sql) instead of "read the
+  // current count, then write the new count" — that used to cost two
+  // network round-trips just to submit a vote, on top of whatever it took
+  // for other viewers' live subscriptions to notice the change.
   function applyVote(id, clickedDir) {
     var voted = getVoted();
     var current = voted[id] || null;
@@ -1724,40 +1879,83 @@
     if (next) voted[id] = next; else delete voted[id];
     setVoted(voted);
 
+    var upDelta = (next === "up" ? 1 : 0) - (current === "up" ? 1 : 0);
+    var downDelta = (next === "down" ? 1 : 0) - (current === "down" ? 1 : 0);
+
     dbPromise.then(function (db) {
       if (!db) return;
-      return ensureMatchDoc(db, id).then(function () {
-        return matchDocRef(db, id).get().then(function (snap) {
-          var data = snap.data() || { upvotes: 0, downvotes: 0 };
-          var upvotes = data.upvotes || 0;
-          var downvotes = data.downvotes || 0;
-          if (current === "up") upvotes = Math.max(0, upvotes - 1);
-          if (current === "down") downvotes = Math.max(0, downvotes - 1);
-          if (next === "up") upvotes += 1;
-          if (next === "down") downvotes += 1;
-          return matchDocRef(db, id).update({ upvotes: upvotes, downvotes: downvotes });
+      return db.rpc("increment_match_votes", { p_id: id, p_up_delta: upDelta, p_down_delta: downDelta })
+        .catch(function () {
+          // Fallback for a Supabase project that hasn't run the
+          // increment_match_votes SQL yet — slower (an extra round-trip),
+          // but still correct, so voting never breaks mid-rollout.
+          return ensureMatchDoc(db, id).then(function () {
+            return matchDocRef(db, id).get().then(function (snap) {
+              var data = snap.data() || { upvotes: 0, downvotes: 0 };
+              return matchDocRef(db, id).update({
+                upvotes: Math.max(0, (data.upvotes || 0) + upDelta),
+                downvotes: Math.max(0, (data.downvotes || 0) + downDelta)
+              });
+            });
+          });
         });
-      });
     }).catch(function (e) {
       console.warn("vote failed", e);
     });
 
-    return next;
+    return { next: next, upDelta: upDelta, downDelta: downDelta };
   }
 
   function submitComment(id, text) {
     text = (text || "").trim();
     if (!text) return Promise.resolve();
     var name = getDisplayName();
+    // A random token this browser will need to present later to delete
+    // this exact comment (see the MY_COMMENTS notes above) — saved on the
+    // row itself so delete_comment() in supabase-schema.sql can check it.
+    var token = Math.random().toString(36).slice(2) + Date.now().toString(36);
     return dbPromise.then(function (db) {
       if (!db) return;
       return ensureMatchDoc(db, id).then(function () {
-        return commentsColRef(db, id).add({
+        var row = {
           text: text.slice(0, 500),
           author: name || "Anonymous reader",
-          createdAt: new Date().toISOString()
+          createdAt: new Date().toISOString(),
+          delete_token: token
+        };
+        return commentsColRef(db, id).add(row).catch(function (e) {
+          // The delete_token column doesn't exist yet — the
+          // supabase-schema.sql update for comment moderation hasn't been
+          // run on this project. Post the comment anyway, just without a
+          // delete token (it'll only be removable by the site owner until
+          // that SQL is run).
+          var fallbackRow = Object.assign({}, row);
+          delete fallbackRow.delete_token;
+          return commentsColRef(db, id).add(fallbackRow);
         });
+      }).then(function (added) {
+        if (added && added.id != null) rememberMyComment(added.id, token);
       });
+    });
+  }
+
+  function deleteComment(commentId) {
+    var token = myCommentToken(commentId);
+    var admin = isAdmin();
+    var mine = getMyComments();
+    delete mine[commentId];
+    setMyComments(mine);
+
+    return dbPromise.then(function (db) {
+      if (!db) return;
+      return db.rpc("delete_comment", { p_id: commentId, p_token: token, p_admin_key: admin ? ADMIN_PASSPHRASE : null })
+        .catch(function () {
+          // Fallback for a project that hasn't run the delete_comment SQL
+          // yet — the old fully-open delete policy is still in place
+          // there, so this still works, just without the ownership check
+          // enforced by the database itself yet.
+          return db.deleteRow("comments", commentId);
+        });
     });
   }
 
@@ -1835,7 +2033,11 @@
     });
   }
 
-  // Same undo/switch toggle behavior as match votes (see applyVote above).
+  // Same undo/switch toggle behavior as match votes (see applyVote above),
+  // including the optimistic cache bump + single-round-trip RPC write —
+  // callers already re-render right after calling this, so patching
+  // tagVoteCache synchronously here is what makes that re-render show the
+  // new count immediately instead of a beat later.
   function applyTagVote(titleId, tagId, clickedDir) {
     var key = tagVoteKey(titleId, tagId);
     var storeKey = "t:" + key;
@@ -1846,18 +2048,28 @@
     if (next) voted[storeKey] = next; else delete voted[storeKey];
     setVoted(voted);
 
+    var upDelta = (next === "up" ? 1 : 0) - (current === "up" ? 1 : 0);
+    var downDelta = (next === "down" ? 1 : 0) - (current === "down" ? 1 : 0);
+    var cached = tagVoteCache[key] || { up: 0, down: 0 };
+    tagVoteCache[key] = {
+      up: Math.max(0, (cached.up || 0) + upDelta),
+      down: Math.max(0, (cached.down || 0) + downDelta)
+    };
+
     dbPromise.then(function (db) {
       if (!db) return;
-      var ref = tagVoteDocRef(db, key);
-      return ref.get().then(function (snap) {
-        var data = snap.exists ? snap.data() : { up: 0, down: 0 };
-        var up = data.up || 0, down = data.down || 0;
-        if (current === "up") up = Math.max(0, up - 1);
-        if (current === "down") down = Math.max(0, down - 1);
-        if (next === "up") up += 1;
-        if (next === "down") down += 1;
-        return snap.exists ? ref.update({ up: up, down: down }) : ref.set({ up: up, down: down });
-      });
+      return db.rpc("increment_tag_vote", { p_id: key, p_up_delta: upDelta, p_down_delta: downDelta })
+        .catch(function () {
+          // Fallback for a project that hasn't run the increment_tag_vote
+          // SQL yet — slower, but still correct.
+          var ref = tagVoteDocRef(db, key);
+          return ref.get().then(function (snap) {
+            var data = snap.exists ? snap.data() : { up: 0, down: 0 };
+            var up = Math.max(0, (data.up || 0) + upDelta);
+            var down = Math.max(0, (data.down || 0) + downDelta);
+            return snap.exists ? ref.update({ up: up, down: down }) : ref.set({ up: up, down: down });
+          });
+        });
     }).catch(function (e) { console.warn("tag vote failed", e); });
 
     return next;
@@ -1889,14 +2101,21 @@
   }
 
   function applyFavoriteCount(id, added) {
+    var delta = added ? 1 : -1;
+    favCountCache[id] = Math.max(0, (favCountCache[id] || 0) + delta);
+
     dbPromise.then(function (db) {
       if (!db) return;
-      var ref = favCountDocRef(db, id);
-      return ref.get().then(function (snap) {
-        var count = snap.exists ? (snap.data().count || 0) : 0;
-        count = Math.max(0, count + (added ? 1 : -1));
-        return snap.exists ? ref.update({ count: count }) : ref.set({ count: count });
-      });
+      return db.rpc("increment_favorite_count", { p_id: id, p_delta: delta })
+        .catch(function () {
+          // Fallback for a project that hasn't run the
+          // increment_favorite_count SQL yet — slower, but still correct.
+          var ref = favCountDocRef(db, id);
+          return ref.get().then(function (snap) {
+            var count = Math.max(0, (snap.exists ? (snap.data().count || 0) : 0) + delta);
+            return snap.exists ? ref.update({ count: count }) : ref.set({ count: count });
+          });
+        });
     }).catch(function (e) { console.warn("favorite count failed", e); });
   }
 
@@ -2340,12 +2559,30 @@
         commentsBox.classList.toggle("open");
       });
 
+      var currentVotes = { upvotes: 0, downvotes: 0 };
+      function paintVotes(v) {
+        currentVotes = v;
+        upBtn.textContent = "▲ " + (v.upvotes || 0);
+        downBtn.textContent = "▼ " + (v.downvotes || 0);
+      }
       function reflectVoteState(dir) {
         upBtn.classList.toggle("voted", dir === "up");
         downBtn.classList.toggle("voted", dir === "down");
       }
-      upBtn.addEventListener("click", function () { reflectVoteState(applyVote(mid, "up")); });
-      downBtn.addEventListener("click", function () { reflectVoteState(applyVote(mid, "down")); });
+      // Bump the shown count the instant you click, rather than waiting on
+      // the network round-trip — the live subscription below will correct
+      // it to the authoritative count moments later, invisibly, the same
+      // way it would if someone else's vote changed it.
+      function castVote(dir) {
+        var res = applyVote(mid, dir);
+        reflectVoteState(res.next);
+        paintVotes({
+          upvotes: Math.max(0, (currentVotes.upvotes || 0) + res.upDelta),
+          downvotes: Math.max(0, (currentVotes.downvotes || 0) + res.downDelta)
+        });
+      }
+      upBtn.addEventListener("click", function () { castVote("up"); });
+      downBtn.addEventListener("click", function () { castVote("down"); });
 
       var inputEl = form.querySelector("input");
       var postBtn = form.querySelector("button");
@@ -2361,20 +2598,43 @@
       postBtn.addEventListener("click", doPost);
       inputEl.addEventListener("keydown", function (e) { if (e.key === "Enter") doPost(); });
 
-      watchMatch(mid, function (votes) {
-        upBtn.textContent = "▲ " + (votes.upvotes || 0);
-        downBtn.textContent = "▼ " + (votes.downvotes || 0);
-      }, function (comments) {
-        commentToggle.textContent = comments.length + (comments.length === 1 ? " comment" : " comments");
+      var liveCommentCount = 0;
+      function paintCommentCount(n) {
+        liveCommentCount = n;
+        commentToggle.textContent = n + (n === 1 ? " comment" : " comments");
+      }
+      watchMatch(mid, paintVotes, function (comments) {
+        paintCommentCount(comments.length);
         commentList.innerHTML = "";
         if (!comments.length) {
           commentList.appendChild(el("div", { class: "sync-note" }, [text("No comments yet — be the first.")]));
         }
         comments.slice().reverse().forEach(function (c) {
-          commentList.appendChild(el("div", { class: "comment" }, [
+          var canDelete = myCommentToken(c.id) != null || isAdmin();
+          var row = el("div", { class: "comment" }, [
             el("span", { class: "who" }, [text(c.author || "Anonymous reader")]),
             text(c.text)
-          ]));
+          ]);
+          if (canDelete) {
+            row.appendChild(el("button", {
+              class: "comment-delete",
+              type: "button",
+              title: isAdmin() && myCommentToken(c.id) == null ? "Remove this comment (site owner)" : "Remove your comment",
+              onclick: function () {
+                if (!confirm("Remove this comment?")) return;
+                // Remove it from view the instant you confirm, rather than
+                // waiting on the network — the live subscription above
+                // will reconcile moments later, same as everywhere else.
+                row.remove();
+                paintCommentCount(Math.max(0, liveCommentCount - 1));
+                if (!commentList.children.length) {
+                  commentList.appendChild(el("div", { class: "sync-note" }, [text("No comments yet — be the first.")]));
+                }
+                deleteComment(c.id);
+              }
+            }, [text("Remove")]));
+          }
+          commentList.appendChild(row);
         });
       });
     }
@@ -2474,6 +2734,47 @@
   subscribeFavCountsOnce(function () {
     if (state.openTitleId) renderDetail();
   });
+
+  // Quiet footer link so the site owner can unlock deleting ANY comment
+  // (everyone else can only delete their own — see MY_COMMENTS above).
+  (function initAdminToggle() {
+    var statusEl = document.getElementById("adminStatus");
+    var toggleBtn = document.getElementById("adminToggle");
+    var formEl = document.getElementById("adminForm");
+    var inputEl = document.getElementById("adminInput");
+    var submitBtn = document.getElementById("adminSubmit");
+
+    function paint() {
+      if (isAdmin()) {
+        statusEl.textContent = "Comment moderation unlocked on this device.";
+        toggleBtn.textContent = "Lock";
+        formEl.hidden = true;
+      } else {
+        statusEl.textContent = "";
+        toggleBtn.textContent = "Site owner?";
+      }
+    }
+    paint();
+
+    toggleBtn.addEventListener("click", function () {
+      if (isAdmin()) { lockAdmin(); paint(); if (state.openTitleId) renderDetail(); return; }
+      formEl.hidden = !formEl.hidden;
+      if (!formEl.hidden) inputEl.focus();
+    });
+    function trySubmit() {
+      if (tryUnlockAdmin(inputEl.value)) {
+        inputEl.value = "";
+        formEl.hidden = true;
+        paint();
+        if (state.openTitleId) renderDetail();
+      } else {
+        inputEl.value = "";
+        inputEl.placeholder = "Wrong passphrase";
+      }
+    }
+    submitBtn.addEventListener("click", trySubmit);
+    inputEl.addEventListener("keydown", function (e) { if (e.key === "Enter") trySubmit(); });
+  })();
 })();
 </script>
 </body>
