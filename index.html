@@ -462,8 +462,10 @@
   .match-tab[data-type="manhwa"].active { border-color: var(--bloom); }
 
   .match-list { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+  .see-more-matches { display: block; width: 100%; margin-top: 12px; text-align: center; }
   .match-card { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; background: var(--card-bg); }
   .match-head { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+  .match-kicker { font-size: 0.62rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 2px; }
   .match-title { font-family: "Cormorant Garamond", serif; font-weight: 600; font-size: 1.08rem; cursor: pointer; }
   .match-title:hover { text-decoration: underline; }
   .match-creator { color: var(--ink-soft); font-size: 0.78rem; }
@@ -693,7 +695,7 @@
     { id: "b-onyx-storm", type: "book", title: "Onyx Storm", creator: "Rebecca Yarros",
       series: "The Empyrean", seriesIndex: 3,
       blurb: "With the wards failing and a venin army closing in, Violet has to hold together a war college — and a bond with two riders — that keeps threatening to break.",
-      tags: ["enemies-to-lovers","dragons","academy","war-and-rebellion","slow-burn","high-heat"] },
+      tags: ["dragons","academy","war-and-rebellion","slow-burn","high-heat"] },
     { id: "b-acotar", type: "book", title: "A Court of Thorns and Roses", creator: "Sarah J. Maas",
       series: "A Court of Thorns and Roses", seriesIndex: 1,
       blurb: "A huntress dragged into the fae lands under an old bargain finds the beastly lord holding her captive isn't what the stories claimed.",
@@ -711,7 +713,7 @@
       tags: ["forced-proximity","hidden-identity","court-politics","chosen-one","slow-burn","high-heat"] },
     { id: "b-tog", type: "book", title: "Throne of Glass", creator: "Sarah J. Maas",
       blurb: "An imprisoned assassin is offered her freedom if she'll fight to become the king's personal champion.",
-      tags: ["love-triangle","court-politics","found-family","chosen-one","academy"] },
+      tags: ["love-triangle","court-politics","found-family","chosen-one"] },
     { id: "b-cruel-prince", type: "book", title: "The Cruel Prince", creator: "Holly Black",
       series: "The Folk of the Air", seriesIndex: 1,
       blurb: "A mortal girl raised in the treacherous High Court of Faerie claws for power against the vicious prince who wants her gone.",
@@ -883,7 +885,7 @@
       tags: ["found-family","ensemble","slow-burn","revenge-plot"] },
     { id: "b-caraval", type: "book", title: "Caraval", creator: "Stephanie Garber",
       blurb: "Sisters escape their controlling father for a legendary, dangerous game — built entirely on making its players fall for its lies.",
-      tags: ["hidden-identity","found-family","slow-burn","chosen-one"] },
+      tags: ["hidden-identity","found-family","slow-burn"] },
     { id: "b-wrath-dawn", type: "book", title: "The Wrath and the Dawn", creator: "Renée Ahdieh",
       blurb: "She volunteers to marry the boy-king who kills every wife by dawn, planning to end him for her best friend's death — and finds a reason to stay alive instead.",
       tags: ["arranged-marriage","enemies-to-lovers","mythology","slow-burn","high-heat"] },
@@ -1097,13 +1099,13 @@
     // ---------------- Anime (batch 2) ----------------
     { id: "a-rezero", type: "anime", title: "Re:ZERO: Starting Life in Another World", creator: "Studio: White Fox",
       blurb: "Dying and waking up at the same point in time over and over, he has to save the girl he loves before the loop resets everything again.",
-      tags: ["love-triangle","healing-from-trauma","chosen-one","isekai","regression"] },
+      tags: ["love-triangle","healing-from-trauma","isekai","regression"] },
     { id: "a-shield-hero", type: "anime", title: "The Rising of the Shield Hero", creator: "Studio: Kinema Citrus",
       blurb: "Falsely accused and cast out by everyone in a summoned world, he rebuilds trust — and a found family — one person willing to see the truth.",
       tags: ["found-family","power-imbalance","revenge-plot","isekai"] },
     { id: "a-realist-hero", type: "anime", title: "How a Realist Hero Rebuilt the Kingdom", creator: "Studio: J.C.Staff",
       blurb: "Summoned to save a crumbling kingdom, he chooses economics and diplomacy over swords — and an arranged marriage that turns out better than planned.",
-      tags: ["arranged-marriage","court-politics","chosen-one","isekai","reverse-harem"] },
+      tags: ["arranged-marriage","court-politics","chosen-one","isekai"] },
     { id: "a-dating-sim", type: "anime", title: "Trapped in a Dating Sim", creator: "Studio: SynergySP",
       blurb: "Reincarnated as a minor villain in the otome game he used to play, he has to dodge every death flag while the game's heroines start falling for him instead.",
       tags: ["hidden-identity","court-politics","morally-grey","isekai","reincarnated-villain"] },
@@ -1367,7 +1369,40 @@
       tags: ["enemies-to-lovers","academy","slow-burn","queer-romance"] },
     { id: "m-id-gangnam-beauty", type: "manhwa", format: "webtoon", title: "My ID is Gangnam Beauty", creator: "Gi Maeng-Gi",
       blurb: "A student who got plastic surgery to escape years of bullying starts college hoping for a fresh start, only to run into the one classmate who knew her before.",
-      tags: ["found-family","healing-from-trauma","academy","slow-burn"] }
+      tags: ["found-family","healing-from-trauma","academy","slow-burn"] },
+
+    // ---------------- Books (batch 4 — major titles check) ----------------
+    { id: "b-twilight", type: "book", title: "Twilight", creator: "Stephenie Meyer",
+      blurb: "A girl who moves to a rainy small town falls for the strange, beautiful boy in her biology class — and the secret he's been hiding since 1918.",
+      tags: ["hidden-identity","slow-burn","power-imbalance","age-gap","low-heat"] },
+    { id: "b-vampire-academy", type: "book", title: "Vampire Academy", creator: "Richelle Mead",
+      blurb: "A half-vampire bodyguard-in-training and the royal vampire princess she'd die for return to the academy that trains them both — where her forbidden pull toward her brooding mentor is the least of her problems.",
+      tags: ["academy","power-imbalance","age-gap","found-family"] },
+    { id: "b-selection", type: "book", title: "The Selection", creator: "Kiera Cass",
+      blurb: "Chosen at random for a nationwide competition to marry the prince, a girl who never wanted the crown finds the palace — and the prince — harder to walk away from than she planned.",
+      tags: ["court-politics","love-triangle","found-family","low-heat"] },
+    { id: "b-red-queen", type: "book", title: "Red Queen", creator: "Victoria Aveyard",
+      blurb: "A common girl with red blood discovers she has the same deadly powers as the silver-blooded elite who rule over people like her — and gets forced into their palace to hide what she is.",
+      tags: ["court-politics","chosen-one","power-imbalance","betrayal"] },
+    { id: "b-city-of-bones", type: "book", title: "City of Bones", creator: "Cassandra Clare",
+      blurb: "A girl who watches her mother vanish is pulled into a hidden world of demon-hunters, and into a devastating secret about the boy she's falling for.",
+      tags: ["hidden-identity","found-family","chosen-one","mythology"] },
+    { id: "b-cinder", type: "book", title: "Cinder", creator: "Marissa Meyer",
+      blurb: "A gifted mechanic and cyborg — mistrusted for what she is — catches the prince's attention right as a plague and a looming war put her secret, and her life, at risk.",
+      tags: ["hidden-identity","power-imbalance","court-politics","chosen-one"] },
+    { id: "b-ember-in-ashes", type: "book", title: "An Ember in the Ashes", creator: "Sabaa Tahir",
+      blurb: "A girl who trades herself into slavery to save her captured brother is drawn to the conflicted young soldier ordered to watch her every move.",
+      tags: ["enemies-to-lovers","power-imbalance","court-politics","revenge-plot"] },
+
+    // ---------------- Anime (batch 4 — major titles check) ----------------
+    { id: "a-your-name", type: "anime", title: "Your Name (Kimi no Na wa)", creator: "Studio: CoMix Wave Films",
+      blurb: "A city boy and a country girl who mysteriously swap bodies in their sleep search for each other across a gap of time and distance neither of them understands yet.",
+      tags: ["slow-burn","low-heat","mythology","healing-from-trauma"] },
+
+    // ---------------- Manga / Manhwa / Webtoons (batch 4 — major titles check) ----------------
+    { id: "m-boys-over-flowers", type: "manhwa", format: "manga", title: "Boys Over Flowers (Hana Yori Dango)", creator: "Yoko Kamio",
+      blurb: "A working-class girl at an elite school for the ultra-rich defies the four tyrannical heirs who rule it — and finds herself falling for the worst of them.",
+      tags: ["enemies-to-lovers","academy","reverse-harem","power-imbalance"] }
   ];
 
   var TITLE_BY_ID = {};
@@ -1463,7 +1498,7 @@
       });
     });
     groupList.sort(function (x, y) { return y.score - x.score; });
-    return groupList.slice(0, limit || 4);
+    return limit ? groupList.slice(0, limit) : groupList;
   }
 
   function matchId(idA, idB) {
@@ -1505,6 +1540,7 @@
     activeTagFilter: null,
     openTitleId: null,
     openMatchType: "book",
+    matchLimit: 5,
     showFavoritesOnly: false,
     startHere: { mode: "prompt", picks: [] } // mode: prompt | picking | results | hidden — picks are trope ids
   };
@@ -2157,6 +2193,7 @@
     state.openTitleId = id;
     var t = TITLE_BY_ID[id];
     state.openMatchType = Object.keys(TYPE_META).filter(function (ty) { return ty !== t.type; })[0];
+    state.matchLimit = 5;
     document.getElementById("scrim").classList.add("open");
     document.getElementById("detail").classList.add("open");
     document.getElementById("detail").setAttribute("aria-hidden", "false");
@@ -2240,19 +2277,20 @@
       matchTabs.appendChild(el("button", {
         class: "match-tab" + (state.openMatchType === ty ? " active" : ""),
         "data-type": ty,
-        onclick: function () { state.openMatchType = ty; renderDetail(); }
+        onclick: function () { state.openMatchType = ty; state.matchLimit = 5; renderDetail(); }
       }, [text(TYPE_META[ty].label)]));
     });
     // also allow same-media matches (books -> books etc.) as a third tab
     matchTabs.appendChild(el("button", {
       class: "match-tab" + (state.openMatchType === t.type ? " active" : ""),
       "data-type": t.type,
-      onclick: function () { state.openMatchType = t.type; renderDetail(); }
+      onclick: function () { state.openMatchType = t.type; state.matchLimit = 5; renderDetail(); }
     }, [text("More " + TYPE_META[t.type].label)]));
     inner.appendChild(matchTabs);
 
     var list = el("div", { class: "match-list" });
-    var matchGroups = topMatches(t, state.openMatchType, 5);
+    var allMatchGroups = topMatches(t, state.openMatchType, null);
+    var matchGroups = allMatchGroups.slice(0, state.matchLimit);
     if (!matchGroups.length) {
       list.appendChild(el("div", { class: "sync-note" }, [text("No strong matches tagged yet in this category.")]));
     }
@@ -2347,6 +2385,7 @@
         var card = el("div", { class: "match-card" });
         card.appendChild(el("div", { class: "match-head" }, [
           el("div", {}, [
+            el("div", { class: "match-kicker", style: "color:" + TYPE_META[m.title.type].accent }, [text(formatLabel(m.title))]),
             el("div", { class: "match-title", onclick: function () { openDetail(m.title.id); } }, [text(m.title.title)]),
             el("div", { class: "match-creator" }, [text(m.title.creator)])
           ])
@@ -2363,6 +2402,7 @@
       var card = el("div", { class: "match-card series-match-card" });
       card.appendChild(el("div", { class: "match-head" }, [
         el("div", {}, [
+          el("div", { class: "match-kicker", style: "color:" + TYPE_META[g.books[0].title.type].accent }, [text(formatLabel(g.books[0].title))]),
           el("div", { class: "series-kicker" }, [text(g.books.length + "-book series match")]),
           el("div", { class: "match-title" }, [text(g.series)]),
           el("div", { class: "match-creator" }, [text(g.books[0].title.creator)])
@@ -2382,6 +2422,16 @@
       list.appendChild(card);
     });
     inner.appendChild(list);
+
+    // Already read/watched the ones shown? Keep going down the ranked
+    // list instead of stopping at the first handful.
+    if (allMatchGroups.length > matchGroups.length) {
+      inner.appendChild(el("button", {
+        class: "btn btn-ghost see-more-matches",
+        type: "button",
+        onclick: function () { state.matchLimit += 5; renderDetail(); }
+      }, [text("See more matches (" + (allMatchGroups.length - matchGroups.length) + " more)")]));
+    }
 
     inner.appendChild(el("div", { class: "sync-note", style: "margin-top:18px" }, [
       text("Votes and comments sync live with anyone else who can open this page.")
