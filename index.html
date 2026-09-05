@@ -9,8 +9,16 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <!-- Supabase client — replaces the Claude-artifact-only "db" capability so
-     votes, favorites, and comments work on the real, deployed site. -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+     votes, favorites, and comments work on the real, deployed site.
+     Pinned to an exact version rather than floating on "@2": the latest
+     2.x release (2.115.0, as of this writing) throws "URL is not a
+     constructor" inside its realtime module and silently breaks live
+     syncing entirely — voting, comments, and favorites keep working
+     locally per-browser, but nothing shows up for anyone else. 2.45.4 is
+     confirmed working against this project. If you ever want to update
+     it, test the new version actually connects (open the site, check the
+     browser console for errors) before trusting it. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 
 <style>
   :root {
