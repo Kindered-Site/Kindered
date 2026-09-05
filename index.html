@@ -1393,12 +1393,11 @@
      (matches, comments, tagvotes, favorites) and README.md for how to plug
      in your project's URL and key below. */
 
-  // Fill these in from your Supabase project (Project Settings -> API) once
-  // you've created it and run supabase-schema.sql. Until then this falls
-  // back to local-only behavior — the site still works, votes/comments just
-  // won't be shared or persist across visits (same as before Supabase runs).
-  var SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL"; // e.g. "https://abcdefgh.supabase.co"
-  var SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY"; // the public "anon" key — safe to ship client-side, access is controlled by the RLS policies in supabase-schema.sql
+  // Wired to Lindsay's "kindred" Supabase project (Settings -> API Keys).
+  // Safe to ship client-side — access is controlled by the RLS policies in
+  // supabase-schema.sql, not by hiding this key.
+  var SUPABASE_URL = "https://pkruvnvshcwotvnaxvbv.supabase.co";
+  var SUPABASE_ANON_KEY = "sb_publishable_NsP2FJT1wXAk8pVwv0C4gA_pZiDBP2p";
 
   var supabaseClient = (SUPABASE_URL.indexOf("YOUR_") !== 0 && typeof window.supabase !== "undefined")
     ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
