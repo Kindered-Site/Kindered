@@ -101,36 +101,45 @@
   /* ---------- Header ---------- */
   header.site {
     border-bottom: 1px solid var(--line);
-    padding: 28px 0 0;
+    padding: 18px 0;
   }
   .brand-row {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
     gap: 16px;
     flex-wrap: wrap;
-    padding-bottom: 18px;
   }
+  .brand-mark {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .brand-glyph {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: linear-gradient(155deg, var(--gilt), var(--bloom));
+    color: var(--paper);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .brand-glyph svg { width: 16px; height: 16px; }
   .wordmark {
     font-family: "Cormorant Garamond", ui-serif, Georgia, serif;
-    font-size: 2.1rem;
+    font-size: 1.5rem;
     font-weight: 700;
     letter-spacing: 0.01em;
   }
   .tagline {
-    font-family: "Cormorant Garamond", ui-serif, Georgia, serif;
-    color: var(--ink);
-    font-size: 1.7rem;
-    font-weight: 600;
-    text-wrap: balance;
-    max-width: 22ch;
-    margin: 6px 0 4px;
-  }
-  .tagline-sub {
     color: var(--ink-soft);
-    font-size: 0.94rem;
-    max-width: 56ch;
-    margin: 0 0 20px;
+    font-size: 0.86rem;
+    font-weight: 600;
+    max-width: 40ch;
+    text-align: right;
+    margin: 0;
   }
 
   /* ---------- Capability strip ---------- */
@@ -273,32 +282,23 @@
   .start-here-because b { color: var(--ink); font-weight: 700; }
   .start-here-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 18px; }
   .start-here-col-label { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 8px; }
-  .start-here-mini-card {
-    display: block; width: 100%; text-align: left; background: var(--card-bg);
-    border: 1px solid var(--line); border-left: 5px solid var(--accent); border-radius: 10px;
-    padding: 14px 14px 12px; margin-bottom: 10px; cursor: pointer;
-    box-shadow: var(--shadow);
-    transition: transform .12s ease;
-  }
-  .start-here-mini-card:hover { transform: translateY(-2px); }
-  .kindred-mini-head { display: flex; justify-content: flex-end; margin-bottom: 6px; }
+  /* Start Here result tiles reuse .card/.card-title/.card-tags etc. (see
+     the main grid above) so they look identical to a browsed title — this
+     class only adds the stacked-column spacing the grid gets from its
+     CSS-grid `gap` instead. */
+  .start-here-mini-card { width: 100%; margin-bottom: 10px; }
   .kindred-score-badge {
     display: inline-flex; align-items: baseline; gap: 4px;
     background: color-mix(in srgb, var(--accent) 18%, var(--card-bg));
     color: var(--accent);
     border-radius: 999px;
     padding: 4px 11px;
-    font-size: 0.86rem;
+    font-size: 0.82rem;
     font-weight: 800;
     white-space: nowrap;
+    flex-shrink: 0;
   }
-  .start-here-mini-title { font-weight: 700; font-size: 1rem; margin-top: 2px; }
-  .start-here-mini-creator { font-size: 0.78rem; color: var(--ink-soft); }
-  .kindred-match-sub { font-size: 0.78rem; color: var(--ink-soft); font-weight: 700; margin: 6px 0 4px; }
-  .kindred-why { margin-top: 4px; }
-  .kindred-why-label { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 3px; }
-  .kindred-why-item { font-size: 0.82rem; color: var(--ink-soft); line-height: 1.5; }
-  .kindred-why-item.matched { color: var(--ink); font-weight: 700; }
+  .kindred-match-label { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-soft); width: 100%; margin-bottom: 1px; }
   .start-here-actions { display: flex; align-items: center; gap: 16px; margin-top: 18px; flex-wrap: wrap; }
 
   /* ---------- Toolbar ---------- */
@@ -637,8 +637,7 @@
 
   @media (max-width: 560px) {
     .detail { width: 100vw; }
-    .wordmark { font-size: 1.7rem; }
-    .tagline { font-size: 1.3rem; max-width: none; }
+    .tagline { display: none; }
     .kindred-hero-title { font-size: 1.7rem; }
     .cap-item { flex: 1 1 100%; padding: 14px 0; border-left: none !important; }
     .cap-item + .cap-item { border-top: 1px solid var(--line); border-left: none; padding-left: 0; }
@@ -650,10 +649,12 @@
 <header class="site">
   <div class="wrap">
     <div class="brand-row">
-      <div class="wordmark">Kindred</div>
+      <div class="brand-mark">
+        <div class="brand-glyph"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.53L12 21.35z"/></svg></div>
+        <div class="wordmark">Kindred</div>
+      </div>
+      <div class="tagline">Stories kindred to the ones you already love — matched by trope, confirmed by readers.</div>
     </div>
-    <div class="tagline">Tell us what you love. We'll find what you'll love next.</div>
-    <div class="tagline-sub">Stories kindred to the ones you already love — matched by trope, confirmed by readers.</div>
   </div>
 </header>
 
@@ -2130,6 +2131,40 @@
     return { shared: shared, score: score };
   }
 
+  // The "Kindred Score" shown on a title's own "You might also like"
+  // matches — how much of what YOU'RE currently looking at (title `a`)
+  // carries over into the candidate `b`. Two community signals feed it:
+  //   1. how confidently readers have confirmed the specific shared tropes
+  //      on either title (a Laplace-smoothed rate, not just a net tally —
+  //      one lone upvote shouldn't read as confidently as a dozen votes
+  //      that happen to net the same) — this is the estimate before anyone
+  //      has weighed in on the PAIRING itself, and it's what a brand new
+  //      match starts from.
+  //   2. the direct "yes, these two are actually alike" votes cast on this
+  //      specific pairing (the same ▲/▼ shown under the match below) — a
+  //      much more direct signal than trope math once enough of them exist,
+  //      so it increasingly overrides the estimate as votes accumulate,
+  //      rather than always deferring to the math.
+  function kindredScoreBetween(a, b, shared) {
+    if (!shared || !shared.length) return null;
+    var matchFraction = Math.min(1, shared.length / a.tags.length);
+    var confidenceSum = shared.reduce(function (sum, tag) {
+      var ca = tagVoteCounts(a.id, tag), cb = tagVoteCounts(b.id, tag);
+      var up = (ca.up || 0) + (cb.up || 0), down = (ca.down || 0) + (cb.down || 0);
+      return sum + (up + 1) / (up + down + 2); // Laplace-smoothed confirmation rate
+    }, 0);
+    var avgConfidence = confidenceSum / shared.length;
+    var priorPercent = 100 * matchFraction * (0.82 + 0.18 * avgConfidence);
+
+    var mv = matchVoteCounts(matchId(a.id, b.id));
+    var mUp = mv.upvotes || 0, mDown = mv.downvotes || 0;
+    var voteWeight = (mUp + mDown) / (mUp + mDown + 6); // 0 with no votes, ~0.5 by 6 votes, approaches 1
+    var observedPercent = 100 * (mUp + 1) / (mUp + mDown + 2);
+
+    var percent = Math.round(priorPercent * (1 - voteWeight) + observedPercent * voteWeight);
+    return Math.max(1, Math.min(100, percent));
+  }
+
   // Books/anime/manga that share a `series` name are grouped into one
   // recommendation instead of flooding the list with every entry from the
   // same series — e.g. "Fourth Wing" and "Iron Flame" surface once, as
@@ -2140,7 +2175,7 @@
     TITLES.forEach(function (other) {
       if (other.id === title.id || other.type !== type) return;
       var m = scoreMatch(title, other);
-      if (m) perTitle.push({ title: other, shared: m.shared, score: m.score });
+      if (m) perTitle.push({ title: other, shared: m.shared, score: m.score, percent: kindredScoreBetween(title, other, m.shared) });
     });
 
     var groups = {};
@@ -2148,11 +2183,12 @@
     perTitle.forEach(function (m) {
       var key = m.title.series ? ("series:" + m.title.series) : ("solo:" + m.title.id);
       if (!groups[key]) {
-        groups[key] = { series: m.title.series || null, books: [], score: 0 };
+        groups[key] = { series: m.title.series || null, books: [], score: 0, percent: 0 };
         order.push(key);
       }
       groups[key].books.push(m);
       if (m.score > groups[key].score) groups[key].score = m.score;
+      if (m.percent > groups[key].percent) groups[key].percent = m.percent;
     });
 
     var groupList = order.map(function (k) { return groups[k]; });
@@ -2160,10 +2196,17 @@
       g.books.sort(function (a, b) {
         var ai = a.title.seriesIndex || 0, bi = b.title.seriesIndex || 0;
         if (ai !== bi) return ai - bi;
-        return b.score - a.score;
+        return b.percent - a.percent;
       });
     });
-    groupList.sort(function (x, y) { return y.score - x.score; });
+    // Ranked by Kindred Score, not the raw trope-overlap score — this is
+    // what lets match-quality votes (folded into percent, see
+    // kindredScoreBetween) actually move a match up or down the list, not
+    // just change the number shown on it. Ties fall back to the raw score.
+    groupList.sort(function (x, y) {
+      if (y.percent !== x.percent) return y.percent - x.percent;
+      return y.score - x.score;
+    });
     return limit ? groupList.slice(0, limit) : groupList;
   }
 
@@ -2187,26 +2230,20 @@
     score *= (1 + 0.15 * (shared.length - 1));
     return score;
   }
-  // The "Kindred Score" — the percentage shown on every Start Here result
-  // ("94% Kindred"). It's built from two things:
-  //   1. how many of the picked tropes this title actually has (the main
-  //      driver — matching all 3 sits in a much higher band than matching 1)
-  //   2. the community's net up/down votes on THOSE SPECIFIC trope tags for
-  //      this title, which nudge the score a little further up or down
-  //      within that band — so the same title can drift a few points either
-  //      way purely from voting, with nothing else about it changing.
-  // A title with no votes yet lands at a fair, un-inflated baseline (never
-  // shown as a perfect 100% until readers have actually confirmed it).
+  // The Kindred Score used to rank Start Here results (not shown as a
+  // number there anymore, just used for sort order). Same two-part shape
+  // as kindredScoreBetween above: how many of the picked tropes this title
+  // has (the main driver), and a Laplace-smoothed confirmation rate on
+  // those specific tags — a few consistent votes read as more confident
+  // than one lone vote with the same net tally — so ranking still shifts
+  // a little as people vote, with nothing else about the title changing.
   function kindredScore(tagIds, candidate) {
     var shared = tagIds.filter(function (tg) { return candidate.tags.indexOf(tg) !== -1; });
     if (!shared.length) return null;
     var matchFraction = shared.length / tagIds.length;
     var confidenceSum = shared.reduce(function (sum, t) {
-      var net = netTagScore(candidate.id, t);
-      // No votes yet -> neutral 0.5. Net upvotes push toward 1 (raises the
-      // score); net downvotes push toward 0 (lowers it) — this is the "goes
-      // up and down a bit as people vote" mechanic.
-      return sum + Math.max(0, Math.min(1, 0.5 + net / 20));
+      var c = tagVoteCounts(candidate.id, t);
+      return sum + ((c.up || 0) + 1) / ((c.up || 0) + (c.down || 0) + 2);
     }, 0);
     var avgConfidence = confidenceSum / shared.length;
     var confidenceFactor = 0.82 + 0.18 * avgConfidence; // ranges 0.82 .. 1.0
@@ -2526,6 +2563,32 @@
   function matchDocRef(db, id) { return db.doc("matches/" + id); }
   function commentsColRef(db, id) { return db.collection("matches/" + id + "/comments"); }
 
+  // A bulk, synchronous view of every pairing's match-quality votes (the
+  // ▲/▼ someone casts on a specific recommended match, saying "yes, these
+  // two are actually alike" — separate from voting on an individual
+  // trope). watchMatch() below still drives the live count shown on each
+  // visible match card; this cache exists so the Kindred Score can read
+  // vote data for EVERY candidate pairing at once (needed to score and
+  // sort the full match list), the same way tagVoteCache does for tropes.
+  var matchVoteCache = {}; // matchId -> { upvotes, downvotes }
+  var matchVoteSubscribed = false;
+  function matchVoteCounts(mid) {
+    return matchVoteCache[mid] || { upvotes: 0, downvotes: 0 };
+  }
+  function subscribeMatchVotesOnce(onUpdate) {
+    if (matchVoteSubscribed) return;
+    matchVoteSubscribed = true;
+    dbPromise.then(function (db) {
+      if (!db) return;
+      db.collection("matches").limit(3000).onSnapshot(function (qsnap) {
+        var next = {};
+        qsnap.docs.forEach(function (d) { next[d.id] = d.data(); });
+        matchVoteCache = next;
+        onUpdate();
+      }, function (e) { console.warn("match votes subscribe error", e); });
+    });
+  }
+
   function ensureMatchDoc(db, id) {
     return matchDocRef(db, id).get().then(function (snap) {
       if (!snap.exists) {
@@ -2554,6 +2617,16 @@
 
     var upDelta = (next === "up" ? 1 : 0) - (current === "up" ? 1 : 0);
     var downDelta = (next === "down" ? 1 : 0) - (current === "down" ? 1 : 0);
+
+    // Patch the bulk match-vote cache synchronously too (same pattern as
+    // applyTagVote below) so the Kindred Score on this pairing — and its
+    // position in the ranked match list — can reflect your own vote the
+    // instant you cast it, not just after the live snapshot round-trips.
+    var cachedMv = matchVoteCache[id] || { upvotes: 0, downvotes: 0 };
+    matchVoteCache[id] = {
+      upvotes: Math.max(0, (cachedMv.upvotes || 0) + upDelta),
+      downvotes: Math.max(0, (cachedMv.downvotes || 0) + downDelta)
+    };
 
     dbPromise.then(function (db) {
       if (!db) return;
@@ -2941,29 +3014,47 @@
       }
       matches.forEach(function (m) {
         var meta = TYPE_META[m.title.type];
-        var matchesAll = m.shared.length === picks.length;
-        col.appendChild(el("button", {
-          class: "start-here-mini-card",
+        // Same tile as the library grid below (card / card-kicker / card-title
+        // etc.) so a Start Here result and a browsed title look identical —
+        // just with a "Matches with" row instead of the grid's top-3-tags row.
+        var card = el("div", {
+          class: "card start-here-mini-card",
           style: "--accent:" + meta.accent,
-          onclick: function () { openDetail(m.title.id); }
+          role: "button",
+          tabindex: "0",
+          onclick: function () { openDetail(m.title.id); },
+          onkeydown: function (e) {
+            if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+              e.preventDefault();
+              openDetail(m.title.id);
+            }
+          }
         }, [
-          el("div", { class: "kindred-mini-head" }, [
-            el("span", { class: "kindred-score-badge" }, [text(m.percent + "% Kindred")])
-          ]),
-          el("div", { class: "start-here-mini-title" }, [text(m.title.title)]),
-          el("div", { class: "start-here-mini-creator" }, [text(m.title.creator)]),
-          el("div", { class: "kindred-match-sub" }, [
-            text(matchesAll ? "Matches all " + picks.length + " of your tropes" : "Matches " + m.shared.length + " of " + picks.length + " tropes")
-          ]),
-          el("div", { class: "kindred-why" }, [
-            el("div", { class: "kindred-why-label" }, [text("Why this matched:")])
-          ].concat(picks.map(function (tagId, i) {
-            var isShared = m.shared.indexOf(tagId) !== -1;
-            return el("div", { class: "kindred-why-item" + (isShared ? " matched" : "") }, [
-              text((isShared ? "✓ " : "○ ") + names[i])
-            ]);
+          el("div", { class: "card-kicker" }, [text(formatLabel(m.title))]),
+          el("div", { class: "card-title display" }, [text(m.title.title)]),
+          el("div", { class: "card-creator" }, [
+            text(m.title.creator), m.title.year ? el("span", { class: "card-year" }, [text(" · " + m.title.year)]) : null
+          ].filter(Boolean)),
+          el("div", { class: "card-blurb" }, [text(m.title.blurb)]),
+          el("div", { class: "card-tags" }, [
+            el("span", { class: "kindred-match-label" }, [text("Matches with:")])
+          ].concat(m.shared.map(function (tagId) {
+            return el("span", { class: "tagpill", style: "--accent:" + meta.accent + ";--mix:" + tagMixPercent(m.title.id, tagId) + "%" }, [text(TAGS[tagId])]);
           })))
-        ]));
+        ]);
+        var favBtn = el("button", {
+          class: "fav-btn" + (isFavorited(m.title.id) ? " active" : ""),
+          "aria-label": "Favorite",
+          title: "Save to My Favorites",
+          html: HEART_SVG,
+          onclick: function (e) {
+            e.stopPropagation();
+            var now = toggleFavorite(m.title.id);
+            favBtn.classList.toggle("active", now);
+          }
+        });
+        card.appendChild(favBtn);
+        col.appendChild(card);
       });
       cols.appendChild(col);
     });
@@ -3299,6 +3390,10 @@
           upvotes: Math.max(0, (currentVotes.upvotes || 0) + res.upDelta),
           downvotes: Math.max(0, (currentVotes.downvotes || 0) + res.downDelta)
         });
+        // This vote is a direct signal into that match's Kindred Score (see
+        // kindredScoreBetween) — re-render so the score and the list's sort
+        // order reflect it right away, not just on the next visit.
+        renderDetail();
       }
       upBtn.addEventListener("click", function () { castVote("up"); });
       downBtn.addEventListener("click", function () { castVote("down"); });
@@ -3367,7 +3462,8 @@
             el("div", { class: "match-kicker", style: "color:" + TYPE_META[m.title.type].accent }, [text(formatLabel(m.title))]),
             el("div", { class: "match-title", onclick: function () { openDetail(m.title.id); } }, [text(m.title.title)]),
             el("div", { class: "match-creator" }, [text(m.title.creator)])
-          ])
+          ]),
+          m.percent ? el("span", { class: "kindred-score-badge", style: "--accent:" + TYPE_META[m.title.type].accent }, [text(m.percent + "% Kindred")]) : null
         ]));
         buildMatchBody(card, m);
         list.appendChild(card);
@@ -3385,7 +3481,8 @@
           el("div", { class: "series-kicker" }, [text(g.books.length + "-book series match")]),
           el("div", { class: "match-title" }, [text(g.series)]),
           el("div", { class: "match-creator" }, [text(g.books[0].title.creator)])
-        ])
+        ]),
+        g.percent ? el("span", { class: "kindred-score-badge", style: "--accent:" + TYPE_META[g.books[0].title.type].accent }, [text(g.percent + "% Kindred")]) : null
       ]));
       var booksWrap = el("div", { class: "series-books" });
       g.books.forEach(function (m) {
@@ -3454,6 +3551,14 @@
   // Favorite counts are just a shared popularity signal (see FAVORITES
   // section above) — refresh the open detail view's count as it changes.
   subscribeFavCountsOnce(function () {
+    if (state.openTitleId) renderDetail();
+  });
+
+  // Match-quality votes (the ▲/▼ on a specific "You might also like" pairing)
+  // feed straight into that pairing's Kindred Score (see kindredScoreBetween)
+  // — refresh the open detail view so the score and the match order react
+  // live to anyone's vote, not just the one you just cast yourself.
+  subscribeMatchVotesOnce(function () {
     if (state.openTitleId) renderDetail();
   });
 
