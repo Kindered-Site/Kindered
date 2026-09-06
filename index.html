@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Find your next romantasy book, anime, or manga/manhwa/webtoon — matched by the tropes you already love, confirmed by other readers.">
 <title>Kindred</title>
+<!-- Google tag (gtag.js) — keep this in every future version of the site. -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VN2MRLH639"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-VN2MRLH639');
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -111,19 +119,29 @@
   }
   .tagline {
     font-family: "Cormorant Garamond", ui-serif, Georgia, serif;
+    color: var(--ink);
+    font-size: 1.7rem;
+    font-weight: 600;
+    text-wrap: balance;
+    max-width: 22ch;
+    margin: 6px 0 4px;
+  }
+  .tagline-sub {
     color: var(--ink-soft);
-    font-size: 1.12rem;
-    font-style: italic;
-    max-width: 62ch;
-    margin: 2px 0 22px;
+    font-size: 0.94rem;
+    max-width: 56ch;
+    margin: 0 0 20px;
   }
 
   /* ---------- Capability strip ---------- */
+  .capability-strip-band {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: color-mix(in srgb, var(--ink) 3%, var(--paper));
+  }
   .capability-strip {
     display: flex;
     flex-wrap: wrap;
-    border-top: 1px solid var(--line);
-    margin-bottom: 20px;
   }
   .cap-item {
     flex: 1 1 210px;
@@ -131,9 +149,19 @@
     align-items: flex-start;
     gap: 12px;
     padding: 16px 22px 16px 0;
-    border-bottom: 1px solid var(--line);
   }
   .cap-item + .cap-item { border-left: 1px solid var(--line); padding-left: 20px; }
+  @media (max-width: 560px) { .capability-strip-band { display: none; } }
+
+  /* ---------- Browse-the-library heading ---------- */
+  .browse-heading-wrap { padding-top: 26px; }
+  .browse-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    margin-bottom: 10px;
+  }
   .cap-icon {
     flex-shrink: 0;
     width: 32px;
@@ -186,28 +214,40 @@
   .tab-btn[data-type="manhwa"].active { border-color: var(--bloom); }
   .tab-btn:focus-visible { outline: 2px solid var(--gilt); outline-offset: 2px; border-radius: 3px; }
 
-  /* ---------- Start Here ---------- */
+  /* ---------- Start Here: the hero trope-matching experience ---------- */
   .start-here {
     border-bottom: 1px solid var(--line);
-    background: color-mix(in srgb, var(--gilt) 7%, var(--paper));
+    background:
+      radial-gradient(1200px 420px at 12% -10%, color-mix(in srgb, var(--gilt) 16%, transparent), transparent),
+      color-mix(in srgb, var(--gilt) 8%, var(--paper));
   }
-  .start-here-inner { padding: 18px 0; }
-  .start-here-prompt {
+  .start-here-inner { padding: 34px 0 30px; }
+  .start-here-collapsed .start-here-inner { padding: 14px 0; }
+
+  /* Collapsed ("Skip for now") reopener bar */
+  .start-here-hidden-bar {
     display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    font-size: 0.92rem; color: var(--ink-soft);
   }
-  .start-here-title { font-size: 1.3rem; }
-  .start-here-sub { color: var(--ink-soft); font-size: 0.86rem; margin-top: 3px; max-width: 46ch; }
-  .start-here-prompt-actions { display: flex; align-items: center; gap: 14px; }
+
+  /* Hero headline above the picker */
+  .kindred-hero-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .kindred-hero-title {
+    font-size: 2.5rem;
+    line-height: 1.08;
+  }
+  .kindred-hero-title-accent { color: var(--gilt-deep); }
+  .start-here-sub { color: var(--ink-soft); font-size: 0.98rem; margin: 10px 0 20px; max-width: 52ch; }
   .start-here-dismiss {
     background: none; border: none; color: var(--ink-soft); cursor: pointer;
     font-size: 0.78rem; font-weight: 700; text-decoration: underline; text-underline-offset: 2px;
+    white-space: nowrap; margin-top: 8px;
   }
-  .start-here-picker-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; gap: 12px; }
-  .picks-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+  .picks-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
   .pick-chip {
     display: inline-flex; align-items: center; gap: 4px;
     background: var(--card-bg); border: 1px solid var(--line); border-radius: 999px;
-    padding: 6px 6px 6px 13px; font-size: 0.8rem; font-weight: 700;
+    padding: 8px 8px 8px 16px; font-size: 0.92rem; font-weight: 700;
   }
   .pick-chip button {
     border: none; background: none; cursor: pointer; color: var(--ink-soft);
@@ -215,27 +255,51 @@
   }
   .pick-chip button:hover { color: var(--ember); background: color-mix(in srgb, var(--ember) 12%, transparent); }
   .pick-slot-empty {
-    border: 1px dashed var(--line); border-radius: 999px; padding: 6px 14px;
-    font-size: 0.8rem; color: var(--ink-soft); font-weight: 600;
+    border: 1px dashed color-mix(in srgb, var(--gilt) 55%, var(--line)); border-radius: 999px; padding: 8px 18px;
+    font-size: 0.92rem; color: var(--ink-soft); font-weight: 600;
   }
   .start-here-trope-grid {
     display: flex; flex-wrap: wrap; gap: 7px; margin-top: 2px;
     max-height: 280px; overflow-y: auto; padding-right: 2px;
   }
   .chip-disabled { opacity: 0.35; pointer-events: none; }
-  .start-here-because { font-size: 0.9rem; color: var(--ink-soft); }
+  .btn-large { font-size: 1.02rem; padding: 13px 26px; font-weight: 800; }
+  .btn-small { font-size: 0.8rem; padding: 8px 14px; }
+
+  /* Results */
+  .kindred-results-head { margin-bottom: 4px; }
+  .kindred-results-title { font-size: 1.9rem; margin-bottom: 4px; }
+  .start-here-because { font-size: 0.94rem; color: var(--ink-soft); }
   .start-here-because b { color: var(--ink); font-weight: 700; }
-  .start-here-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 14px; }
+  .start-here-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 18px; }
   .start-here-col-label { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 8px; }
   .start-here-mini-card {
     display: block; width: 100%; text-align: left; background: var(--card-bg);
-    border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 8px;
-    padding: 10px 12px; margin-bottom: 8px; cursor: pointer;
+    border: 1px solid var(--line); border-left: 5px solid var(--accent); border-radius: 10px;
+    padding: 14px 14px 12px; margin-bottom: 10px; cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: transform .12s ease;
   }
-  .start-here-mini-card:hover { transform: translateY(-1px); }
-  .start-here-mini-title { font-weight: 700; font-size: 0.9rem; }
-  .start-here-mini-creator { font-size: 0.74rem; color: var(--ink-soft); }
-  .start-here-actions { display: flex; align-items: center; gap: 16px; margin-top: 16px; flex-wrap: wrap; }
+  .start-here-mini-card:hover { transform: translateY(-2px); }
+  .kindred-mini-head { display: flex; justify-content: flex-end; margin-bottom: 6px; }
+  .kindred-score-badge {
+    display: inline-flex; align-items: baseline; gap: 4px;
+    background: color-mix(in srgb, var(--accent) 18%, var(--card-bg));
+    color: var(--accent);
+    border-radius: 999px;
+    padding: 4px 11px;
+    font-size: 0.86rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  .start-here-mini-title { font-weight: 700; font-size: 1rem; margin-top: 2px; }
+  .start-here-mini-creator { font-size: 0.78rem; color: var(--ink-soft); }
+  .kindred-match-sub { font-size: 0.78rem; color: var(--ink-soft); font-weight: 700; margin: 6px 0 4px; }
+  .kindred-why { margin-top: 4px; }
+  .kindred-why-label { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 3px; }
+  .kindred-why-item { font-size: 0.82rem; color: var(--ink-soft); line-height: 1.5; }
+  .kindred-why-item.matched { color: var(--ink); font-weight: 700; }
+  .start-here-actions { display: flex; align-items: center; gap: 16px; margin-top: 18px; flex-wrap: wrap; }
 
   /* ---------- Toolbar ---------- */
   .toolbar {
@@ -574,7 +638,8 @@
   @media (max-width: 560px) {
     .detail { width: 100vw; }
     .wordmark { font-size: 1.7rem; }
-    .tagline { font-size: 1rem; }
+    .tagline { font-size: 1.3rem; max-width: none; }
+    .kindred-hero-title { font-size: 1.7rem; }
     .cap-item { flex: 1 1 100%; padding: 14px 0; border-left: none !important; }
     .cap-item + .cap-item { border-top: 1px solid var(--line); border-left: none; padding-left: 0; }
   }
@@ -587,7 +652,23 @@
     <div class="brand-row">
       <div class="wordmark">Kindred</div>
     </div>
-    <div class="tagline">Stories kindred to the ones you already love — matched by trope, confirmed by readers.</div>
+    <div class="tagline">Tell us what you love. We'll find what you'll love next.</div>
+    <div class="tagline-sub">Stories kindred to the ones you already love — matched by trope, confirmed by readers.</div>
+  </div>
+</header>
+
+<section class="start-here" id="startHere">
+  <div class="wrap">
+    <div class="start-here-inner">
+      <div class="start-here-prompt" id="startHerePrompt"></div>
+      <div class="start-here-picker" id="startHerePicker" hidden></div>
+      <div class="start-here-results" id="startHereResults" hidden></div>
+    </div>
+  </div>
+</section>
+
+<div class="capability-strip-band">
+  <div class="wrap">
     <div class="capability-strip">
       <div class="cap-item" style="--accent: var(--gilt)">
         <div class="cap-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
@@ -597,10 +678,10 @@
         </div>
       </div>
       <div class="cap-item" style="--accent: var(--jade)">
-        <div class="cap-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></div>
+        <div class="cap-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
         <div>
-          <div class="cap-title">Start Here</div>
-          <div class="cap-desc">Pick 3 tropes you love and get instant, ranked matches across books, anime, and manga.</div>
+          <div class="cap-title">Kindred Score</div>
+          <div class="cap-desc">Every match gets a live % score based on shared tropes and reader votes — it shifts as the crowd weighs in.</div>
         </div>
       </div>
       <div class="cap-item" style="--accent: var(--bloom)">
@@ -618,19 +699,13 @@
         </div>
       </div>
     </div>
-    <nav class="tabs" id="mainTabs"></nav>
   </div>
-</header>
+</div>
 
-<section class="start-here" id="startHere">
-  <div class="wrap">
-    <div class="start-here-inner">
-      <div class="start-here-prompt" id="startHerePrompt"></div>
-      <div class="start-here-picker" id="startHerePicker" hidden></div>
-      <div class="start-here-results" id="startHereResults" hidden></div>
-    </div>
-  </div>
-</section>
+<div class="wrap browse-heading-wrap">
+  <div class="browse-title">Or browse the full library</div>
+  <nav class="tabs" id="mainTabs"></nav>
+</div>
 
 <div class="wrap">
   <div class="toolbar">
@@ -2112,14 +2187,51 @@
     score *= (1 + 0.15 * (shared.length - 1));
     return score;
   }
+  // The "Kindred Score" — the percentage shown on every Start Here result
+  // ("94% Kindred"). It's built from two things:
+  //   1. how many of the picked tropes this title actually has (the main
+  //      driver — matching all 3 sits in a much higher band than matching 1)
+  //   2. the community's net up/down votes on THOSE SPECIFIC trope tags for
+  //      this title, which nudge the score a little further up or down
+  //      within that band — so the same title can drift a few points either
+  //      way purely from voting, with nothing else about it changing.
+  // A title with no votes yet lands at a fair, un-inflated baseline (never
+  // shown as a perfect 100% until readers have actually confirmed it).
+  function kindredScore(tagIds, candidate) {
+    var shared = tagIds.filter(function (tg) { return candidate.tags.indexOf(tg) !== -1; });
+    if (!shared.length) return null;
+    var matchFraction = shared.length / tagIds.length;
+    var confidenceSum = shared.reduce(function (sum, t) {
+      var net = netTagScore(candidate.id, t);
+      // No votes yet -> neutral 0.5. Net upvotes push toward 1 (raises the
+      // score); net downvotes push toward 0 (lowers it) — this is the "goes
+      // up and down a bit as people vote" mechanic.
+      return sum + Math.max(0, Math.min(1, 0.5 + net / 20));
+    }, 0);
+    var avgConfidence = confidenceSum / shared.length;
+    var confidenceFactor = 0.82 + 0.18 * avgConfidence; // ranges 0.82 .. 1.0
+    var percent = Math.round(100 * matchFraction * confidenceFactor);
+    return {
+      percent: Math.max(1, Math.min(100, percent)),
+      shared: shared
+    };
+  }
+
   function startHereMatches(tagIds, type, limit) {
     var results = [];
     TITLES.forEach(function (t) {
       if (t.type !== type) return;
-      var s = tropeSetScore(tagIds, t);
-      if (s !== null) results.push({ title: t, score: s });
+      var ks = kindredScore(tagIds, t);
+      if (ks === null) return;
+      results.push({ title: t, percent: ks.percent, shared: ks.shared, score: tropeSetScore(tagIds, t) });
     });
-    results.sort(function (x, y) { return y.score - x.score; });
+    // Sorted by Kindred Score first — the whole point is that this order
+    // re-shuffles live as votes move a title's percent past its neighbors.
+    // Same-percent ties fall back to the underlying raw match score.
+    results.sort(function (x, y) {
+      if (y.percent !== x.percent) return y.percent - x.percent;
+      return y.score - x.score;
+    });
     return results.slice(0, limit || 3);
   }
 
@@ -2133,7 +2245,7 @@
     openMatchType: "book",
     matchLimit: 5,
     showFavoritesOnly: false,
-    startHere: { mode: "prompt", picks: [] } // mode: prompt | picking | results | hidden — picks are trope ids
+    startHere: { mode: "picking", picks: [] } // mode: picking | results | hidden — picks are trope ids
   };
 
   // Start Here picks only ever get written to storage once a full set of 3
@@ -2702,37 +2814,33 @@
   function renderStartHere() {
     var section = document.getElementById("startHere");
     var sh = state.startHere;
-    if (sh.mode === "hidden") { section.hidden = true; return; }
     section.hidden = false;
+    section.classList.toggle("start-here-collapsed", sh.mode === "hidden");
 
     var promptEl = document.getElementById("startHerePrompt");
     var pickerEl = document.getElementById("startHerePicker");
     var resultsEl = document.getElementById("startHereResults");
-    promptEl.hidden = sh.mode !== "prompt";
+    promptEl.hidden = sh.mode !== "hidden";
     pickerEl.hidden = sh.mode !== "picking";
     resultsEl.hidden = sh.mode !== "results";
 
-    if (sh.mode === "prompt") renderStartHerePrompt();
+    if (sh.mode === "hidden") renderStartHereHidden();
     if (sh.mode === "picking") renderStartHerePicker();
     if (sh.mode === "results") renderStartHereResultsView();
   }
 
-  function renderStartHerePrompt() {
+  // The collapsed state after someone taps "Skip for now" / "Hide this" —
+  // this is the star feature, so even dismissed it stays reachable as a
+  // slim one-line bar instead of vanishing outright.
+  function renderStartHereHidden() {
     var promptEl = document.getElementById("startHerePrompt");
     promptEl.innerHTML = "";
-    promptEl.appendChild(el("div", {}, [
-      el("div", { class: "start-here-title display" }, [text("Don't know where to start?")]),
-      el("div", { class: "start-here-sub" }, [text("Pick 3 tropes you love, and we'll recommend books, anime, and manga built around them.")])
-    ]));
-    promptEl.appendChild(el("div", { class: "start-here-prompt-actions" }, [
+    promptEl.appendChild(el("div", { class: "start-here-hidden-bar" }, [
+      el("span", {}, [text("Tell us what you love — we'll find what you'll love next.")]),
       el("button", {
-        class: "btn btn-primary",
+        class: "btn btn-primary btn-small",
         onclick: function () { state.startHere.mode = "picking"; state.startHere.picks = []; renderStartHere(); }
-      }, [text("Start Here")]),
-      el("button", {
-        class: "start-here-dismiss",
-        onclick: function () { state.startHere.mode = "hidden"; renderStartHere(); }
-      }, [text("Skip for now")])
+      }, [text("Find My Kindred")])
     ]));
   }
 
@@ -2742,13 +2850,17 @@
 
     pickerEl.innerHTML = "";
     var cameFromResults = getStartHerePicks().length === 3;
-    pickerEl.appendChild(el("div", { class: "start-here-picker-head" }, [
-      el("div", { class: "start-here-title display" }, [text("Pick 3 tropes you love")]),
+    pickerEl.appendChild(el("div", { class: "kindred-hero-head" }, [
+      el("div", {}, [
+        el("div", { class: "kindred-hero-title display" }, [text("Tell us what you love.")]),
+        el("div", { class: "kindred-hero-title display kindred-hero-title-accent" }, [text("We'll find what you'll love next.")])
+      ]),
       el("button", {
         class: "start-here-dismiss",
         onclick: function () { state.startHere.mode = cameFromResults ? "results" : "hidden"; renderStartHere(); }
-      }, [text("Cancel")])
+      }, [text(cameFromResults ? "Cancel" : "Skip for now")])
     ]));
+    pickerEl.appendChild(el("div", { class: "start-here-sub" }, [text("Pick 3 tropes you love, and we'll rank books, anime, and manga by how closely they match.")]));
 
     var picksRow = el("div", { class: "picks-row" });
     for (var i = 0; i < 3; i++) {
@@ -2768,19 +2880,19 @@
     }
     pickerEl.appendChild(picksRow);
 
-    // All 3 slots filled — an explicit "see matches" step rather than
+    // All 3 slots filled — an explicit "find my matches" step rather than
     // silently jumping away the instant the third pick lands, so someone
     // editing an existing set of 3 can still swap one before moving on.
     if (picks.length >= 3) {
       pickerEl.appendChild(el("button", {
-        class: "btn btn-primary",
+        class: "btn btn-primary btn-large",
         style: "margin-top:4px",
         onclick: function () {
           setStartHerePicks(state.startHere.picks.slice(0, 3));
           state.startHere.mode = "results";
           renderStartHere();
         }
-      }, [text("See my matches")]));
+      }, [text("Find My Kindred →")]));
       return;
     }
 
@@ -2806,14 +2918,17 @@
     var box = document.getElementById("startHereResults");
     box.innerHTML = "";
     var picks = getStartHerePicks();
-    if (picks.length !== 3) { state.startHere.mode = "prompt"; renderStartHere(); return; }
+    if (picks.length !== 3) { state.startHere.mode = "picking"; renderStartHere(); return; }
     var names = picks.map(function (id) { return TAGS[id] || "?"; });
 
-    box.appendChild(el("div", { class: "start-here-because" }, [
-      text("Because you love "),
-      el("b", {}, [text(names[0])]), text(", "),
-      el("b", {}, [text(names[1])]), text(" & "),
-      el("b", {}, [text(names[2])])
+    box.appendChild(el("div", { class: "kindred-results-head" }, [
+      el("div", { class: "kindred-results-title display" }, [text("Your Kindred matches")]),
+      el("div", { class: "start-here-because" }, [
+        text("Because you love "),
+        el("b", {}, [text(names[0])]), text(", "),
+        el("b", {}, [text(names[1])]), text(" & "),
+        el("b", {}, [text(names[2])])
+      ])
     ]));
 
     var cols = el("div", { class: "start-here-cols" });
@@ -2826,13 +2941,28 @@
       }
       matches.forEach(function (m) {
         var meta = TYPE_META[m.title.type];
+        var matchesAll = m.shared.length === picks.length;
         col.appendChild(el("button", {
           class: "start-here-mini-card",
           style: "--accent:" + meta.accent,
           onclick: function () { openDetail(m.title.id); }
         }, [
+          el("div", { class: "kindred-mini-head" }, [
+            el("span", { class: "kindred-score-badge" }, [text(m.percent + "% Kindred")])
+          ]),
           el("div", { class: "start-here-mini-title" }, [text(m.title.title)]),
-          el("div", { class: "start-here-mini-creator" }, [text(m.title.creator)])
+          el("div", { class: "start-here-mini-creator" }, [text(m.title.creator)]),
+          el("div", { class: "kindred-match-sub" }, [
+            text(matchesAll ? "Matches all " + picks.length + " of your tropes" : "Matches " + m.shared.length + " of " + picks.length + " tropes")
+          ]),
+          el("div", { class: "kindred-why" }, [
+            el("div", { class: "kindred-why-label" }, [text("Why this matched:")])
+          ].concat(picks.map(function (tagId, i) {
+            var isShared = m.shared.indexOf(tagId) !== -1;
+            return el("div", { class: "kindred-why-item" + (isShared ? " matched" : "") }, [
+              text((isShared ? "✓ " : "○ ") + names[i])
+            ]);
+          })))
         ]));
       });
       cols.appendChild(col);
@@ -3001,8 +3131,13 @@
     wrap.appendChild(el("span", { class: "tagvote-label" }, [text(TAGS[tag])]));
     var up = el("button", { class: "tagvote-btn up" + (current === "up" ? " voted" : ""), title: "Vote this trope really fits" }, [text("▲" + (counts.up || 0))]);
     var down = el("button", { class: "tagvote-btn down" + (current === "down" ? " voted" : ""), title: "Vote this trope doesn't fit" }, [text("▼" + (counts.down || 0))]);
-    up.addEventListener("click", function () { applyTagVote(titleId, tag, "up"); renderDetail(); renderGrid(); });
-    down.addEventListener("click", function () { applyTagVote(titleId, tag, "down"); renderDetail(); renderGrid(); });
+    function refreshAfterTagVote() {
+      renderDetail();
+      renderGrid();
+      if (state.startHere.mode === "results") renderStartHereResultsView();
+    }
+    up.addEventListener("click", function () { applyTagVote(titleId, tag, "up"); refreshAfterTagVote(); });
+    down.addEventListener("click", function () { applyTagVote(titleId, tag, "down"); refreshAfterTagVote(); });
     wrap.appendChild(up);
     wrap.appendChild(down);
     return wrap;
@@ -3299,7 +3434,7 @@
   var savedStartHerePicks = getStartHerePicks();
   state.startHere = savedStartHerePicks.length === 3
     ? { mode: "results", picks: savedStartHerePicks.slice() }
-    : { mode: "prompt", picks: [] };
+    : { mode: "picking", picks: [] };
   renderStartHere();
 
   renderTabs();
@@ -3307,10 +3442,13 @@
   renderGrid();
 
   // Tag votes affect matching/sorting everywhere, so refresh whatever's on
-  // screen whenever the live vote data changes (from any viewer).
+  // screen whenever the live vote data changes (from any viewer) — this is
+  // what makes Kindred Scores (and the result order they drive) update in
+  // real time as the crowd votes, not just on the voter's own screen.
   subscribeTagVotesOnce(function () {
     renderGrid();
     if (state.openTitleId) renderDetail();
+    if (state.startHere.mode === "results") renderStartHereResultsView();
   });
 
   // Favorite counts are just a shared popularity signal (see FAVORITES
