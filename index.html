@@ -627,6 +627,8 @@
     margin-bottom: 2px;
   }
   .series-book-title { font-weight: 700; font-size: 1rem; margin-bottom: 3px; }
+  .series-book-tags { display: flex; flex-wrap: wrap; gap: 5px; margin: 5px 0 2px; }
+  .series-book-tags .tagpill { font-size: 0.62rem; padding: 2px 7px; }
   .series-book-blurb {
     font-size: 0.83rem;
     color: var(--ink-soft);
@@ -787,22 +789,6 @@
   .comment:last-child { border-bottom: none; }
   .comment .who { font-weight: 700; margin-right: 6px; }
   .comment .when { color: var(--ink-soft); font-size: 0.72rem; }
-  .comment-delete {
-    float: right; border: none; background: none; cursor: pointer;
-    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.03em;
-    color: var(--ink-soft); text-transform: uppercase; padding: 0;
-  }
-  .comment-delete:hover { color: var(--ember); text-decoration: underline; }
-  .comment-form { display: flex; gap: 6px; margin-top: 8px; }
-  .comment-form input {
-    flex: 1; border: 1px solid var(--line); border-radius: 7px; padding: 7px 10px;
-    font-family: inherit; font-size: 0.82rem; background: var(--paper); color: var(--ink);
-  }
-  .comment-form button {
-    border: none; background: var(--ink); color: var(--paper); border-radius: 7px;
-    padding: 0 12px; font-weight: 700; font-size: 0.8rem; cursor: pointer;
-  }
-  .sync-note { font-size: 0.7rem; color: var(--ink-soft); margin-top: 4px; }
 
   /* ---------- Feedback ---------- */
   .feedback-section { border-top: 1px solid var(--line); margin-top: 40px; padding: 34px 0; }
@@ -834,25 +820,6 @@
     color: var(--ink-soft);
     font-size: 0.78rem;
   }
-  .admin-toggle {
-    display: inline; border: none; background: none; padding: 0; margin-left: 6px;
-    font: inherit; font-size: 0.72rem; color: var(--ink-soft); text-decoration: underline;
-    cursor: pointer;
-  }
-  .admin-toggle:hover { color: var(--ink); }
-  #adminStatus { font-weight: 700; }
-  .admin-form { display: inline-flex; gap: 6px; margin-left: 6px; vertical-align: middle; }
-  .admin-form input {
-    border: 1px solid var(--line); border-radius: 6px; padding: 3px 8px;
-    font-family: inherit; font-size: 0.75rem; background: var(--paper); color: var(--ink);
-    width: 140px;
-  }
-  .admin-form button {
-    border: 1px solid var(--line); border-radius: 6px; background: transparent; color: var(--ink);
-    font-family: inherit; font-size: 0.72rem; padding: 3px 8px; cursor: pointer;
-  }
-  .admin-form button:hover { border-color: var(--gilt); }
-
   @media (max-width: 560px) {
     .detail { width: 100vw; }
     /* Already full-width at this size, so the toggle would just be a
@@ -895,29 +862,29 @@
       <div class="cap-item" style="--accent: var(--gilt)">
         <div class="cap-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
         <div>
-          <div class="cap-title">One Library, Every Format</div>
-          <div class="cap-desc">Books, anime, and manga, manhwa &amp; webtoons together — filtered by the tropes they share, not just genre.</div>
+          <div class="cap-title">Start With What You Love</div>
+          <div class="cap-desc">Open a story you already love, or pick three tropes. Kindred finds other stories that share that DNA — even when they come from a different format.</div>
         </div>
       </div>
       <div class="cap-item" style="--accent: var(--jade)">
         <div class="cap-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
         <div>
           <div class="cap-title">Kindred Score</div>
-          <div class="cap-desc">Every match gets a live % score based on shared tropes and reader votes — it shifts as the crowd weighs in.</div>
+          <div class="cap-desc">Every recommendation gets a 1–100% match based on how much trope DNA the two stories share. Reader votes then nudge that score up or down — so the crowd can refine the ranking.</div>
         </div>
       </div>
       <div class="cap-item" style="--accent: var(--bloom)">
         <div class="cap-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
         <div>
-          <div class="cap-title">Reader-Verified Tags</div>
-          <div class="cap-desc">Vote any trope up or down on a title you've read or watched — tags sharpen as more readers weigh in.</div>
+          <div class="cap-title">Readers Refine It</div>
+          <div class="cap-desc">Think a trope fits — or doesn’t? Vote ▲ or ▼ on the title. Those votes help confirm tags and improve the matches everyone sees.</div>
         </div>
       </div>
       <div class="cap-item" style="--accent: var(--ember)">
         <div class="cap-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.53L12 21.35z"/></svg></div>
         <div>
-          <div class="cap-title">Favorite &amp; Track</div>
-          <div class="cap-desc">Save titles to your own list and see how many other readers favorited them too.</div>
+          <div class="cap-title">Follow the Connection</div>
+          <div class="cap-desc">See why two stories match, vote on the pairing, then jump to the next story. Books, anime, manga, manhwa &amp; webtoons all live in the same discovery loop.</div>
         </div>
       </div>
     </div>
@@ -970,12 +937,6 @@
   <div class="wrap">
     Kindred is a growing library of well-known titles to prove out the matching idea — add your own picks as it grows.
     Votes and comments are shared live with anyone who can open this page.
-    <span id="adminStatus"></span>
-    <button type="button" id="adminToggle" class="admin-toggle"></button>
-    <span id="adminForm" class="admin-form" hidden>
-      <input type="password" id="adminInput" placeholder="Owner passphrase" autocomplete="off">
-      <button type="button" id="adminSubmit">Unlock</button>
-    </span>
   </div>
 </footer>
 
@@ -987,6 +948,14 @@
 <script>
 (function () {
   "use strict";
+
+  // GA4 is loaded in <head>. Keep event tracking centralized so title,
+  // series, vote, favorite, and outbound-link activity is easy to analyze.
+  function trackEvent(name, params) {
+    try {
+      if (typeof window.gtag === "function") window.gtag("event", name, params || {});
+    } catch (e) {}
+  }
 
   /* ============================= DATA ============================= */
 
@@ -1023,18 +992,15 @@
   // where this one falls, computed live off TITLES rather than stored on
   // the book itself so it never goes stale as more books get added.
   function seriesLabel(t) {
-    if (!t.series) return null;
+    if (!hasRealSeries(t)) return null;
     var siblings = TITLES.filter(function (o) { return o.series === t.series; });
     var mainCount = siblings.filter(function (o) { return Number.isInteger(o.seriesIndex); }).length;
-    if (Number.isInteger(t.seriesIndex)) {
-      return "Book " + t.seriesIndex + " of " + mainCount + " in " + t.series;
+    if (typeof t.seriesIndex === "number") {
+      return Number.isInteger(t.seriesIndex)
+        ? "Book " + t.seriesIndex + " of " + mainCount + " in " + t.series
+        : "Book " + t.seriesIndex + " in " + t.series;
     }
-    // A .5 companion novella/prequel — not part of the main count, so
-    // "Book 3.5 of 3" would be confusing; name it as what it actually is.
-    // No leading article before the series name here — several series
-    // names already start with "The" (The Folk of the Air, The Mortal
-    // Instruments), and "in the The Folk of the Air series" reads as a typo.
-    return "A companion story in " + t.series;
+    return "In " + t.series;
   }
 
   var HEART_SVG = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.53L12 21.35z"/></svg>';
@@ -1084,37 +1050,37 @@
       cover: "https://covers.openlibrary.org/b/id/14935041-L.jpg",
       series: "The Empyrean", seriesIndex: 1,
       blurb: "A war college for dragon riders where washing out can kill you, and the boy she's sworn to hate is the only one keeping her alive.",
-      tags: ["enemies-to-lovers","dragons","academy","morally-grey","slow-burn","found-family","high-heat"] },
+      tags: ["enemies-to-lovers","dragons","academy","forced-proximity","morally-grey","slow-burn","found-family","high-heat"] },
     { id: "b-iron-flame", type: "book", title: "Iron Flame", creator: "Rebecca Yarros",
       year: 2024,
       cover: "https://covers.openlibrary.org/b/id/14576377-L.jpg",
       series: "The Empyrean", seriesIndex: 2,
       blurb: "Second year at Basgiath gets deadlier as betrayal reaches the top of the war college and the rules of survival change again.",
-      tags: ["enemies-to-lovers","dragons","academy","betrayal","court-politics","slow-burn","high-heat"] },
+      tags: ["enemies-to-lovers","dragons","academy","forced-proximity","betrayal","found-family","morally-grey","high-heat"] },
     { id: "b-onyx-storm", type: "book", title: "Onyx Storm", creator: "Rebecca Yarros",
       year: 2025,
       cover: "https://covers.openlibrary.org/b/id/15206732-L.jpg",
       series: "The Empyrean", seriesIndex: 3,
       blurb: "With the wards failing and a venin army closing in, Violet has to hold together a war college — and a bond with two riders — that keeps threatening to break.",
-      tags: ["dragons","academy","war-and-rebellion","slow-burn","high-heat"] },
+      tags: ["dragons","war-and-rebellion","found-family","court-politics","morally-grey","high-heat"] },
     { id: "b-acotar", type: "book", title: "A Court of Thorns and Roses", creator: "Sarah J. Maas",
       year: 2015,
       cover: "https://covers.openlibrary.org/b/id/15103057-L.jpg",
       series: "A Court of Thorns and Roses", seriesIndex: 1,
       blurb: "A huntress dragged into the fae lands under an old bargain finds the beastly lord holding her captive isn't what the stories claimed.",
-      tags: ["fae","court-politics","slow-burn","morally-grey","hidden-identity","fated-mates"] },
+      tags: ["enemies-to-lovers","fae","forced-proximity","court-politics","slow-burn","found-family","morally-grey","high-heat"] },
     { id: "b-acomaf", type: "book", title: "A Court of Mist and Fury", creator: "Sarah J. Maas",
       year: 2016,
       cover: "https://covers.openlibrary.org/b/id/15152926-L.jpg",
       series: "A Court of Thorns and Roses", seriesIndex: 2,
       blurb: "Broken by what the Spring Court cost her, she's pulled into a rival court's politics — and a very different kind of bargain.",
-      tags: ["fae","found-family","slow-burn","healing-from-trauma","court-politics","fated-mates","high-heat"] },
+      tags: ["fae","found-family","forced-proximity","slow-burn","healing-from-trauma","court-politics","fated-mates","morally-grey","high-heat"] },
     { id: "b-acowar", type: "book", title: "A Court of Wings and Ruin", creator: "Sarah J. Maas",
       year: 2017,
       cover: "https://covers.openlibrary.org/b/id/14859521-L.jpg",
       series: "A Court of Thorns and Roses", seriesIndex: 3,
       blurb: "Back in the Spring Court as a spy with a shattered mask of a life, she's playing a game that only works if the enemy never sees the knife coming.",
-      tags: ["fae","war-and-rebellion","court-politics","morally-grey","fated-mates"] },
+      tags: ["fae","war-and-rebellion","court-politics","morally-grey","fated-mates","found-family","hidden-identity","high-heat"] },
     { id: "b-fbaa", type: "book", title: "From Blood and Ash", creator: "Jennifer L. Armentrout",
       year: 2020,
       cover: "https://covers.openlibrary.org/b/id/14105538-L.jpg",
@@ -1132,24 +1098,24 @@
       cover: "https://covers.openlibrary.org/b/id/15118088-L.jpg",
       series: "From Blood and Ash", seriesIndex: 3,
       blurb: "Revealed as her adopted kingdom's true heir and a living god, she has to rise from betrayal and near-death to claim a crown — and an army of ancient creatures no one has seen in centuries.",
-      tags: ["chosen-one","court-politics","war-and-rebellion","high-heat","vampire"] },
+      tags: ["chosen-one","court-politics","war-and-rebellion","fated-mates","high-heat","vampire"] },
     { id: "b-war-two-queens", type: "book", title: "The War of Two Queens", creator: "Jennifer L. Armentrout",
       year: 2022,
       cover: "https://covers.openlibrary.org/b/id/13250338-L.jpg",
       series: "From Blood and Ash", seriesIndex: 4,
       blurb: "Leading an invasion to rescue the husband a rival queen took from her, she has to become the kind of weapon that can finally end a war two kingdoms started without her.",
-      tags: ["chosen-one","war-and-rebellion","revenge-plot","high-heat","vampire"] },
+      tags: ["chosen-one","war-and-rebellion","revenge-plot","fated-mates","high-heat","vampire"] },
     { id: "b-soul-ash-blood", type: "book", title: "A Soul of Ash and Blood", creator: "Jennifer L. Armentrout",
       year: 2023,
       cover: "https://covers.openlibrary.org/b/id/15232200-L.jpg",
       series: "From Blood and Ash", seriesIndex: 5,
       blurb: "Healing from everything her ascension cost her, she finally hears the whole story from the husband who once meant to use her — how a mission to control her became devotion instead.",
-      tags: ["slow-burn","healing-from-trauma","chosen-one","high-heat","vampire"] },
+      tags: ["slow-burn","healing-from-trauma","chosen-one","fated-mates","high-heat","vampire"] },
     { id: "b-primal-blood-bone", type: "book", title: "The Primal of Blood and Bone", creator: "Jennifer L. Armentrout",
       year: 2025,
       series: "From Blood and Ash", seriesIndex: 6,
       blurb: "Possessed by the ancient god who murdered her in another lifetime, she has to fight her way back to herself before the husband desperate to save her becomes something even he can't undo.",
-      tags: ["chosen-one","power-imbalance","healing-from-trauma","high-heat","vampire"] },
+      tags: ["chosen-one","power-imbalance","healing-from-trauma","fated-mates","high-heat","vampire"] },
     { id: "b-tog", type: "book", title: "Throne of Glass", creator: "Sarah J. Maas",
       year: 2012,
       cover: "https://covers.openlibrary.org/b/id/14554746-L.jpg",
@@ -1161,7 +1127,7 @@
       cover: "https://covers.openlibrary.org/b/id/14350103-L.jpg",
       series: "Throne of Glass", seriesIndex: 0.5,
       blurb: "Five prequel novellas following the teenage assassin's rise through the guild — and the doomed romance with her partner that made her who she is before the throne ever entered the picture.",
-      tags: ["found-family","revenge-plot","slow-burn"] },
+      tags: ["found-family","revenge-plot"] },
     { id: "b-crown-of-midnight", type: "book", title: "Crown of Midnight", creator: "Sarah J. Maas",
       year: 2013,
       cover: "https://covers.openlibrary.org/b/id/15251337-L.jpg",
@@ -1185,7 +1151,7 @@
       cover: "https://covers.openlibrary.org/b/id/13314620-L.jpg",
       series: "Throne of Glass", seriesIndex: 5,
       blurb: "Racing to unite fractured kingdoms before a demon-lord's armies burn them all down, she realizes every choice she's made was leading here all along.",
-      tags: ["chosen-one","war-and-rebellion","found-family"] },
+      tags: ["chosen-one","war-and-rebellion","found-family","fated-mates","slow-burn","high-heat"] },
     { id: "b-tower-of-dawn", type: "book", title: "Tower of Dawn", creator: "Sarah J. Maas",
       year: 2017,
       cover: "https://covers.openlibrary.org/b/id/13316174-L.jpg",
@@ -1197,7 +1163,7 @@
       cover: "https://covers.openlibrary.org/b/id/13316183-L.jpg",
       series: "Throne of Glass", seriesIndex: 7,
       blurb: "Tortured and imprisoned by a rival queen, she has to survive long enough for her allies to reach her before the final war for every kingdom she's ever loved begins without her.",
-      tags: ["chosen-one","war-and-rebellion","found-family"] },
+      tags: ["chosen-one","war-and-rebellion","found-family","fated-mates"] },
     { id: "b-cruel-prince", type: "book", title: "The Cruel Prince", creator: "Holly Black",
       year: 2018,
       cover: "https://covers.openlibrary.org/b/id/8772072-L.jpg",
@@ -1215,13 +1181,13 @@
       cover: "https://covers.openlibrary.org/b/id/9146990-L.jpg",
       series: "The Folk of the Air", seriesIndex: 3,
       blurb: "Exiled and powerless in the mortal world after his ultimate betrayal, she's forced back into Faerie when her sister's life is on the line — right into the arms of the king who cast her out.",
-      tags: ["enemies-to-lovers","fae","court-politics","morally-grey"] },
+      tags: ["fae","court-politics","morally-grey"] },
     { id: "b-hate-stories", type: "book", title: "How the King of Elfhame Learned to Hate Stories", creator: "Holly Black",
       year: 2020,
       cover: "https://covers.openlibrary.org/b/id/10527709-L.jpg",
       series: "The Folk of the Air", seriesIndex: 3.5,
       blurb: "A quiet, monster-hunting companion story that pulls back the curtain on the cruel High King's past — and how a neglected, discarded prince became someone worth loving.",
-      tags: ["morally-grey","fae","healing-from-trauma","slow-burn"] },
+      tags: ["morally-grey","fae","healing-from-trauma"] },
     { id: "b-serpent-dove", type: "book", title: "Serpent & Dove", creator: "Shelby Mahurin",
       year: 2019,
       cover: "https://covers.openlibrary.org/b/id/12401583-L.jpg",
@@ -1262,23 +1228,23 @@
       cover: "https://covers.openlibrary.org/b/id/10831828-L.jpg",
       series: "The Bridge Kingdom", seriesIndex: 1,
       blurb: "Sent to marry an enemy king as a spy, she's supposed to bring his kingdom down from the inside — not fall for him.",
-      tags: ["arranged-marriage","enemies-to-lovers","court-politics","hidden-identity","slow-burn"] },
+      tags: ["arranged-marriage","enemies-to-lovers","court-politics","hidden-identity","slow-burn","high-heat"] },
     { id: "b-traitor-queen", type: "book", title: "The Traitor Queen", creator: "Danielle L. Jensen",
       year: 2020,
       cover: "https://covers.openlibrary.org/b/id/15137804-L.jpg",
       series: "The Bridge Kingdom", seriesIndex: 2,
       blurb: "Ruling at his side now instead of scheming against him, she has to protect their fragile peace from enemies on both sides of the bridge.",
-      tags: ["arranged-marriage","court-politics","hidden-identity","slow-burn"] },
+      tags: ["arranged-marriage","court-politics","slow-burn","high-heat"] },
     { id: "b-inadequate-heir", type: "book", title: "The Inadequate Heir", creator: "Danielle L. Jensen",
       year: 2021,
       series: "The Bridge Kingdom", seriesIndex: 3,
       blurb: "Raised to avenge her murdered mother by conquering an empire, she falls for a mysterious soldier in a contested city — never suspecting he's actually the enemy king she's sworn to destroy.",
-      tags: ["hidden-identity","enemies-to-lovers","war-and-rebellion","slow-burn"] },
+      tags: ["hidden-identity","enemies-to-lovers","war-and-rebellion","slow-burn","high-heat"] },
     { id: "b-endless-war", type: "book", title: "The Endless War", creator: "Danielle L. Jensen",
       year: 2023,
       series: "The Bridge Kingdom", seriesIndex: 4,
       blurb: "Imprisoned for loving an enemy king, she has to run a rebellion from inside her own cell while he tears his empire apart trying to reach her.",
-      tags: ["hidden-identity","war-and-rebellion","revenge-plot","slow-burn"] },
+      tags: ["war-and-rebellion","revenge-plot","slow-burn","high-heat"] },
     { id: "b-twisted-throne", type: "book", title: "The Twisted Throne", creator: "Danielle L. Jensen",
       year: 2025,
       series: "The Bridge Kingdom", seriesIndex: 5,
@@ -1295,19 +1261,19 @@
       cover: "https://covers.openlibrary.org/b/id/15172587-L.jpg",
       series: "Powerless", seriesIndex: 1,
       blurb: "In a kingdom that executes the powerless on sight, she falls for a prince who can never know what she really is.",
-      tags: ["enemies-to-lovers","hidden-identity","court-politics","slow-burn"] },
+      tags: ["enemies-to-lovers","hidden-identity","slow-burn"] },
     { id: "b-powerful", type: "book", title: "Powerful", creator: "Lauren Roberts",
       year: 2024,
       cover: "https://covers.openlibrary.org/b/id/14591831-L.jpg",
       series: "Powerless", seriesIndex: 1.5,
       blurb: "The same forbidden romance, told from the prince's side this time — what it actually looked like to fall for the girl he was supposed to help hunt down.",
-      tags: ["enemies-to-lovers","hidden-identity","court-politics","slow-burn"] },
+      tags: ["enemies-to-lovers","hidden-identity","slow-burn"] },
     { id: "b-reckless", type: "book", title: "Reckless", creator: "Lauren Roberts",
       year: 2024,
       cover: "https://covers.openlibrary.org/b/id/14636384-L.jpg",
       series: "Powerless", seriesIndex: 2,
       blurb: "With her secret out and a kingdom hunting her as a fugitive, she has to decide how far she'll trust the prince who already broke his word to her once — even as he's promoted into the very forces chasing her.",
-      tags: ["enemies-to-lovers","hidden-identity","court-politics","slow-burn"] },
+      tags: ["enemies-to-lovers","hidden-identity","slow-burn"] },
     { id: "b-fearless", type: "book", title: "Fearless", creator: "Lauren Roberts",
       year: 2025,
       cover: "https://covers.openlibrary.org/b/id/14840900-L.jpg",
@@ -1331,7 +1297,7 @@
       cover: "https://covers.openlibrary.org/b/id/14350041-L.jpg",
       series: "A Court of Thorns and Roses", seriesIndex: 4,
       blurb: "Still healing from what was done to her, she has to learn to let someone else close again — on her own terms.",
-      tags: ["found-family","healing-from-trauma","slow-burn","morally-grey","court-politics","high-heat"] },
+      tags: ["fae","found-family","healing-from-trauma","slow-burn","fated-mates","forced-proximity","grumpy-sunshine","high-heat"] },
     { id: "b-legendborn", type: "book", title: "Legendborn", creator: "Tracy Deonn",
       year: 2020,
       cover: "https://covers.openlibrary.org/b/id/10607301-L.jpg",
@@ -1343,7 +1309,7 @@
       cover: "https://covers.openlibrary.org/b/id/15102361-L.jpg",
       series: "Crescent City", seriesIndex: 1,
       blurb: "A half-fae party girl teams up with a fallen warrior-angel to hunt down whoever murdered her best friend.",
-      tags: ["found-family","morally-grey","slow-burn","revenge-plot","court-politics"] },
+      tags: ["found-family","morally-grey","slow-burn","revenge-plot","forced-proximity","court-politics"] },
 
     // ---------------- Anime ----------------
     { id: "a-snow-white-rh", type: "anime", title: "Snow White with the Red Hair", creator: "Studio: Bones",
@@ -1357,14 +1323,14 @@
       cover: "https://cdn.myanimelist.net/images/anime/1447/99827.jpg",
       crunchyrollUrl: "https://www.crunchyroll.com/series/G6ZJMGEXY/fruits-basket",
       blurb: "An orphaned girl moves in with a family cursed to turn into zodiac animals, and slowly heals a household full of old wounds.",
-      tags: ["found-family","healing-from-trauma","slow-burn","ensemble"] },
+      tags: ["found-family","healing-from-trauma","slow-burn","ensemble","love-triangle","friends-to-lovers"] },
     { id: "a-apothecary-diaries", type: "anime", title: "The Apothecary Diaries", creator: "Studio: OLM / TOHO animation",
       year: 2023,
       cover: "https://cdn.myanimelist.net/images/anime/1708/138033.jpg",
       crunchyrollUrl: "https://www.crunchyroll.com/watch/G8WU73JWE",
       netflixUrl: "https://www.netflix.com/title/81712068",
       blurb: "A sharp-tongued apothecary sold into palace service solves poisonings and court intrigue while dodging the attention of a strange, powerful official.",
-      tags: ["court-politics","slow-burn","hidden-identity","morally-grey"] },
+      tags: ["court-politics","slow-burn","hidden-identity"] },
     { id: "a-twelve-kingdoms", type: "anime", title: "The Twelve Kingdoms", creator: "Studio: Pierrot",
       year: 2002,
       cover: "https://cdn.myanimelist.net/images/anime/6/50859.jpg",
@@ -1388,14 +1354,14 @@
       cover: "https://cdn.myanimelist.net/images/anime/1147/122444.jpg",
       netflixUrl: "https://www.netflix.com/title/81564905",
       blurb: "Married off by a family that never wanted her, she's shocked to find her cold, unreadable new husband might be the first person to truly see her.",
-      tags: ["arranged-marriage","slow-burn","healing-from-trauma","hidden-identity","grumpy-sunshine"] },
+      tags: ["arranged-marriage","slow-burn","healing-from-trauma","grumpy-sunshine"] },
     { id: "a-demon-slayer", type: "anime", title: "Demon Slayer", creator: "Studio: ufotable",
       year: 2019,
       cover: "https://cdn.myanimelist.net/images/anime/1286/99889.jpg",
       crunchyrollUrl: "https://www.crunchyroll.com/watch/GE00264120PLPL",
       netflixUrl: "https://www.netflix.com/title/81091393",
       blurb: "A boy joins an order of demon hunters to save his sister and avenge his family, gathering a found family of fellow slayers along the way.",
-      tags: ["found-family","war-and-rebellion","chosen-one","ensemble"] },
+      tags: ["found-family","ensemble"] },
     { id: "a-given", type: "anime", title: "Given", creator: "Studio: Lerche",
       year: 2019,
       cover: "https://cdn.myanimelist.net/images/anime/1666/102238.jpg",
@@ -1415,18 +1381,18 @@
       cover: "https://cdn.myanimelist.net/images/manga/1/235295.jpg",
       webtoonsUrl: "https://www.webtoons.com/en/fantasy/the-remarried-empress/list?title_no=2135",
       blurb: "An empress who gave everything to her throne finally walks away — straight into the arms of the enemy emperor next door.",
-      tags: ["court-politics","arranged-marriage","revenge-plot","morally-grey","slow-burn"] },
+      tags: ["court-politics","arranged-marriage","revenge-plot","slow-burn"] },
     { id: "m-who-made-me-princess", type: "manhwa", format: "webtoon", title: "Who Made Me a Princess", creator: "Plutus / Spoon",
       year: 2017,
       cover: "https://cdn.myanimelist.net/images/manga/1/222587.jpg",
       webtoonsUrl: "https://www.webtoons.com/en/romance/who-made-me-a-princess/list?title_no=9475",
       blurb: "Reborn as the unloved daughter of a king fated to execute her, she has one goal: make herself impossible to kill.",
-      tags: ["found-family","court-politics","healing-from-trauma","hidden-identity","isekai"] },
+      tags: ["found-family","court-politics","isekai"] },
     { id: "m-villains-destined-die", type: "manhwa", format: "webtoon", title: "Villains Are Destined to Die", creator: "Gilbert / Sonyeon",
       year: 2021,
       cover: "https://cdn.myanimelist.net/images/manga/5/303096.jpg",
       blurb: "Reincarnated as the hated villainess of an otome game, she has to dodge every death flag while every love interest starts falling for her instead.",
-      tags: ["enemies-to-lovers","court-politics","revenge-plot","love-triangle","isekai","reincarnated-villain"] },
+      tags: ["court-politics","love-triangle","isekai","reincarnated-villain"] },
     { id: "m-villainess-divorce", type: "manhwa", format: "webtoon", title: "This Villainess Wants A Divorce!", creator: "Yuin",
       year: 2018,
       cover: "https://cdn.myanimelist.net/images/manga/3/253645.jpg",
@@ -1447,12 +1413,12 @@
       year: 2018,
       cover: "https://cdn.myanimelist.net/images/manga/1/242318.jpg",
       blurb: "She agrees to one fake blind date to get her friend off the hook — and shows up to find her own CEO waiting on the other side of the table.",
-      tags: ["forced-proximity","enemies-to-lovers","hidden-identity","slow-burn","fake-dating"] },
+      tags: ["forced-proximity","hidden-identity","fake-dating"] },
     { id: "m-solo-leveling", type: "manhwa", format: "webtoon", title: "Solo Leveling", creator: "Chugong / DUBU",
       year: 2018,
       cover: "https://cdn.myanimelist.net/images/manga/3/222295.jpg",
       blurb: "The weakest hunter alive gets a second chance at power after a near-death dungeon run — and starts building the found family to go with it.",
-      tags: ["chosen-one","found-family","war-and-rebellion"] },
+      tags: ["chosen-one"] },
     { id: "m-villainess-hourglass", type: "manhwa", format: "webtoon", title: "The Villainess Turns the Hourglass", creator: "Sso Sso / Yun Ree",
       year: 2020,
       cover: "https://cdn.myanimelist.net/images/manga/2/311275.jpg",
@@ -1463,7 +1429,7 @@
       cover: "https://cdn.myanimelist.net/images/manga/3/246434.jpg",
       webtoonsUrl: "https://www.webtoons.com/en/romance/truebeauty/list?title_no=1436",
       blurb: "A girl who hides behind makeup for confidence gets caught bare-faced by the one boy at school who might actually see past it.",
-      tags: ["forced-proximity","healing-from-trauma","slow-burn","academy"] },
+      tags: ["love-triangle","hidden-identity","slow-burn","academy"] },
     { id: "m-villainess-marionette", type: "manhwa", format: "webtoon", title: "The Villainess Is a Marionette", creator: "Chalantsae",
       year: 2021,
       cover: "https://cdn.myanimelist.net/images/manga/1/317205.jpg",
@@ -1476,7 +1442,7 @@
       cover: "https://covers.openlibrary.org/b/id/14576237-L.jpg",
       series: "Crescent City", seriesIndex: 3,
       blurb: "Trapped in a strange new world with no way home, Bryce has to find a path back to Midgard before the people she loves pay the price for her absence.",
-      tags: ["found-family","war-and-rebellion","slow-burn","court-politics","high-heat"] },
+      tags: ["found-family","war-and-rebellion","slow-burn","court-politics","fated-mates","high-heat"] },
     { id: "b-zodiac-academy", type: "book", title: "Zodiac Academy: The Awakening", creator: "Caroline Peckham & Susan Valenti",
       year: 2020,
       cover: "https://covers.openlibrary.org/b/id/14803787-L.jpg",
@@ -1532,30 +1498,30 @@
       cover: "https://covers.openlibrary.org/b/id/13316187-L.jpg",
       series: "Crescent City", seriesIndex: 2,
       blurb: "Reeling from the fight that nearly destroyed their city, Bryce and Hunt have to hold their found family together while a much bigger war closes in.",
-      tags: ["found-family","war-and-rebellion","slow-burn","court-politics","high-heat"] },
+      tags: ["found-family","war-and-rebellion","slow-burn","court-politics","fated-mates","high-heat"] },
     { id: "b-shadow-in-ember", type: "book", title: "A Shadow in the Ember", creator: "Jennifer L. Armentrout",
       year: 2022,
       cover: "https://covers.openlibrary.org/b/id/14660379-L.jpg",
       series: "Flesh and Fire", seriesIndex: 1,
       blurb: "Raised in secret for a fate she never chose, she's drawn to the one person capable of destroying the destiny everyone else has planned for her.",
-      tags: ["hidden-identity","slow-burn","chosen-one","court-politics"] },
+      tags: ["enemies-to-lovers","arranged-marriage","hidden-identity","slow-burn","chosen-one","high-heat","vampire"] },
     { id: "b-light-in-flame", type: "book", title: "A Light in the Flame", creator: "Jennifer L. Armentrout",
       year: 2022,
       cover: "https://covers.openlibrary.org/b/id/13007273-L.jpg",
       series: "Flesh and Fire", seriesIndex: 2,
       blurb: "Her powers finally awakening into something the whole realm should fear, she's drawn deeper into a bond with the death god who might be the only one who can keep her from becoming a monster — or a weapon.",
-      tags: ["slow-burn","chosen-one","court-politics","power-imbalance","high-heat"] },
+      tags: ["enemies-to-lovers","fated-mates","slow-burn","chosen-one","court-politics","high-heat","vampire"] },
     { id: "b-fire-in-flesh", type: "book", title: "A Fire in the Flesh", creator: "Jennifer L. Armentrout",
       year: 2023,
       cover: "https://covers.openlibrary.org/b/id/13818485-L.jpg",
       series: "Flesh and Fire", seriesIndex: 3,
       blurb: "With her identity impossible to hide any longer, she has to decide whether the destiny everyone planned for her is one she'll actually choose.",
-      tags: ["hidden-identity","slow-burn","chosen-one","court-politics","high-heat"] },
+      tags: ["enemies-to-lovers","fated-mates","slow-burn","chosen-one","court-politics","high-heat","vampire"] },
     { id: "b-born-blood-ash", type: "book", title: "Born of Blood and Ash", creator: "Jennifer L. Armentrout",
       year: 2024,
       series: "Flesh and Fire", seriesIndex: 4,
       blurb: "Newly ascended and reeling from what that makes her, she has to unite a realm of fractured gods against the tyrant who murdered the true god of life — without losing the bond that's kept her human through all of it.",
-      tags: ["chosen-one","court-politics","war-and-rebellion","healing-from-trauma","high-heat"] },
+      tags: ["chosen-one","court-politics","war-and-rebellion","healing-from-trauma","fated-mates","high-heat","vampire"] },
     { id: "b-wintersong", type: "book", title: "Wintersong", creator: "S. Jae-Jones",
       year: 2017,
       cover: "https://covers.openlibrary.org/b/id/10031116-L.jpg",
@@ -1659,13 +1625,13 @@
       year: 2009,
       cover: "https://cdn.myanimelist.net/images/anime/1502/124384.jpg",
       blurb: "Mistaken for scary because she looks like a horror-movie ghost, a painfully shy girl is stunned when the most popular boy in school decides to actually be her friend.",
-      tags: ["slow-burn","healing-from-trauma","academy","friends-to-lovers"] },
+      tags: ["slow-burn","academy","friends-to-lovers"] },
     { id: "a-horimiya", type: "anime", title: "Horimiya", creator: "Studio: CloverWorks",
       year: 2021,
       cover: "https://cdn.myanimelist.net/images/anime/1695/111486.jpg",
       crunchyrollUrl: "https://www.crunchyroll.com/watch/GVWU8N11G",
       blurb: "A popular girl and a pierced, tattooed loner discover each other's completely different secret lives — and fall for the real person behind both.",
-      tags: ["slow-burn","academy","found-family"] },
+      tags: ["slow-burn","academy","friends-to-lovers","found-family"] },
     { id: "a-dangers-in-my-heart", type: "anime", title: "The Dangers in My Heart", creator: "Studio: Shin-Ei Animation",
       year: 2023,
       cover: "https://cdn.myanimelist.net/images/anime/1545/133887.jpg",
@@ -1683,7 +1649,7 @@
       crunchyrollUrl: "https://www.crunchyroll.com/watch/GQJUGVQEZ",
       netflixUrl: "https://www.netflix.com/title/81569754",
       blurb: "A quiet boy who sews traditional dolls ends up making cosplay for the loud, popular girl who just found out about his hidden hobby.",
-      tags: ["slow-burn","found-family","academy"] },
+      tags: ["slow-burn","academy","friends-to-lovers"] },
     { id: "a-vampire-knight", type: "anime", title: "Vampire Knight", creator: "Studio: Studio Deen",
       year: 2008,
       cover: "https://cdn.myanimelist.net/images/anime/3/7327.jpg",
@@ -1702,7 +1668,7 @@
       year: 2015,
       cover: "https://cdn.myanimelist.net/images/manga/3/188896.jpg",
       blurb: "Two student council elites are both too proud to confess first, so they turn falling in love into an all-out war of psychological warfare.",
-      tags: ["enemies-to-lovers","academy","slow-burn","ensemble","tsundere"] },
+      tags: ["academy","slow-burn","tsundere","ensemble"] },
     { id: "m-orv", type: "manhwa", format: "webtoon", title: "Omniscient Reader's Viewpoint", creator: "Sing Shong / Sleepy-C",
       year: 2020,
       cover: "https://cdn.myanimelist.net/images/manga/2/238873.jpg",
@@ -1714,7 +1680,7 @@
       cover: "https://swebtoon-phinf.pstatic.net/20250730_49/1753832944376xEinr_JPEG/unOrdinary_Thumb_Poster_250721.jpg?type=crop540_540",
       webtoonsUrl: "https://www.webtoons.com/en/super-hero/unordinary/list?title_no=679",
       blurb: "In a school ranked entirely by superpowers, the weakest student in class is hiding a strength everyone has underestimated.",
-      tags: ["power-imbalance","found-family","academy","chosen-one"] },
+      tags: ["power-imbalance","found-family","academy"] },
     { id: "m-i-love-yoo", type: "manhwa", format: "webtoon", title: "I Love Yoo", creator: "Quimchee",
       year: 2017,
       cover: "https://swebtoon-phinf.pstatic.net/20251118_74/17634215100065nlfb_JPEG/Thumb_Poster_986.jpg?type=crop540_540",
@@ -1790,17 +1756,15 @@
       cover: "https://covers.openlibrary.org/b/id/15089644-L.jpg",
       series: "Once Upon a Broken Heart", seriesIndex: 3,
       blurb: "Now the Prince of Hearts herself, she has to outwit the fate that's been trying to claim her since before she was born.",
-      tags: ["mythology","slow-burn","hidden-identity"] },
+      tags: ["mythology","slow-burn","hidden-identity","morally-grey"] },
     { id: "b-dragon-cursed", type: "book", title: "Dragon Cursed", creator: "Elise Kova",
       year: 2026,
       cover: "https://covers.openlibrary.org/b/id/15234943-L.jpg",
-      series: "Dragon Cursed", seriesIndex: 1,
       blurb: "Turned into one of the very dragons her people fear, she has to find a way to break the curse before the last human city falls.",
       tags: ["dragons","slow-burn","found-family"] },
     { id: "b-fallen-gods", type: "book", title: "Fallen Gods", creator: "Rachel Van Dyken",
       year: 2025,
       cover: "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1711123919i/203938051.jpg",
-      series: "Fallen Gods", seriesIndex: 1,
       blurb: "A museum curator investigating her missing brother stumbles into a world of Norse gods who never actually left.",
       tags: ["mythology","hidden-identity","slow-burn"] },
     { id: "b-rites-starling", type: "book", title: "Rites of the Starling", creator: "Devney Perry",
@@ -1812,7 +1776,6 @@
     { id: "b-spark-flames", type: "book", title: "Spark the Flames", creator: "Ivy Asher",
       year: 2025,
       cover: "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1739771426i/219797284.jpg",
-      series: "Secret of the Syphon", seriesIndex: 1,
       blurb: "Taken captive by the enemy holding her city's secrets, she has to decide whether escape is worth losing what she's found with her captor.",
       tags: ["enemies-to-lovers","forced-proximity"] },
     { id: "b-wrath-gods-reap", type: "book", title: "The Wrath Gods Reap", creator: "Abigail Owen",
@@ -1902,7 +1865,6 @@
     { id: "b-silvercloak", type: "book", title: "Silvercloak", creator: "L.K. Steven",
       year: 2025,
       cover: "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1756121111i/219520708.jpg",
-      series: "The Silvercloak Saga", seriesIndex: 1,
       blurb: "Infiltrating the cult that destroyed her family, a morally grey heroine has to decide how far revenge is worth going.",
       tags: ["revenge-plot","morally-grey","hidden-identity"] },
     { id: "b-thief-of-night", type: "book", title: "Thief of Night", creator: "Holly Black",
@@ -1917,7 +1879,7 @@
       series: "The Plated Prisoner", seriesIndex: 1,
       cover: "https://covers.openlibrary.org/b/id/15201994-L.jpg",
       blurb: "Cursed to turn everything she touches to gold, a trafficking survivor has to outwit the king who calls her his most prized possession.",
-      tags: ["mythology","power-imbalance","healing-from-trauma"] },
+      tags: ["power-imbalance","healing-from-trauma","high-heat"] },
     { id: "b-curse-of-saints", type: "book", title: "The Curse of Saints", creator: "Kate Dramis",
       year: 2023,
       cover: "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1668112790i/62329962.jpg",
@@ -1927,7 +1889,6 @@
     { id: "b-gaze-wicked-gods", type: "book", title: "To Gaze Upon Wicked Gods", creator: "Molly X. Chang",
       year: 2024,
       cover: "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1689939924i/186872482.jpg",
-      series: "Gods Beyond the Skies", seriesIndex: 1,
       blurb: "An assassin with death magic serving an occupying empire has to choose between the mission and the man she was sent to kill.",
       tags: ["mythology","revenge-plot","hidden-identity"] },
     { id: "b-all-the-devils", type: "book", title: "All the Devils", creator: "Catelyn Wilson",
@@ -2004,7 +1965,7 @@
       cover: "https://cdn.myanimelist.net/images/anime/1522/128039.jpg",
       crunchyrollUrl: "https://www.crunchyroll.com/watch/G0DUMN8WM",
       blurb: "Dying and waking up at the same point in time over and over, he has to save the girl he loves before the loop resets everything again.",
-      tags: ["love-triangle","healing-from-trauma","isekai","regression"] },
+      tags: ["love-triangle","isekai","regression","healing-from-trauma"] },
     { id: "a-shield-hero", type: "anime", title: "The Rising of the Shield Hero", creator: "Studio: Kinema Citrus",
       year: 2019,
       cover: "https://cdn.myanimelist.net/images/anime/1490/101365.jpg",
@@ -2034,7 +1995,7 @@
       cover: "https://cdn.myanimelist.net/images/anime/11/39717.jpg",
       crunchyrollUrl: "https://www.crunchyroll.com/watch/GE00058642THTH",
       blurb: "Trapped in a virtual world where death is real, players build alliances, and occasionally fall in love, just to survive to the next floor.",
-      tags: ["found-family","slow-burn","war-and-rebellion","isekai"] },
+      tags: ["found-family","war-and-rebellion","isekai"] },
     { id: "a-familiar-zero", type: "anime", title: "The Familiar of Zero", creator: "Studio: J.C.Staff",
       year: 2006,
       cover: "https://cdn.myanimelist.net/images/anime/8/20680.jpg",
@@ -2239,7 +2200,7 @@
       cover: "https://cdn.myanimelist.net/images/anime/1589/95329.jpg",
       netflixUrl: "https://www.netflix.com/title/70204995",
       blurb: "Pulled through a well into feudal Japan, a modern girl teams up with a half-demon to hunt down a shattered jewel — and keeps ending up at his side.",
-      tags: ["love-triangle","war-and-rebellion","found-family","isekai"] },
+      tags: ["love-triangle","found-family","isekai"] },
     { id: "a-magus-bride", type: "anime", title: "The Ancient Magus' Bride", creator: "Studio: Wit Studio",
       year: 2017,
       cover: "https://cdn.myanimelist.net/images/anime/3/88476.jpg",
@@ -2386,10 +2347,10 @@
     // ---------------- Books (batch 3) ----------------
     { id: "b-acofas", type: "book", title: "A Court of Frost and Starlight", creator: "Sarah J. Maas",
       year: 2018,
-      cover: "https://covers.openlibrary.org/b/id/15209568-L.jpg",
+      cover: "https://static.serlogal.com/imagenes_small/9788408/978840825713.jpg",
       series: "A Court of Thorns and Roses", seriesIndex: 3.5,
       blurb: "A quiet winter interlude in the Night Court, where healing from a war takes longer than winning it did.",
-      tags: ["fae","found-family","court-politics","slow-burn"] },
+      tags: ["fae","found-family","healing-from-trauma","fated-mates","high-heat"] },
     { id: "b-hurricane-wars", type: "book", title: "The Hurricane Wars", creator: "Thea Guanzon",
       year: 2023,
       cover: "https://covers.openlibrary.org/b/id/14421764-L.jpg",
@@ -2449,7 +2410,7 @@
       cover: "https://cdn.myanimelist.net/images/anime/1478/140828.jpg",
       crunchyrollUrl: "https://www.crunchyroll.com/watch/GMKUXPJ1E",
       blurb: "A deaf college student who's never dated finds herself drawn to a well-traveled classmate who starts learning sign language just to talk to her.",
-      tags: ["slow-burn","healing-from-trauma","academy"] },
+      tags: ["slow-burn","academy"] },
     { id: "a-wotakoi", type: "anime", title: "Wotakoi: Love Is Hard for Otaku", creator: "Studio: A-1 Pictures",
       year: 2018,
       cover: "https://cdn.myanimelist.net/images/anime/1864/93518.jpg",
@@ -2502,7 +2463,7 @@
       cover: "https://covers.openlibrary.org/b/id/12728858-L.jpg",
       series: "Twilight", seriesIndex: 1,
       blurb: "A girl who moves to a rainy small town falls for the strange, beautiful boy in her biology class — and the secret he's been hiding since 1918.",
-      tags: ["hidden-identity","slow-burn","power-imbalance","vampire"] },
+      tags: ["hidden-identity","power-imbalance","vampire"] },
     { id: "b-new-moon", type: "book", title: "New Moon", creator: "Stephenie Meyer",
       year: 2006,
       cover: "https://covers.openlibrary.org/b/id/12643307-L.jpg",
@@ -2561,7 +2522,7 @@
       cover: "https://covers.openlibrary.org/b/id/13325417-L.jpg",
       series: "The Selection", seriesIndex: 1,
       blurb: "Chosen at random for a nationwide competition to marry the prince, a girl who never wanted the crown finds the palace — and the prince — harder to walk away from than she planned.",
-      tags: ["court-politics","love-triangle","found-family","arranged-marriage"] },
+      tags: ["court-politics","love-triangle","found-family"] },
     { id: "b-the-elite", type: "book", title: "The Elite", creator: "Kiera Cass",
       year: 2013,
       cover: "https://covers.openlibrary.org/b/id/13326716-L.jpg",
@@ -2613,36 +2574,36 @@
       cover: "https://covers.openlibrary.org/b/id/14812842-L.jpg",
       series: "The Mortal Instruments", seriesIndex: 1,
       blurb: "A girl who watches her mother vanish is pulled into a hidden world of demon-hunters, and into a devastating secret about the boy she's falling for.",
-      tags: ["hidden-identity","found-family","chosen-one","mythology"] },
+      tags: ["hidden-identity","found-family","chosen-one"] },
     { id: "b-city-of-ashes", type: "book", title: "City of Ashes", creator: "Cassandra Clare",
       year: 2008,
       cover: "https://covers.openlibrary.org/b/id/13151184-L.jpg",
       series: "The Mortal Instruments", seriesIndex: 2,
       blurb: "With her mother in a coma and a rogue Shadowhunter stealing dangerous artifacts, she has to face the fact that the boy she can't stop wanting might actually be her brother.",
-      tags: ["hidden-identity","found-family","chosen-one","mythology","forced-proximity"] },
+      tags: ["hidden-identity","found-family","chosen-one","forced-proximity"] },
     { id: "b-city-of-glass", type: "book", title: "City of Glass", creator: "Cassandra Clare",
       year: 2009,
       series: "The Mortal Instruments", seriesIndex: 3,
       blurb: "Sneaking into the hidden Shadowhunter homeland to save her mother, she finally uncovers the truth about her parentage — and about exactly who she's allowed to love.",
-      tags: ["hidden-identity","found-family","chosen-one","mythology"] },
+      tags: ["hidden-identity","found-family","chosen-one"] },
     { id: "b-city-of-fallen-angels", type: "book", title: "City of Fallen Angels", creator: "Cassandra Clare",
       year: 2011,
       cover: "https://covers.openlibrary.org/b/id/13151200-L.jpg",
       series: "The Mortal Instruments", seriesIndex: 4,
       blurb: "With their enemy defeated and their relationship finally possible, someone is murdering Shadowhunters in the shadows — and the boy she loves is suddenly determined to push her away.",
-      tags: ["found-family","mythology","ensemble"] },
+      tags: ["found-family","ensemble"] },
     { id: "b-city-of-lost-souls", type: "book", title: "City of Lost Souls", creator: "Cassandra Clare",
       year: 2012,
       cover: "https://covers.openlibrary.org/b/id/13151206-L.jpg",
       series: "The Mortal Instruments", seriesIndex: 5,
       blurb: "Possessed and on the run with a villain wearing her boyfriend's face, she has to decide exactly how far she's willing to go — and what she's willing to sacrifice — to bring him back.",
-      tags: ["found-family","mythology","revenge-plot","ensemble"] },
+      tags: ["found-family","revenge-plot","ensemble"] },
     { id: "b-city-of-heavenly-fire", type: "book", title: "City of Heavenly Fire", creator: "Cassandra Clare",
       year: 2014,
       cover: "https://covers.openlibrary.org/b/id/13151254-L.jpg",
       series: "The Mortal Instruments", seriesIndex: 6,
       blurb: "With a demon army massing in another realm, the whole found family has to go to war together — and she has to decide what she'll give up to end it for good.",
-      tags: ["found-family","mythology","war-and-rebellion","ensemble"] },
+      tags: ["found-family","war-and-rebellion","ensemble"] },
     { id: "b-cinder", type: "book", title: "Cinder", creator: "Marissa Meyer",
       year: 2012,
       cover: "https://covers.openlibrary.org/b/id/12706802-L.jpg",
@@ -2784,7 +2745,7 @@
       year: 2022,
       cover: "https://cdn.myanimelist.net/images/manga/2/289064.jpg",
       blurb: "Trapped in a loveless marriage that ends the same devastating way every time it plays out, she gets one more chance to live it differently — if she can figure out exactly where the betrayal starts.",
-      tags: ["arranged-marriage","regression","betrayal","revenge-plot"] },
+      tags: ["arranged-marriage","regression","betrayal","high-heat"] },
     { id: "m-marriage-of-convenience", type: "manhwa", format: "webtoon", title: "Marriage of Convenience", creator: "Ken / Ant Studio",
       year: 2022,
       cover: "https://cdn.myanimelist.net/images/manga/1/311272.jpg",
@@ -2818,7 +2779,7 @@
       cover: "https://covers.openlibrary.org/b/id/13903795-L.jpg",
       series: "The Kingmaker Chronicles", seriesIndex: 1,
       blurb: "A clairvoyant hiding her powers in a traveling circus is dragged out by a warlord who needs her gift — and finds his fairness harder to resist than his chains.",
-      tags: ["enemies-to-lovers","forced-proximity","court-politics","mythology","slow-burn"] },
+      tags: ["enemies-to-lovers","forced-proximity","court-politics","mythology","slow-burn","high-heat"] },
     { id: "b-kingdom-of-the-wicked", type: "book", title: "Kingdom of the Wicked", creator: "Kerri Maniscalco",
       year: 2020,
       cover: "https://covers.openlibrary.org/b/id/12382721-L.jpg",
@@ -2893,12 +2854,12 @@
       year: 2025,
       cover: "https://cdn.myanimelist.net/images/anime/1744/150433.jpg",
       blurb: "A gentle-hearted boy from the school everyone assumes churns out delinquents falls for an elegant academy girl who's the only person who ever looks past his scary face — and together they dare to close the divide their two schools have kept for generations.",
-      tags: ["power-imbalance","academy","slow-burn","healing-from-trauma"] },
+      tags: ["academy","slow-burn","healing-from-trauma"] },
     { id: "a-honey-lemon-soda", type: "anime", title: "Honey Lemon Soda", creator: "Studio: J.C.Staff",
       year: 2025,
       cover: "https://cdn.myanimelist.net/images/anime/1382/144602.jpg",
       blurb: "Still flinching from the bullying that left her voiceless, a shy first-year gets drenched in soda and kindness by the school's effortlessly popular golden boy — and slowly remembers what it feels like to be seen.",
-      tags: ["healing-from-trauma","slow-burn","academy","power-imbalance"] },
+      tags: ["healing-from-trauma","slow-burn","academy"] },
     { id: "a-kowloon-generic-romance", type: "anime", title: "Kowloon Generic Romance", creator: "Studio: Arvo Animation",
       year: 2025,
       cover: "https://cdn.myanimelist.net/images/anime/1719/150050.jpg",
@@ -2920,13 +2881,13 @@
       cover: "https://swebtoon-phinf.pstatic.net/20250328_160/17431033963646dYR5_JPEG/Thumb_Poster_3918.jpg?type=crop540_540",
       webtoonsUrl: "https://www.webtoons.com/en/fantasy/my-inlaws-are-obsessed-with-me/list?title_no=3918",
       blurb: "Betrayed and killed by the lover she trusted, a count's daughter wakes up a year in the past — and this time marries the terrifying Grand Duke everyone fears, only to find his family's darkest secret might be the one thing that saves her.",
-      tags: ["regression","arranged-marriage","revenge-plot","betrayal","morally-grey"] },
+      tags: ["regression","arranged-marriage","revenge-plot","betrayal"] },
     { id: "w-operation-true-love", type: "manhwa", format: "webtoon", title: "Operation: True Love", creator: "Kkokkili",
       year: 2022,
       cover: "https://swebtoon-phinf.pstatic.net/20250905_227/1757006287674eYaun_JPEG/Thumb_Poster_4465.jpg?type=crop540_540",
       webtoonsUrl: "https://www.webtoons.com/en/romance/operation-true-love/list?title_no=4465",
       blurb: "Stuck loving a boyfriend who's already drifting toward her own sister, a girl gets brutally honest advice from a sentient flip phone — and teams up with his best friend on a fake-dating scheme meant as revenge that turns into something real.",
-      tags: ["love-triangle","betrayal","enemies-to-lovers","friends-to-lovers","academy"] },
+      tags: ["love-triangle","betrayal","friends-to-lovers","academy"] },
     { id: "w-maybe-meant-to-be", type: "manhwa", format: "webtoon", title: "Maybe Meant to Be", creator: "Honey B",
       year: 2022,
       cover: "https://swebtoon-phinf.pstatic.net/20251108_23/1762549012448jUhXW_JPEG/Thumb_Poster_4208.jpg?type=crop540_540",
@@ -2968,13 +2929,13 @@
       cover: "https://covers.openlibrary.org/b/isbn/9781522615095-L.jpg",
       series: "From Blood and Ash", seriesIndex: 6.5,
       blurb: "With Poppy suspended between life and death, Casteel is left to face a shattered kingdom alone — and to reckon with exactly what he's become without her.",
-      tags: ["war-and-rebellion","healing-from-trauma","fated-mates","power-imbalance"] },
+      tags: ["war-and-rebellion","healing-from-trauma","fated-mates"] },
     { id: "b-throne-of-broken-gods", type: "book", title: "The Throne of Broken Gods", creator: "Amber V. Nicole",
       year: 2023,
       cover: "https://covers.openlibrary.org/b/isbn/9781962599405-L.jpg",
       series: "Gods & Monsters", seriesIndex: 2,
       blurb: "Bound by an ancient war between gods and monsters, Dianna and Samkiel's uneasy alliance deepens into something neither heaven nor hell will forgive.",
-      tags: ["enemies-to-lovers","morally-grey","mythology","power-imbalance"] },
+      tags: ["enemies-to-lovers","morally-grey","mythology","power-imbalance","high-heat"] },
     { id: "b-dawn-of-the-cursed-queen", type: "book", title: "The Dawn of the Cursed Queen", creator: "Amber V. Nicole",
       year: 2024,
       cover: "https://covers.openlibrary.org/b/isbn/9781962599948-L.jpg",
@@ -3022,7 +2983,7 @@
       cover: "https://covers.openlibrary.org/b/isbn/9780692988908-L.jpg",
       series: "The Bargainer", seriesIndex: 3,
       blurb: "Thrown into a fae court she never wanted to know, a reluctant queen finds herself bound to a ruler whose reputation for cruelty might be the only thing standing between her and worse monsters.",
-      tags: ["fae","enemies-to-lovers","court-politics","power-imbalance","high-heat"] },
+      tags: ["fae","enemies-to-lovers","court-politics","power-imbalance"] },
     { id: "b-dark-harmony", type: "book", title: "Dark Harmony", creator: "Laura Thalassa",
       year: 2018,
       cover: "https://covers.openlibrary.org/b/isbn/9781721653433-L.jpg",
@@ -3046,7 +3007,7 @@
       cover: "https://covers.openlibrary.org/b/id/15115281-L.jpg",
       series: "Wicked Games", seriesIndex: 2,
       blurb: "Bound to the underworld's most dangerous prince by a bargain she can't break, Everly is pulled deeper into a court where every game has teeth and every kindness has a price.",
-      tags: ["enemies-to-lovers","morally-grey","hidden-identity","power-imbalance","court-politics"] },
+      tags: ["enemies-to-lovers","morally-grey","hidden-identity","power-imbalance","court-politics","high-heat"] },
     { id: "b-the-knave-and-the-moon", type: "book", title: "The Knave and the Moon", creator: "Rachel Gillig",
       year: 2026,
       cover: "",
@@ -3070,7 +3031,7 @@
       cover: "https://covers.openlibrary.org/b/id/9946539-L.jpg",
       series: "Twilight", seriesIndex: 1.5,
       blurb: "Edward Cullen has spent a century perfecting the art of not wanting anything — until an ordinary girl's scent nearly undoes a hundred years of control in a single classroom.",
-      tags: ["vampire","slow-burn","hidden-identity","power-imbalance"] },
+      tags: ["vampire","hidden-identity","power-imbalance"] },
     // ---------------- Books (batch 7 — standalone-to-series completion, part 1) ----------------
     { id: "b-games-gods-play", type: "book", title: "The Games Gods Play", creator: "Abigail Owen",
       year: 2024,
@@ -3367,31 +3328,31 @@
       cover: "",
       series: "The Plated Prisoner", seriesIndex: 2,
       blurb: "Free of her gilded cage but not of the men who claim to want to protect her, Auren must decide which chains are actually worth keeping.",
-      tags: ["power-imbalance","reverse-harem","court-politics","morally-grey","slow-burn"] },
+      tags: ["power-imbalance","reverse-harem","court-politics","morally-grey","slow-burn","high-heat"] },
     { id: "b-gleam", type: "book", title: "Gleam", creator: "Raven Kennedy",
       year: 2021,
       cover: "",
       series: "The Plated Prisoner", seriesIndex: 3,
       blurb: "As new enemies circle and old lies surface, Auren's fragile found family is tested by a court that would rather see her crowned or dead.",
-      tags: ["found-family","power-imbalance","court-politics","reverse-harem","betrayal"] },
+      tags: ["found-family","power-imbalance","court-politics","reverse-harem","betrayal","high-heat"] },
     { id: "b-glow", type: "book", title: "Glow", creator: "Raven Kennedy",
       year: 2022,
       cover: "",
       series: "The Plated Prisoner", seriesIndex: 4,
       blurb: "Buried secrets about Auren's touch and the kingdom's history come due, forcing her to choose between hiding and being seen.",
-      tags: ["hidden-identity","power-imbalance","morally-grey","reverse-harem","slow-burn"] },
+      tags: ["hidden-identity","power-imbalance","morally-grey","reverse-harem","slow-burn","high-heat"] },
     { id: "b-gold", type: "book", title: "Gold", creator: "Raven Kennedy",
       year: 2023,
       cover: "",
       series: "The Plated Prisoner", seriesIndex: 5,
       blurb: "With war creeping closer and her power impossible to hide, Auren must decide what kind of queen — or weapon — she's willing to become.",
-      tags: ["war-and-rebellion","power-imbalance","court-politics","reverse-harem","morally-grey"] },
+      tags: ["war-and-rebellion","power-imbalance","court-politics","reverse-harem","morally-grey","high-heat"] },
     { id: "b-goldfinch", type: "book", title: "Goldfinch", creator: "Raven Kennedy",
       year: 2024,
       cover: "",
       series: "The Plated Prisoner", seriesIndex: 6,
       blurb: "In the series' final chapter, Auren and her men face the reckoning that's been building since the first cage door opened.",
-      tags: ["reverse-harem","found-family","power-imbalance","war-and-rebellion","morally-grey"] },
+      tags: ["reverse-harem","found-family","power-imbalance","war-and-rebellion","morally-grey","high-heat"] },
     { id: "b-rose-and-the-dagger", type: "book", title: "The Rose & the Dagger", creator: "Renée Ahdieh",
       year: 2016,
       cover: "https://covers.openlibrary.org/b/isbn/9780147513861-L.jpg",
@@ -3457,7 +3418,7 @@
       cover: "",
       series: "Hades x Persephone Saga", seriesIndex: 2,
       blurb: "A companion tale set in the same divided world of gods and mortals, where old rules of fate are tested by a love no one saw coming.",
-      tags: ["mythology","power-imbalance","ensemble","war-and-rebellion"] },
+      tags: ["mythology","power-imbalance","enemies-to-lovers","fated-mates","high-heat"] },
     { id: "b-touch-of-ruin", type: "book", title: "A Touch of Ruin", creator: "Scarlett St. Clair",
       year: 2020,
       cover: "",
@@ -3469,7 +3430,7 @@
       cover: "",
       series: "Hades x Persephone Saga", seriesIndex: 4,
       blurb: "As Hades and Persephone's rebellion spills into the mortal world, this companion volume follows the fallout no one else is left to clean up.",
-      tags: ["mythology","power-imbalance","ensemble","war-and-rebellion"] },
+      tags: ["mythology","power-imbalance","war-and-rebellion","high-heat"] },
     { id: "b-touch-of-malice", type: "book", title: "A Touch of Malice", creator: "Scarlett St. Clair",
       year: 2021,
       cover: "",
@@ -3481,7 +3442,7 @@
       cover: "",
       series: "Hades x Persephone Saga", seriesIndex: 6,
       blurb: "The gods are choosing sides, and this companion volume follows the ones caught in the crossfire of Hades and Persephone's rebellion.",
-      tags: ["mythology","power-imbalance","ensemble","war-and-rebellion"] },
+      tags: ["mythology","power-imbalance","war-and-rebellion","high-heat"] },
     { id: "b-touch-of-chaos", type: "book", title: "A Touch of Chaos", creator: "Scarlett St. Clair",
       year: 2024,
       cover: "",
@@ -3554,7 +3515,7 @@
     { id: "a-yakuza-fiance", type: "anime", title: "Yakuza Fiancé: Raise wa Tanin ga Ii", creator: "Studio: Studio Deen", year: 2024,
       cover: "https://static.animecorner.me/2024/07/1720342405-4a60b15da73ebd6e1e164d2e9027fcf3.jpg",
       blurb: "A sheltered heiress is sent to live with the grandson of a rival yakuza family after an arranged engagement binds their futures together.",
-      tags: ["arranged-marriage","forced-proximity","morally-grey","slow-burn","court-politics"] },
+      tags: ["arranged-marriage","forced-proximity","morally-grey","slow-burn"] },
     { id: "a-7th-time-loop", type: "anime", title: "7th Time Loop: The Villainess Enjoys a Carefree Life Married to Her Worst Enemy!", creator: "Studio: Kai", year: 2024,
       cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20ANIME%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3E7th%20Time%20Loop%3A%20The%20Villainess%20Enjoys%20a%20Carefree%20Life%20Married%20to%20Her%20Worst%20Enemy%21%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
       blurb: "After dying and restarting her life six times, a former villainess accepts a marriage proposal from the prince who will one day destroy the world.",
@@ -3676,7 +3637,7 @@
     { id: "m-omniscient-reader", type: "manhwa", format: "webtoon", title: "Omniscient Reader", creator: "singNsong / Sleepy-C", year: 2020,
       cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EOmniscient%20Reader%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
       blurb: "The only person who finished a doomed web novel discovers its apocalypse has become reality and uses his knowledge to survive.",
-      tags: ["chosen-one","found-family","war-and-rebellion","hidden-identity","ensemble"] },
+      tags: ["found-family","ensemble","isekai","regression"] },
     { id: "m-true-education", type: "manhwa", format: "webtoon", title: "True Education", creator: "Chae Yong-taek / Han Gar-ram", year: 2020,
       cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3ETrue%20Education%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
       blurb: "A special teacher is sent into schools where violence and corruption have spiraled beyond control to restore order by unconventional means.",
@@ -3834,6 +3795,20 @@
 ];
 
   var TITLE_BY_ID = {};
+
+  // A title only behaves as a "series" when Kindred currently has MORE THAN
+  // ONE book carrying that series name. A lone book stays an ordinary book
+  // until another book is added to the library.
+  var SERIES_BOOK_COUNTS = {};
+  TITLES.forEach(function (t) {
+    if (t.type === "book" && t.series) SERIES_BOOK_COUNTS[t.series] = (SERIES_BOOK_COUNTS[t.series] || 0) + 1;
+  });
+  function hasRealSeries(t) {
+    return !!(t && t.type === "book" && t.series && SERIES_BOOK_COUNTS[t.series] > 1);
+  }
+  function isRealSeriesName(seriesName) {
+    return !!(seriesName && SERIES_BOOK_COUNTS[seriesName] > 1);
+  }
   TITLES.forEach(function (t) { TITLE_BY_ID[t.id] = t; });
 
   /* ---- purchase / read links (real search links; no affiliate tag wired up yet) ---- */
@@ -3859,6 +3834,15 @@
   // platform when we don't have a direct link, plus a general web search as
   // a catch-all. Nothing is ever hidden; worst case a button leads to a
   // search instead of the exact page.
+  function isMobileDevice() { return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || ""); }
+  function externalLinkAttrs(link) {
+    // On phones/tablets, don't force a new browser tab for streaming links.
+    // Using the normal https URL in the current browsing context gives iOS
+    // Universal Links / Android App Links the best chance to hand the user
+    // to the installed app; desktop still opens external links in a new tab.
+    return isMobileDevice() ? { href: link.href, rel: "noopener" } : { href: link.href, target: "_blank", rel: "noopener" };
+  }
+
   function getLinks(title) {
     if (title.type === "book") {
       return [
@@ -3996,9 +3980,9 @@
     var groups = {};
     var order = [];
     perTitle.forEach(function (m) {
-      var key = m.title.series ? ("series:" + m.title.series) : ("solo:" + m.title.id);
+      var key = hasRealSeries(m.title) ? ("series:" + m.title.series) : ("solo:" + m.title.id);
       if (!groups[key]) {
-        groups[key] = { series: m.title.series || null, books: [], score: 0, percent: 0, bestMatch: null };
+        groups[key] = { series: hasRealSeries(m.title) ? m.title.series : null, books: [], score: 0, percent: 0, bestMatch: null };
         order.push(key);
       }
       groups[key].books.push(m);
@@ -4012,10 +3996,17 @@
     var groupList = order.map(function (k) { return groups[k]; });
     groupList.forEach(function (g) {
       g.books.sort(function (a, b) {
+        if (b.percent !== a.percent) return b.percent - a.percent;
+        if (b.score !== a.score) return b.score - a.score;
         var ai = a.title.seriesIndex || 0, bi = b.title.seriesIndex || 0;
-        if (ai !== bi) return ai - bi;
-        return b.percent - a.percent;
+        return ai - bi;
       });
+      // Book recommendations surface one representative per series. The
+      // series page still contains every book, so no content is lost — the
+      // recommendation list simply stops flooding the user with sequels.
+      if (title.type === "book" && isRealSeriesName(g.series) && g.books.length > 1) {
+        g.books = [g.books[0]];
+      }
     });
     // Ranked by Kindred Score, not the raw trope-overlap score — this is
     // what lets match-quality votes (folded into percent, see
@@ -4081,9 +4072,24 @@
       if (ks === null) return;
       results.push({ title: t, percent: ks.percent, shared: ks.shared, score: tropeSetScore(tagIds, t) });
     });
+
+    // For books, recommend a SERIES once rather than showing several books
+    // from the same saga. The strongest matching book represents the series,
+    // while the card itself opens the series page.
+    if (type === "book") {
+      var groups = {};
+      results.forEach(function (r) {
+        var key = hasRealSeries(r.title) ? "series:" + r.title.series : "solo:" + r.title.id;
+        if (!groups[key] || r.percent > groups[key].percent ||
+            (r.percent === groups[key].percent && r.score > groups[key].score)) {
+          groups[key] = r;
+        }
+      });
+      results = Object.keys(groups).map(function (k) { return groups[k]; });
+    }
+
     // Sorted by Kindred Score first — the whole point is that this order
     // re-shuffles live as votes move a title's percent past its neighbors.
-    // Same-percent ties fall back to the underlying raw match score.
     results.sort(function (x, y) {
       if (y.percent !== x.percent) return y.percent - x.percent;
       return y.score - x.score;
@@ -4317,30 +4323,9 @@
   function getDisplayName() { return displayNameStore.get(); }
   function setDisplayName(n) { displayNameStore.set(n); }
 
-  // Comment moderation: there are no accounts on this site, so "the
-  // original commenter" is tracked the same device-local way votes and
-  // favorites already are — when you post a comment, a random token for
-  // it is remembered here (and saved on the comment row itself), and only
-  // a browser holding that token — or one unlocked as the site owner
-  // below — sees a delete option for it.
-  var MY_COMMENTS_KEY = "tropeatlas_mycomments_v1";
-  var myCommentsStore = makeJSONStore(MY_COMMENTS_KEY, {});
-  function getMyComments() { return myCommentsStore.get(); }
-  function setMyComments(map) { myCommentsStore.set(map); }
-  function rememberMyComment(id, token) {
-    if (id == null) return;
-    var mine = getMyComments();
-    mine[id] = token;
-    setMyComments(mine);
-  }
-  function myCommentToken(id) { return getMyComments()[id] || null; }
-
-  // The site-owner ("or me") half of comment moderation. CHANGE THIS to a
-  // passphrase only you know, and change the matching value inside
-  // delete_comment() in supabase-schema.sql to the same thing. Anyone who
-  // views this page's source can read this value — same as the Supabase
-  // key above — so it's a lock against casual clicking, not real
-  // security; there's no login system here to do better than that.
+  // Comments are intentionally moderated from Supabase rather than from
+  // the public site. There is no owner passphrase or admin control exposed
+  // in the client.
   // Whether the detail panel should open full-width instead of the default
   // side-panel width — a per-device reading preference (some people want
   // the extra room for the cover + long match lists every time), so it's
@@ -4350,20 +4335,6 @@
   function isDetailFullscreen() { return detailFullscreenStore.get() === "1"; }
   function setDetailFullscreen(on) { detailFullscreenStore.set(on ? "1" : "0"); }
 
-  var ADMIN_PASSPHRASE = "Lindsay0611!";
-  var ADMIN_KEY = "tropeatlas_admin_v1";
-  var adminStore = makeStringStore(ADMIN_KEY, "");
-  function isAdmin() { return adminStore.get() === "1"; }
-  function tryUnlockAdmin(pass) {
-    if (pass && pass === ADMIN_PASSPHRASE) {
-      adminStore.set("1");
-      return true;
-    }
-    return false;
-  }
-  function lockAdmin() {
-    adminStore.set("");
-  }
 
   /* ============================= DB (votes + comments) ============================= */
   /* This used to be window.claude.use("db") — the Claude-artifact-only shared
@@ -4648,18 +4619,14 @@
     text = (text || "").trim();
     if (!text) return Promise.resolve();
     var name = getDisplayName();
-    // A random token this browser will need to present later to delete
-    // this exact comment (see the MY_COMMENTS notes above) — saved on the
-    // row itself so delete_comment() in supabase-schema.sql can check it.
-    var token = Math.random().toString(36).slice(2) + Date.now().toString(36);
+      var token = Math.random().toString(36).slice(2) + Date.now().toString(36);
     return dbPromise.then(function (db) {
       if (!db) return;
       return ensureMatchDoc(db, id).then(function () {
         var row = {
           text: text.slice(0, 500),
           author: name || "Anonymous reader",
-          createdAt: new Date().toISOString(),
-          delete_token: token
+          createdAt: new Date().toISOString()
         };
         return commentsColRef(db, id).add(row).catch(function (e) {
           // The delete_token column doesn't exist yet — the
@@ -4671,8 +4638,6 @@
           delete fallbackRow.delete_token;
           return commentsColRef(db, id).add(fallbackRow);
         });
-      }).then(function (added) {
-        if (added && added.id != null) rememberMyComment(added.id, token);
       });
     });
   }
@@ -4701,25 +4666,8 @@
     });
   }
 
-  function deleteComment(commentId) {
-    var token = myCommentToken(commentId);
-    var admin = isAdmin();
-    var mine = getMyComments();
-    delete mine[commentId];
-    setMyComments(mine);
-
-    return dbPromise.then(function (db) {
-      if (!db) return;
-      return db.rpc("delete_comment", { p_id: commentId, p_token: token, p_admin_key: admin ? ADMIN_PASSPHRASE : null })
-        .catch(function () {
-          // Fallback for a project that hasn't run the delete_comment SQL
-          // yet — the old fully-open delete policy is still in place
-          // there, so this still works, just without the ownership check
-          // enforced by the database itself yet.
-          return db.deleteRow("comments", commentId);
-        });
-    });
-  }
+  // Comment deletion is intentionally not exposed in the public UI.
+  // Remove comments directly from Supabase when moderating.
 
   // Vote COUNTS are no longer driven from here — they come from the bulk
   // matchVoteCache (see subscribeMatchVotesOnce), which is the same cache
@@ -4817,6 +4765,7 @@
 
     var upDelta = (next === "up" ? 1 : 0) - (current === "up" ? 1 : 0);
     var downDelta = (next === "down" ? 1 : 0) - (current === "down" ? 1 : 0);
+    trackEvent("tag_vote", { title_id: titleId, tag: tagId, direction: next || "removed" });
     var cached = tagVoteCache[key] || { up: 0, down: 0 };
     tagVoteCache[key] = {
       up: Math.max(0, (cached.up || 0) + upDelta),
@@ -5060,16 +5009,16 @@
           style: "--accent:" + meta.accent,
           role: "button",
           tabindex: "0",
-          onclick: function () { openDetail(m.title.id); },
+          onclick: function () { hasRealSeries(m.title) ? openSeriesPage(m.title.series) : openDetail(m.title.id); },
           onkeydown: function (e) {
             if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
               e.preventDefault();
-              openDetail(m.title.id);
+              hasRealSeries(m.title) ? openSeriesPage(m.title.series) : openDetail(m.title.id);
             }
           }
         }, [
-          el("div", { class: "card-kicker" }, [text(formatLabel(m.title))]),
-          el("div", { class: "card-title display" }, [text(m.title.title)]),
+          el("div", { class: "card-kicker" }, [text(hasRealSeries(m.title) ? "Series · " + formatLabel(m.title) : formatLabel(m.title))]),
+          el("div", { class: "card-title display" }, [text(hasRealSeries(m.title) ? m.title.series : m.title.title)]),
           el("div", { class: "card-creator" }, [
             text(m.title.creator), m.title.year ? el("span", { class: "card-year" }, [text(" · " + m.title.year)]) : null
           ].filter(Boolean)),
@@ -5228,7 +5177,7 @@
     // Storm even though none of their own titles contain that word — matters
     // most in "By Series" mode, where the series card itself only shows up
     // via one of its member books passing this same check.
-    if (t.series && t.series.toLowerCase().indexOf(q) !== -1) return true;
+    if (hasRealSeries(t) && t.series.toLowerCase().indexOf(q) !== -1) return true;
     return t.tags.some(function (tag) { return TAGS[tag].toLowerCase().indexOf(q) !== -1; });
   }
 
@@ -5359,7 +5308,7 @@
     // the same position their best-ranked book would have held.
     var seenSeries = {};
     list.forEach(function (t) {
-      if (!t.series) {
+      if (!hasRealSeries(t)) {
         grid.appendChild(buildTitleCard(t));
         return;
       }
@@ -5375,6 +5324,9 @@
   /* ============================= RENDER: detail ============================= */
 
   function openDetail(id) {
+    var openedTitle = TITLE_BY_ID[id];
+    if (!openedTitle) return;
+    trackEvent("title_open", { title_id: id, title: openedTitle.title, type: openedTitle.type });
     state.openTitleId = id;
     state.openSeriesName = null;
     var t = TITLE_BY_ID[id];
@@ -5400,6 +5352,12 @@
   // closing the panel (or a shared ?series= link landing here fresh) shows
   // a browsing context that actually matches what's open.
   function openSeriesPage(seriesName) {
+    if (!isRealSeriesName(seriesName)) {
+      var lone = TITLES.find(function (t) { return t.type === "book" && t.series === seriesName; });
+      if (lone) return openDetail(lone.id);
+      return;
+    }
+    trackEvent("series_open", { series_name: seriesName });
     state.openSeriesName = seriesName;
     state.openTitleId = null;
     state.activeMainTab = "book";
@@ -5540,7 +5498,7 @@
 
     var list = el("div", { class: "series-book-list" });
     books.forEach(function (b) {
-      var indexLabel = Number.isInteger(b.seriesIndex) ? ("Book " + b.seriesIndex) : "Companion story";
+      var indexLabel = typeof b.seriesIndex === "number" ? ("Book " + b.seriesIndex) : "Book";
       var row = el("div", {
         class: "series-book-row",
         role: "button",
@@ -5559,6 +5517,9 @@
         el("div", { class: "series-book-row-text" }, [
           el("div", { class: "series-book-index" }, [text(indexLabel)]),
           el("div", { class: "series-book-title" }, [text(b.title)]),
+          el("div", { class: "series-book-tags" }, b.tags.map(function (tag) {
+            return el("span", { class: "tagpill", style: "--accent:" + meta.accent + ";--mix:" + tagMixPercent(b.id, tag) + "%" }, [text(TAGS[tag])]);
+          })),
           el("div", { class: "series-book-blurb" }, [text(b.blurb)])
         ])
       ]);
@@ -5658,7 +5619,9 @@
 
     var actions = el("div", { class: "detail-actions" });
     getLinks(t).forEach(function (link) {
-      actions.appendChild(el("a", { class: "btn " + (link.primary ? "btn-primary" : "btn-ghost"), href: link.href, target: "_blank", rel: "noopener" }, [text(link.label)]));
+      var attrs = Object.assign({ class: "btn " + (link.primary ? "btn-primary" : "btn-ghost") }, externalLinkAttrs(link));
+      attrs.onclick = function () { trackEvent("outbound_click", { title_id: t.id, title: t.title, destination: link.label }); };
+      actions.appendChild(el("a", attrs, [text(link.label)]));
     });
     var favCount = favCountCache[t.id] || 0;
     var favBtn = el("button", {
@@ -5675,6 +5638,7 @@
     paintFavBtn();
     favBtn.addEventListener("click", function () {
       var now = toggleFavorite(t.id);
+      trackEvent("favorite_toggle", { title_id: t.id, title: t.title, favorited: now });
       favBtn.classList.toggle("active", now);
       paintFavBtn();
     });
@@ -5775,7 +5739,23 @@
         // This vote is a direct signal into that match's Kindred Score (see
         // kindredScoreBetween) — re-render so the score and the list's sort
         // order reflect it right away, not just on the next visit.
+        trackEvent("match_vote", { match_id: mid, direction: dir });
         renderDetail();
+        // The vote can reorder the recommendation list. Follow the same
+        // recommendation after the DOM is rebuilt, so the user moves WITH
+        // the card rather than being left at the old scroll position.
+        requestAnimationFrame(function () {
+          var cards = document.querySelectorAll("[data-match-id]");
+          var movedMatch = null;
+          for (var i = 0; i < cards.length; i++) {
+            if (cards[i].getAttribute("data-match-id") === mid) { movedMatch = cards[i]; break; }
+          }
+          if (movedMatch) {
+            movedMatch.scrollIntoView({ block: "center", behavior: "auto" });
+            var newVoteBtn = movedMatch.querySelector(".vote-btn." + dir);
+            if (newVoteBtn) newVoteBtn.focus({ preventScroll: true });
+          }
+        });
       }
       upBtn.addEventListener("click", function () { castVote("up"); });
       downBtn.addEventListener("click", function () { castVote("down"); });
@@ -5806,39 +5786,19 @@
           commentList.appendChild(el("div", { class: "sync-note" }, [text("No comments yet — be the first.")]));
         }
         comments.slice().reverse().forEach(function (c) {
-          var canDelete = myCommentToken(c.id) != null || isAdmin();
           var row = el("div", { class: "comment" }, [
             el("span", { class: "who" }, [text(c.author || "Anonymous reader")]),
             text(c.text)
           ]);
-          if (canDelete) {
-            row.appendChild(el("button", {
-              class: "comment-delete",
-              type: "button",
-              title: isAdmin() && myCommentToken(c.id) == null ? "Remove this comment (site owner)" : "Remove your comment",
-              onclick: function () {
-                if (!confirm("Remove this comment?")) return;
-                // Remove it from view the instant you confirm, rather than
-                // waiting on the network — the live subscription above
-                // will reconcile moments later, same as everywhere else.
-                row.remove();
-                paintCommentCount(Math.max(0, liveCommentCount - 1));
-                if (!commentList.children.length) {
-                  commentList.appendChild(el("div", { class: "sync-note" }, [text("No comments yet — be the first.")]));
-                }
-                deleteComment(c.id);
-              }
-            }, [text("Remove")]));
-          }
           commentList.appendChild(row);
         });
       });
     }
 
     matchGroups.forEach(function (g) {
-      if (g.books.length === 1) {
+      if (g.books.length === 1 && !g.series) {
         var m = g.books[0];
-        var card = el("div", { class: "match-card" });
+        var card = el("div", { class: "match-card", "data-match-id": matchId(t.id, m.title.id) });
         card.appendChild(el("div", { class: "match-head" }, [
           el("div", {}, [
             el("div", { class: "match-kicker", style: "color:" + TYPE_META[m.title.type].accent }, [text(formatLabel(m.title))]),
@@ -5856,12 +5816,12 @@
       // book listed underneath (in series order) so it's clear exactly
       // which book earned which shared tropes, instead of the same series
       // taking up several slots in the list.
-      var card = el("div", { class: "match-card series-match-card" });
+      var card = el("div", { class: "match-card series-match-card", "data-match-id": matchId(t.id, g.bestMatch ? g.bestMatch.title.id : g.books[0].title.id) });
       card.appendChild(el("div", { class: "match-head" }, [
         el("div", {}, [
           el("div", { class: "match-kicker", style: "color:" + TYPE_META[g.books[0].title.type].accent }, [text(formatLabel(g.books[0].title))]),
-          el("div", { class: "series-kicker" }, [text(g.books.length + "-book series match")]),
-          el("div", { class: "match-title" }, [text(g.series)]),
+          el("div", { class: "series-kicker" }, [text("Series match")]),
+          el("div", { class: "match-title", onclick: function () { openSeriesPage(g.series); } }, [text(g.series)]),
           el("div", { class: "match-creator" }, [text(g.books[0].title.creator)])
         ]),
         g.percent ? renderScoreBadge(g.percent, g.bestMatch ? kindredScoreBreakdown(t, g.bestMatch.title, g.bestMatch.shared) : null, TYPE_META[g.books[0].title.type].accent) : null
@@ -6000,46 +5960,7 @@
     if (state.openTitleId) renderDetail();
   });
 
-  // Quiet footer link so the site owner can unlock deleting ANY comment
-  // (everyone else can only delete their own — see MY_COMMENTS above).
-  (function initAdminToggle() {
-    var statusEl = document.getElementById("adminStatus");
-    var toggleBtn = document.getElementById("adminToggle");
-    var formEl = document.getElementById("adminForm");
-    var inputEl = document.getElementById("adminInput");
-    var submitBtn = document.getElementById("adminSubmit");
 
-    function paint() {
-      if (isAdmin()) {
-        statusEl.textContent = "Comment moderation unlocked on this device.";
-        toggleBtn.textContent = "Lock";
-        formEl.hidden = true;
-      } else {
-        statusEl.textContent = "";
-        toggleBtn.textContent = "Site owner?";
-      }
-    }
-    paint();
-
-    toggleBtn.addEventListener("click", function () {
-      if (isAdmin()) { lockAdmin(); paint(); if (state.openTitleId) renderDetail(); return; }
-      formEl.hidden = !formEl.hidden;
-      if (!formEl.hidden) inputEl.focus();
-    });
-    function trySubmit() {
-      if (tryUnlockAdmin(inputEl.value)) {
-        inputEl.value = "";
-        formEl.hidden = true;
-        paint();
-        if (state.openTitleId) renderDetail();
-      } else {
-        inputEl.value = "";
-        inputEl.placeholder = "Wrong passphrase";
-      }
-    }
-    submitBtn.addEventListener("click", trySubmit);
-    inputEl.addEventListener("keydown", function (e) { if (e.key === "Enter") trySubmit(); });
-  })();
 })();
 </script>
 </body>
