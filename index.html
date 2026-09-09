@@ -773,7 +773,10 @@
   .series-books { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
   .series-book { border-top: 1px dashed var(--line); padding-top: 12px; }
   .series-book:first-child { border-top: none; padding-top: 0; }
-  .series-book-name-line { display: flex; align-items: baseline; gap: 8px; }
+  .series-book-name-line { display: flex; align-items: center; gap: 8px; }
+  .series-book-name-line .kindred-score-wrap { margin-left: auto; flex-shrink: 0; }
+  .series-book-name-line .kindred-score-badge { font-size: 0.64rem; padding: 3px 7px; }
+  .series-book-name-line .score-info-icon { width: 15px; height: 15px; font-size: 0.58rem; }
   .series-book-index {
     font-size: 0.68rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase;
     color: var(--ink-soft); white-space: nowrap;
@@ -5846,9 +5849,8 @@
       }
 
       // A series match: one card named for the series, with each matching
-      // book listed underneath (in series order) so it's clear exactly
-      // which book earned which shared tropes, instead of the same series
-      // taking up several slots in the list.
+      // book listed underneath (in series order). The score is per BOOK,
+      // never a single aggregate score for the whole series.
       var card = el("div", { class: "match-card series-match-card", "data-match-id": matchId(t.id, g.bestMatch ? g.bestMatch.title.id : g.books[0].title.id) });
       card.appendChild(el("div", { class: "match-head" }, [
         el("div", {}, [
@@ -5857,15 +5859,16 @@
           el("div", { class: "match-title", onclick: function () { openSeriesPage(g.series); } }, [text(g.series)]),
           el("div", { class: "match-creator" }, [text(g.books[0].title.creator)])
         ]),
-        g.percent ? renderScoreBadge(g.percent, g.bestMatch ? kindredScoreBreakdown(t, g.bestMatch.title, g.bestMatch.shared) : null, TYPE_META[g.books[0].title.type].accent) : null
+        null
       ]));
       var booksWrap = el("div", { class: "series-books" });
       g.books.forEach(function (m) {
         var bookRow = el("div", { class: "series-book" });
         bookRow.appendChild(el("div", { class: "series-book-name-line" }, [
           el("span", { class: "series-book-index" }, [text(m.title.seriesIndex ? ("Book " + m.title.seriesIndex) : "")]),
-          el("span", { class: "series-book-name", onclick: function () { openDetail(m.title.id); } }, [text(m.title.title)])
-        ]));
+          el("span", { class: "series-book-name", onclick: function () { openDetail(m.title.id); } }, [text(m.title.title)]),
+          m.percent ? renderScoreBadge(m.percent, kindredScoreBreakdown(t, m.title, m.shared), TYPE_META[m.title.type].accent) : null
+        ].filter(Boolean)));
         buildMatchBody(bookRow, m);
         booksWrap.appendChild(bookRow);
       });
