@@ -112,6 +112,17 @@
   button { font-family: inherit; }
 
   .wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+  .footer-disclaimer {
+    margin-top: 8px;
+    color: var(--ink-soft);
+    font-size: 0.76rem;
+    line-height: 1.55;
+  }
+  .series-book-row:focus-visible, [role="button"]:focus-visible, button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--gilt) 72%, transparent);
+    outline-offset: 3px;
+  }
+
 
   /* ---------- Header ---------- */
   header.site {
@@ -935,13 +946,13 @@
 
 <footer class="site">
   <div class="wrap">
-    Kindred is a growing library of well-known titles to prove out the matching idea — add your own picks as it grows.
-    Votes and comments are shared live with anyone who can open this page.
+    <div>Kindred is a growing library of well-known titles to prove out the matching idea — add your own picks as it grows.</div>
+    <div class="footer-disclaimer">Community votes are shared live. Each browser can cast one vote per title/trope or match pairing; votes are not tied to a verified account.</div>
   </div>
 </footer>
 
 <div class="scrim" id="scrim"></div>
-<div class="detail" id="detail" role="dialog" aria-modal="true" aria-hidden="true">
+<div class="detail" id="detail" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="detailTitle" tabindex="-1">
   <div class="detail-inner" id="detailInner"></div>
 </div>
 
@@ -1029,7 +1040,10 @@
     "mythology": "Mythology Retelling",
     "power-imbalance": "Power Imbalance",
     "betrayal": "Political Betrayal",
-        "high-heat": "High Heat",
+    // High Heat is an objective content tag: at least one explicit, on-page
+    // sex scene. Spice/heat ratings alone do not qualify; fade-to-black or
+    // implied sex does not qualify.
+    "high-heat": "High Heat",
     "isekai": "Isekai / Transported",
     "reincarnated-villain": "Reincarnated Villain(ess)",
     "fated-mates": "Fated Mates",
@@ -1062,7 +1076,7 @@
       cover: "https://covers.openlibrary.org/b/id/15206732-L.jpg",
       series: "The Empyrean", seriesIndex: 3,
       blurb: "With the wards failing and a venin army closing in, Violet has to hold together a war college — and a bond with two riders — that keeps threatening to break.",
-      tags: ["dragons","war-and-rebellion","found-family","court-politics","morally-grey","high-heat"] },
+      tags: ["dragons","war-and-rebellion","found-family","morally-grey","high-heat"] },
     { id: "b-acotar", type: "book", title: "A Court of Thorns and Roses", creator: "Sarah J. Maas",
       year: 2015,
       cover: "https://covers.openlibrary.org/b/id/15103057-L.jpg",
@@ -1163,7 +1177,7 @@
       cover: "https://covers.openlibrary.org/b/id/13316183-L.jpg",
       series: "Throne of Glass", seriesIndex: 7,
       blurb: "Tortured and imprisoned by a rival queen, she has to survive long enough for her allies to reach her before the final war for every kingdom she's ever loved begins without her.",
-      tags: ["chosen-one","war-and-rebellion","found-family","fated-mates"] },
+      tags: ["chosen-one","war-and-rebellion","found-family","fated-mates","high-heat"] },
     { id: "b-cruel-prince", type: "book", title: "The Cruel Prince", creator: "Holly Black",
       year: 2018,
       cover: "https://covers.openlibrary.org/b/id/8772072-L.jpg",
@@ -1199,7 +1213,7 @@
       cover: "https://covers.openlibrary.org/b/id/10136462-L.jpg",
       series: "Serpent & Dove", seriesIndex: 2,
       blurb: "With her secret out and a witch hunt closing in on both of them, their marriage of convenience has to become a real alliance to survive it.",
-      tags: ["forced-proximity","hidden-identity","slow-burn","revenge-plot","war-and-rebellion","arranged-marriage"] },
+      tags: ["forced-proximity","hidden-identity","slow-burn","revenge-plot","war-and-rebellion"] },
     { id: "b-gods-monsters", type: "book", title: "Gods & Monsters", creator: "Shelby Mahurin",
       year: 2021,
       series: "Serpent & Dove", seriesIndex: 3,
@@ -1309,7 +1323,7 @@
       cover: "https://covers.openlibrary.org/b/id/15102361-L.jpg",
       series: "Crescent City", seriesIndex: 1,
       blurb: "A half-fae party girl teams up with a fallen warrior-angel to hunt down whoever murdered her best friend.",
-      tags: ["found-family","morally-grey","slow-burn","revenge-plot","forced-proximity","court-politics"] },
+      tags: ["found-family","morally-grey","slow-burn","revenge-plot","forced-proximity","enemies-to-lovers","court-politics","high-heat"] },
 
     // ---------------- Anime ----------------
     { id: "a-snow-white-rh", type: "anime", title: "Snow White with the Red Hair", creator: "Studio: Bones",
@@ -1342,7 +1356,7 @@
       cover: "https://cdn.myanimelist.net/images/anime/1795/95088.jpg",
       netflixUrl: "https://www.netflix.com/title/81010662",
       blurb: "A former child soldier who lost the words for her own feelings learns to understand love, letter by letter, in the aftermath of war.",
-      tags: ["healing-from-trauma","found-family","slow-burn","war-and-rebellion"] },
+      tags: ["healing-from-trauma","found-family","slow-burn"] },
     { id: "a-ranking-of-kings", type: "anime", title: "Ranking of Kings", creator: "Studio: Wit Studio",
       year: 2021,
       cover: "https://cdn.myanimelist.net/images/anime/1347/117616.jpg",
@@ -1442,7 +1456,7 @@
       cover: "https://covers.openlibrary.org/b/id/14576237-L.jpg",
       series: "Crescent City", seriesIndex: 3,
       blurb: "Trapped in a strange new world with no way home, Bryce has to find a path back to Midgard before the people she loves pay the price for her absence.",
-      tags: ["found-family","war-and-rebellion","slow-burn","court-politics","fated-mates","high-heat"] },
+      tags: ["found-family","war-and-rebellion","court-politics","fated-mates","high-heat"] },
     { id: "b-zodiac-academy", type: "book", title: "Zodiac Academy: The Awakening", creator: "Caroline Peckham & Susan Valenti",
       year: 2020,
       cover: "https://covers.openlibrary.org/b/id/14803787-L.jpg",
@@ -1533,7 +1547,7 @@
       cover: "https://covers.openlibrary.org/b/id/15163087-L.jpg",
       series: "Crowns of Nyaxia", seriesIndex: 1,
       blurb: "The only human competing in a deadly vampire tournament allies with the ruthless vampire prince most likely to be the one who kills her.",
-      tags: ["enemies-to-lovers","court-politics","slow-burn","revenge-plot","vampire"] },
+      tags: ["enemies-to-lovers","court-politics","slow-burn","revenge-plot","vampire","high-heat"] },
     { id: "b-jasad-heir", type: "book", title: "The Jasad Heir", creator: "Sara Hashem",
       year: 2023,
       cover: "https://covers.openlibrary.org/b/id/14415397-L.jpg",
@@ -1674,7 +1688,7 @@
       cover: "https://cdn.myanimelist.net/images/manga/2/238873.jpg",
       webtoonsUrl: "https://www.webtoons.com/en/action/omniscient-reader/list?title_no=2154",
       blurb: "The one reader who ever finished a webnovel nobody else read finds himself living inside its apocalypse — and rewriting its ending for the found family he's building.",
-      tags: ["chosen-one","found-family","war-and-rebellion","ensemble","isekai"] },
+      tags: ["found-family","ensemble","isekai","regression"] },
     { id: "m-unordinary", type: "manhwa", format: "webtoon", title: "UnOrdinary", creator: "uru-chan",
       year: 2015,
       cover: "https://swebtoon-phinf.pstatic.net/20250730_49/1753832944376xEinr_JPEG/unOrdinary_Thumb_Poster_250721.jpg?type=crop540_540",
@@ -1703,7 +1717,7 @@
       year: 2021,
       cover: "https://cdn.myanimelist.net/images/manga/1/331107.jpg",
       blurb: "Married off to a knight who barely speaks to her, she assumes it's a loveless arrangement — until he comes back from war a completely different person.",
-      tags: ["arranged-marriage","slow-burn","healing-from-trauma","forced-proximity","high-heat"] },
+      tags: ["arranged-marriage","slow-burn","healing-from-trauma","forced-proximity"] },
     { id: "m-bride-water-god", type: "manhwa", format: "manhwa", title: "Bride of the Water God", creator: "Mi-Kyung Yun",
       year: 2006,
       cover: "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1330556288i/1702887.jpg",
@@ -1901,7 +1915,7 @@
       year: 2021,
       cover: "https://covers.openlibrary.org/b/id/14614806-L.jpg",
       blurb: "Two teens raised in the same group home, bound by a childhood legend about a maker of tears, find their way back to each other years later.",
-      tags: ["healing-from-trauma","slow-burn","found-family","friends-to-lovers"] },
+      tags: ["healing-from-trauma","slow-burn","enemies-to-lovers","high-heat"] },
     { id: "b-silver-elite", type: "book", title: "Silver Elite", creator: "Dani Francis",
       year: 2024,
       cover: "https://covers.openlibrary.org/b/id/14847507-L.jpg",
@@ -2347,7 +2361,7 @@
     // ---------------- Books (batch 3) ----------------
     { id: "b-acofas", type: "book", title: "A Court of Frost and Starlight", creator: "Sarah J. Maas",
       year: 2018,
-      cover: "https://static.serlogal.com/imagenes_small/9788408/978840825713.jpg",
+      cover: "https://covers.openlibrary.org/b/isbn/9781526617187-L.jpg",
       series: "A Court of Thorns and Roses", seriesIndex: 3.5,
       blurb: "A quiet winter interlude in the Night Court, where healing from a war takes longer than winning it did.",
       tags: ["fae","found-family","healing-from-trauma","fated-mates","high-heat"] },
@@ -2356,7 +2370,7 @@
       cover: "https://covers.openlibrary.org/b/id/14421764-L.jpg",
       series: "The Hurricane Wars", seriesIndex: 1,
       blurb: "A war orphan with a gift for magic she has to hide is paired against her will with the enemy commander she's sworn to destroy from within.",
-      tags: ["enemies-to-lovers","war-and-rebellion","hidden-identity","fated-mates","arranged-marriage"] },
+      tags: ["enemies-to-lovers","war-and-rebellion","hidden-identity","fated-mates","arranged-marriage","high-heat"] },
     { id: "b-priory-orange-tree", type: "book", title: "The Priory of the Orange Tree", creator: "Samantha Shannon",
       year: 2019,
       cover: "https://covers.openlibrary.org/b/id/8802446-L.jpg",
@@ -2959,7 +2973,7 @@
       cover: "https://covers.openlibrary.org/b/isbn/9780316341981-L.jpg",
       series: "Kingdom of the Wicked", seriesIndex: 3,
       blurb: "With Hell's throne finally within reach, Emilia must decide whether saving the ones she loves means becoming the very monster she swore to destroy.",
-      tags: ["revenge-plot","morally-grey","court-politics","power-imbalance","war-and-rebellion"] },
+      tags: ["revenge-plot","morally-grey","court-politics","power-imbalance","war-and-rebellion","high-heat"] },
     { id: "b-fearful", type: "book", title: "Fearful", creator: "Lauren Roberts",
       year: 2025,
       cover: "https://covers.openlibrary.org/b/isbn/9781068472701-L.jpg",
@@ -3010,7 +3024,7 @@
       tags: ["enemies-to-lovers","morally-grey","hidden-identity","power-imbalance","court-politics","high-heat"] },
     { id: "b-the-knave-and-the-moon", type: "book", title: "The Knave and the Moon", creator: "Rachel Gillig",
       year: 2026,
-      cover: "",
+      cover: "https://covers.openlibrary.org/b/isbn/9780316601849-L.jpg",
       series: "The Stonewater Kingdom", seriesIndex: 2,
       blurb: "With the Omens more restless than ever and a moth-marked curse still clinging to her, Sybil must strike a new, more dangerous bargain to save the only home she has left.",
       tags: ["fae","forced-proximity","slow-burn","hidden-identity","mythology"] },
@@ -3022,7 +3036,7 @@
       tags: ["arranged-marriage","court-politics","found-family","power-imbalance","healing-from-trauma"] },
     { id: "b-the-ippos-king", type: "book", title: "The Ippos King", creator: "Grace Draven",
       year: 2020,
-      cover: "",
+      cover: "https://covers.openlibrary.org/b/isbn/9781641972246-L.jpg",
       series: "Wraith Kings", seriesIndex: 3,
       blurb: "As a fractured empire teeters toward civil war, two reluctant allies bound by duty and old grudges must decide whether loyalty to a crown is worth the cost of everything else.",
       tags: ["enemies-to-lovers","war-and-rebellion","court-politics","power-imbalance"] },
@@ -3047,13 +3061,13 @@
       tags: ["enemies-to-lovers","mythology","betrayal","morally-grey"] },
     { id: "b-house-fangs-deceit", type: "book", title: "A House of Fangs & Deceit", creator: "Alex Frost",
       year: 2024,
-      cover: "",
+      cover: "https://covers.openlibrary.org/b/isbn/9798988189350-L.jpg",
       series: "Lunaria Realms", seriesIndex: 1,
       blurb: "An Heir raised for a political marriage returns home in disgrace, only to find the monsters at her door are outnumbered by the enemies already inside her own House.",
       tags: ["reverse-harem","arranged-marriage","court-politics","vampire","betrayal"] },
     { id: "b-court-bones-sorrow", type: "book", title: "A Court of Bones & Sorrow", creator: "Alex Frost",
       year: 2024,
-      cover: "",
+      cover: "https://covers.openlibrary.org/b/isbn/9781963368024-L.jpg",
       series: "Lunaria Realms", seriesIndex: 2,
       blurb: "Torn between the men she already loves and a prince she's meant to seduce for secrets, she has one rule: learn everything, feel nothing — and it isn't working.",
       tags: ["reverse-harem","court-politics","hidden-identity","betrayal"] },
@@ -3089,7 +3103,7 @@
       tags: ["war-and-rebellion","court-politics","fated-mates","morally-grey"] },
     { id: "b-given", type: "book", title: "Given", creator: "Elayna R. Gallea",
       year: 2025,
-      cover: "",
+      cover: "https://covers.openlibrary.org/b/isbn/9798347021734-L.jpg",
       series: "The Giving Chronicles", seriesIndex: 1,
       blurb: "Marked from birth to be sacrificed to the gods, a girl runs — straight into the path of the Hunter whose only purpose is to bring her back.",
       tags: ["enemies-to-lovers","slow-burn","forced-proximity","chosen-one"] },
@@ -3107,7 +3121,7 @@
       tags: ["found-family","morally-grey","ensemble","betrayal"] },
     { id: "b-adversary-villain", type: "book", title: "Adversary to the Villain", creator: "Hannah Nicole Maehrer",
       year: 2026,
-      cover: "",
+      cover: "https://covers.openlibrary.org/b/isbn/9781804999677-L.jpg",
       series: "Assistant to the Villain", seriesIndex: 4,
       blurb: "A new threat rises to challenge everything she's built with the villain she loves, and this time, mercy might not be an option.",
       tags: ["found-family","morally-grey","ensemble","war-and-rebellion"] },
@@ -3137,7 +3151,7 @@
       tags: ["enemies-to-lovers","forced-proximity","power-imbalance","morally-grey"] },
     { id: "b-fallen-kiss-dusk", type: "book", title: "The Fallen and the Kiss of Dusk", creator: "Carissa Broadbent",
       year: 2025,
-      cover: "",
+      cover: "https://covers.openlibrary.org/b/isbn/9781250367839-L.jpg",
       series: "Crowns of Nyaxia", seriesIndex: 4,
       blurb: "With her bargain nearly paid and the stone curse spreading, she has one chance to save him — if the cost doesn't undo everything she's fought for.",
       tags: ["enemies-to-lovers","power-imbalance","betrayal","morally-grey"] },
@@ -3149,13 +3163,13 @@
       tags: ["vampire","court-politics","enemies-to-lovers","power-imbalance"] },
     { id: "b-restless-truth", type: "book", title: "A Restless Truth", creator: "Freya Marske",
       year: 2022,
-      cover: "",
+      cover: "https://covers.openlibrary.org/b/isbn/9781250831897-L.jpg",
       series: "The Last Binding", seriesIndex: 2,
       blurb: "Trapped aboard an ocean liner with a killer, a magical conspiracy, and one infuriatingly composed spinster, a wallflower discovers she's far more dangerous than anyone assumed.",
       tags: ["queer-romance","slow-burn","found-family","betrayal","high-heat"] },
     { id: "b-power-unbound", type: "book", title: "A Power Unbound", creator: "Freya Marske",
       year: 2023,
-      cover: "",
+      cover: "https://covers.openlibrary.org/b/isbn/9781529081008-L.jpg",
       series: "The Last Binding", seriesIndex: 3,
       blurb: "As the last piece of a world-altering contract comes due, three tangled couples must choose between the magic that could save them and each other.",
       tags: ["queer-romance","ensemble","found-family","betrayal","high-heat"] },
@@ -3204,13 +3218,13 @@
       tags: ["enemies-to-lovers","court-politics","war-and-rebellion","betrayal","hidden-identity"] },
     { id: "b-storm-and-fury", type: "book", title: "Storm and Fury", creator: "Jennifer L. Armentrout",
       year: 2019,
-      cover: "",
+      cover: "https://covers.openlibrary.org/b/isbn/9781335218797-L.jpg",
       series: "Harbinger", seriesIndex: 1,
       blurb: "Blind, half-angel, and hidden away her whole life for her own protection, Trinity has never had to fight for anything — until the wards around her fall, a stranger with wings shows up, and hiding stops being an option.",
       tags: ["chosen-one","found-family","slow-burn","war-and-rebellion"] },
     { id: "b-rage-and-ruin", type: "book", title: "Rage and Ruin", creator: "Jennifer L. Armentrout",
       year: 2020,
-      cover: "",
+      cover: "https://covers.openlibrary.org/b/isbn/9781335012845-L.jpg",
       series: "Harbinger", seriesIndex: 2,
       blurb: "Something is hunting demons and Wardens alike through the capital, and Trinity's fragile truce with the world she was raised to fear is about to get a lot more complicated — and a lot more dangerous.",
       tags: ["chosen-one","war-and-rebellion","betrayal","slow-burn"] },
@@ -3294,7 +3308,7 @@
       tags: ["enemies-to-lovers","war-and-rebellion","betrayal","forced-proximity"] },
     { id: "b-atlas-paradox", type: "book", title: "The Atlas Paradox", creator: "Olivie Blake",
       year: 2022,
-      cover: "",
+      cover: "https://covers.openlibrary.org/b/isbn/9781250855091-L.jpg",
       series: "The Atlas Series", seriesIndex: 2,
       blurb: "The six who survived initiation thought the worst was behind them — but the Society never needed all six, and someone in the group is about to find out exactly how expendable they are.",
       tags: ["ensemble","morally-grey","betrayal","power-imbalance"] },
@@ -3325,31 +3339,31 @@
       tags: ["morally-grey","court-politics","war-and-rebellion","slow-burn","hidden-identity"] },
     { id: "b-glint", type: "book", title: "Glint", creator: "Raven Kennedy",
       year: 2021,
-      cover: "",
+      cover: "https://covers.openlibrary.org/b/isbn/9781737633815-L.jpg",
       series: "The Plated Prisoner", seriesIndex: 2,
       blurb: "Free of her gilded cage but not of the men who claim to want to protect her, Auren must decide which chains are actually worth keeping.",
       tags: ["power-imbalance","reverse-harem","court-politics","morally-grey","slow-burn","high-heat"] },
     { id: "b-gleam", type: "book", title: "Gleam", creator: "Raven Kennedy",
       year: 2021,
-      cover: "",
+      cover: "https://covers.openlibrary.org/b/isbn/9781405955218-L.jpg",
       series: "The Plated Prisoner", seriesIndex: 3,
       blurb: "As new enemies circle and old lies surface, Auren's fragile found family is tested by a court that would rather see her crowned or dead.",
       tags: ["found-family","power-imbalance","court-politics","reverse-harem","betrayal","high-heat"] },
     { id: "b-glow", type: "book", title: "Glow", creator: "Raven Kennedy",
       year: 2022,
-      cover: "",
+      cover: "https://covers.openlibrary.org/b/isbn/9781405955232-L.jpg",
       series: "The Plated Prisoner", seriesIndex: 4,
       blurb: "Buried secrets about Auren's touch and the kingdom's history come due, forcing her to choose between hiding and being seen.",
       tags: ["hidden-identity","power-imbalance","morally-grey","reverse-harem","slow-burn","high-heat"] },
     { id: "b-gold", type: "book", title: "Gold", creator: "Raven Kennedy",
       year: 2023,
-      cover: "",
+      cover: "https://covers.openlibrary.org/b/isbn/9781405955096-L.jpg",
       series: "The Plated Prisoner", seriesIndex: 5,
       blurb: "With war creeping closer and her power impossible to hide, Auren must decide what kind of queen — or weapon — she's willing to become.",
       tags: ["war-and-rebellion","power-imbalance","court-politics","reverse-harem","morally-grey","high-heat"] },
     { id: "b-goldfinch", type: "book", title: "Goldfinch", creator: "Raven Kennedy",
       year: 2024,
-      cover: "",
+      cover: "https://covers.openlibrary.org/b/isbn/9781405966542-L.jpg",
       series: "The Plated Prisoner", seriesIndex: 6,
       blurb: "In the series' final chapter, Auren and her men face the reckoning that's been building since the first cage door opened.",
       tags: ["reverse-harem","found-family","power-imbalance","war-and-rebellion","morally-grey","high-heat"] },
@@ -3523,11 +3537,11 @@
     { id: "a-why-raeliana", type: "anime", title: "Why Raeliana Ended Up at the Duke's Mansion", creator: "Studio: Typhoon Graphics", year: 2023,
       cover: "https://img1.daumcdn.net/thumb/R800x0/?fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdna%2F6Qmhw%2Fbtsd4Hl3Oym%2FAAAAAAAAAAAAAAAAAAAAAP2xAyePGQiQUVL-TYI-GQH5GCrjUeD8ijgYto_MhFzX%2Fimg.jpg",
       blurb: "A woman wakes inside a novel as a doomed side character and bargains with a duke for a fake engagement that could keep her alive.",
-      tags: ["hidden-identity","isekai","court-politics","fake-dating"] },
+      tags: ["hidden-identity","court-politics","slow-burn","isekai","fake-dating","arranged-marriage"] },
     { id: "a-kaguya-sama", type: "anime", title: "Kaguya-sama: Love Is War", creator: "Studio: A-1 Pictures", year: 2019,
       cover: "https://image.tmdb.org/t/p/original/td5dHTdzEDGmvyWEhlYMPHDTlBz.jpg",
       blurb: "Two brilliant student-council rivals are hopelessly in love but each is determined to make the other confess first.",
-      tags: ["academy","enemies-to-lovers","slow-burn","found-family"] },
+      tags: ["academy","slow-burn","tsundere","ensemble"] },
     { id: "a-horimiya-missing-pieces", type: "anime", title: "Horimiya: The Missing Pieces", creator: "Studio: CloverWorks", year: 2023,
       cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20ANIME%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EHorimiya%3A%20The%20Missing%20Pieces%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
       blurb: "More of the quiet school-life moments that fill in the gaps around Hori and Miyamura's relationship and their friends.",
@@ -3539,7 +3553,7 @@
     { id: "a-sasaki-miyano", type: "anime", title: "Sasaki and Miyano", creator: "Studio: Studio Deen", year: 2022,
       cover: "https://i0.wp.com/brainstomping.com/wp-content/uploads/2022/04/Sasaki-to-Miyano-scaled-poster-anime.jpg?resize=790%2C952&ssl=1",
       blurb: "A quiet high-school friendship gradually becomes something more as a manga-loving student realizes his feelings for an older classmate.",
-      tags: ["friends-to-lovers","academy","slow-burn","healing-from-trauma"] },
+      tags: ["friends-to-lovers","academy","slow-burn","queer-romance"] },
     { id: "a-stranger-by-the-shore", type: "anime", title: "The Stranger by the Shore", creator: "Studio: Studio Hibari", year: 2020,
       cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20ANIME%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EThe%20Stranger%20by%20the%20Shore%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
       blurb: "Two young men meet by the sea and reconnect years later when one returns with feelings he can no longer hide.",
@@ -3559,7 +3573,7 @@
     { id: "a-kimi-ni-todoke-season2", type: "anime", title: "Kimi ni Todoke 2nd Season", creator: "Studio: Production I.G", year: 2011,
       cover: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx9656-vckh2wNj3FwY.jpg",
       blurb: "Sawako and Kazehaya face misunderstandings and the fear of saying what they really feel as their friendship deepens.",
-      tags: ["friends-to-lovers","academy","slow-burn","healing-from-trauma"] },
+      tags: ["friends-to-lovers","academy","slow-burn"] },
     { id: "a-romantic-killer", type: "anime", title: "Romantic Killer", creator: "Studio: domerica", year: 2022,
       cover: "https://cdn.aniplaylist.com/thumbnails/f790460ef9a94e6da8b99db56a16dc13839c5723.jpeg",
       blurb: "A romance-averse gamer is forced into increasingly ridiculous situations designed to make her fall in love.",
@@ -3575,7 +3589,7 @@
     { id: "a-tamako-love-story", type: "anime", title: "Tamako Love Story", creator: "Studio: Kyoto Animation", year: 2014,
       cover: "https://cdn.myanimelist.net/images/anime/6/64459.jpg",
       blurb: "A longtime friendship begins to shift when Mochizou realizes he cannot keep his feelings for Tamako hidden forever.",
-      tags: ["friends-to-lovers","academy","slow-burn","healing-from-trauma"] },
+      tags: ["friends-to-lovers","academy","slow-burn"] },
     { id: "a-honey-and-clover", type: "anime", title: "Honey and Clover", creator: "Studio: J.C.Staff", year: 2005,
       cover: "https://cdn.myanimelist.net/images/anime/11/73923.jpg",
       blurb: "A group of art students navigate unrequited love, friendship, ambition, and the uncertainty of growing up.",
@@ -3587,43 +3601,43 @@
       blurb: "A former idol trainee and a cheerful classmate try to navigate high school while hiding the awkward truths that make them stand out.",
       tags: ["grumpy-sunshine","academy","slow-burn","friends-to-lovers"] },
     { id: "m-happily-ever-afterwards", type: "manhwa", format: "webtoon", title: "Happily Ever Afterwards", creator: "Siren", year: 2021,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EHappily%20Ever%20Afterwards%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "https://webtoon-phinf.pstatic.net/20210504_114/1620075256784U5QOV_PNG/0HappilyEverAfterwards_desktop_landingpage_FG.png",
       blurb: "A woman reincarnates into a novel determined to marry the overlooked second male lead, whether he likes the idea or not.",
       tags: ["isekai","grumpy-sunshine","slow-burn","forced-proximity"] },
     { id: "m-nice-to-meet-you", type: "manhwa", format: "webtoon", title: "Nice To Meet You", creator: "Wishroomness", year: 2019,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3ENice%20To%20Meet%20You%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "https://swebtoon-phinf.pstatic.net/20250204_64/1738646040947fJuO5_JPEG/2066.jpg?type=crop540_540",
       blurb: "A cheerful college student gets tangled in a friendship and romance with a pair of very different guys.",
       tags: ["grumpy-sunshine","love-triangle","friends-to-lovers","slow-burn"] },
     { id: "m-salty-studio", type: "manhwa", format: "webtoon", title: "Salty Studio", creator: "JOO", year: 2015,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3ESalty%20Studio%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "https://webtoon-phinf.pstatic.net/20250204_10/1738645830891ycQeg_JPEG/74.jpg",
       blurb: "An aspiring photographer and the people around him stumble through work, friendship, and romance in a warm slice-of-life story.",
       tags: ["friends-to-lovers","slow-burn","found-family"] },
     { id: "m-after-school-unripe-apples", type: "manhwa", format: "webtoon", title: "After School Lessons for Unripe Apples", creator: "Sukkarin", year: 2020,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EAfter%20School%20Lessons%20for%20Unripe%20Apples%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "https://webtoon-phinf.pstatic.net/20210714_238/16262098374928mJ3X_PNG/7AfterSchoolLessonsForUnripeApples_desktop_landingpage_fg.png",
       blurb: "A lively girl reconnects with an old classmate whose reserved personality makes every interaction unexpectedly funny and tender.",
       tags: ["grumpy-sunshine","academy","friends-to-lovers","slow-burn"] },
     { id: "m-kiss-bet", type: "manhwa", format: "webtoon", title: "The Kiss Bet", creator: "Ingrid Ochoa", year: 2018,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EThe%20Kiss%20Bet%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "https://m.media-amazon.com/images/I/81j4n7sVJ5L._SL1200_.jpg",
       blurb: "A high-school girl makes a silly bet about kissing and ends up navigating friendship, crushes, and an increasingly complicated love life.",
       tags: ["academy","love-triangle","friends-to-lovers","slow-burn"] },
     { id: "m-see-you-in-my-19th-life", type: "manhwa", format: "webtoon", title: "See You in My 19th Life", creator: "Lee Hye", year: 2020,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3ESee%20You%20in%20My%2019th%20Life%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "https://webtoon-phinf.pstatic.net/20201210_145/1607541810308cmLBD_PNG/7See%2BYou%2Bin%2BMy%2B19th%2BLife_desktop_landingpage_FG.png",
       blurb: "A woman who remembers every past life seeks out the boy she loved in her previous life, carrying memories he cannot share.",
       tags: ["regression","friends-to-lovers","slow-burn","healing-from-trauma"] },
     { id: "m-sirens-lament", type: "manhwa", format: "webtoon", title: "Siren's Lament", creator: "Instantmiso", year: 2016,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3ESiren%26%23x27%3Bs%20Lament%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "https://i.pinimg.com/736x/44/c7/be/44c7be0b773f7453f75855079a57affe.jpg",
       blurb: "A young woman is pulled into a world of sirens and forbidden love after a chance encounter changes the fate of everyone around her.",
       tags: ["mythology","love-triangle","slow-burn","healing-from-trauma"] },
     { id: "m-subzero", type: "manhwa", format: "webtoon", title: "SubZero", creator: "Junepurrr", year: 2018,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3ESubZero%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "https://womenwriteaboutcomics.com/wp-content/uploads/2024/07/SUBZERO-COMP-SOLICIT-WEB.jpg",
       blurb: "A dragon clan princess agrees to marry the heir of a rival clan in a desperate attempt to stop generations of war.",
       tags: ["arranged-marriage","enemies-to-lovers","dragons","court-politics","war-and-rebellion"] },
     { id: "m-freaking-romance", type: "manhwa", format: "webtoon", title: "Freaking Romance", creator: "Snailords", year: 2018,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EFreaking%20Romance%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "https://www.manga-news.com/public/images/vols/Freaking_Romance_-_Tome_01_-_Hugo_Publishing.jpg",
       blurb: "A young woman discovers that the handsome man in her mirror is actually living in a parallel dimension — and the connection becomes increasingly intimate.",
       tags: ["forced-proximity","slow-burn","found-family","healing-from-trauma"] },
     { id: "m-down-to-earth", type: "manhwa", format: "webtoon", title: "Down To Earth", creator: "Pookie Senpai", year: 2020,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EDown%20To%20Earth%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "https://i.pinimg.com/750x/ef/aa/06/efaa064df30492f7e898647520be1883.jpg",
       blurb: "A young man finds an alien girl crash-landed in his backyard and reluctantly becomes her guide to life on Earth.",
       tags: ["forced-proximity","grumpy-sunshine","slow-burn","found-family"] },
     { id: "m-unholy-blood", type: "manhwa", format: "webtoon", title: "Unholy Blood", creator: "LINA", year: 2020,
@@ -3631,7 +3645,7 @@
       blurb: "A powerful vampire hiding among humans is pulled back into a violent conflict when a relentless investigator begins hunting the monsters around her.",
       tags: ["vampire","hidden-identity","revenge-plot","found-family","slow-burn"] },
     { id: "m-wind-breaker", type: "manhwa", format: "webtoon", title: "Wind Breaker", creator: "Yongseok Jo", year: 2013,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EWind%20Breaker%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "https://i.ebayimg.com/images/g/B9IAAOSwWrNk0X~E/s-l1600.jpg",
       blurb: "A gifted student cyclist is drawn into an underground racing community where competition, friendship, and personal growth collide.",
       tags: ["found-family","academy","ensemble","slow-burn"] },
     { id: "m-omniscient-reader", type: "manhwa", format: "webtoon", title: "Omniscient Reader", creator: "singNsong / Sleepy-C", year: 2020,
@@ -3641,29 +3655,29 @@
     { id: "m-true-education", type: "manhwa", format: "webtoon", title: "True Education", creator: "Chae Yong-taek / Han Gar-ram", year: 2020,
       cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3ETrue%20Education%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
       blurb: "A special teacher is sent into schools where violence and corruption have spiraled beyond control to restore order by unconventional means.",
-      tags: ["academy","revenge-plot","war-and-rebellion","morally-grey"] },
+      tags: ["academy","revenge-plot","morally-grey"] },
     { id: "m-noblesse", type: "manhwa", format: "webtoon", title: "Noblesse", creator: "Son Je-ho / Lee Kwang-su", year: 2007,
       cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3ENoblesse%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
       blurb: "A powerful vampire awakens after centuries and tries to adapt to modern school life while protecting the friends he makes there.",
       tags: ["vampire","academy","found-family","hidden-identity","ensemble"] },
     { id: "m-bastard", type: "manhwa", format: "webtoon", title: "Bastard", creator: "Carnby Kim / Youngchan Hwang", year: 2014,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EBastard%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "https://miro.medium.com/v2/resize%3Afit%3A1400/0%2AR932HP8k97xGsdFS.jpg",
       blurb: "A teenager living with a serial killer father must decide whether to risk everything to protect the girl who becomes his friend.",
       tags: ["hidden-identity","healing-from-trauma","slow-burn","revenge-plot"] },
     { id: "m-sweet-home", type: "manhwa", format: "webtoon", title: "Sweet Home", creator: "Carnby Kim / Youngchan Hwang", year: 2017,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3ESweet%20Home%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "https://shop.delivered.co.kr/cdn/shop/files/XL_08d22b4f-8b8a-4603-907b-dc160a262c86.jpg?v=1753853468",
       blurb: "A withdrawn teenager and his apartment neighbors fight to survive when people across the world begin transforming into monsters.",
-      tags: ["found-family","healing-from-trauma","ensemble","war-and-rebellion"] },
+      tags: ["found-family","healing-from-trauma","ensemble"] },
     { id: "m-weak-hero", type: "manhwa", format: "webtoon", title: "Weak Hero", creator: "SEOPASS / RAZEN", year: 2018,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EWeak%20Hero%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "https://shikimori.io/uploads/poster/mangas/128231/main_2x-305cdd94a4d2aa2fe1748a7ccfb1cb9d.webp",
       blurb: "A small but frighteningly analytical student uses strategy and determination to survive a school ruled by violence.",
-      tags: ["academy","found-family","revenge-plot","war-and-rebellion"] },
+      tags: ["academy","found-family","revenge-plot"] },
     { id: "m-my-dear-cold-blooded-king", type: "manhwa", format: "webtoon", title: "My Dear Cold-Blooded King", creator: "Lifelover", year: 2017,
       cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EMy%20Dear%20Cold-Blooded%20King%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
       blurb: "A young woman is caught between assassins, rival factions, and a dangerously charismatic king whose true identity is anything but simple.",
       tags: ["hidden-identity","court-politics","morally-grey","slow-burn","love-triangle"] },
     { id: "m-like-wind-on-a-dry-branch", type: "manhwa", format: "webtoon", title: "Like Wind on a Dry Branch", creator: "Dalsaeowl / Haeon", year: 2021,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3ELike%20Wind%20on%20a%20Dry%20Branch%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "https://i.ebayimg.com/images/g/~owAAOSwFLBioXmn/s-l960.png",
       blurb: "A grieving woman accepts a place in the court of a feared prince while a plague and political conspiracies threaten the kingdom.",
       tags: ["court-politics","healing-from-trauma","slow-burn","morally-grey","grumpy-sunshine"] },
     { id: "m-siren-lament-2", type: "manhwa", format: "webtoon", title: "Edith", creator: "Swansgarden", year: 2020,
@@ -3687,7 +3701,7 @@
     { id: "m-tamako-market-counter", type: "manhwa", format: "manga", title: "Tamako Market", creator: "Mako Komao / Kyoto Animation", year: 2012,
       cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3ETamako%20Market%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
       blurb: "A cheerful shopkeeper’s daughter balances family, friendship, and a quietly growing connection with the boy next door.",
-      tags: ["friends-to-lovers","slow-burn","found-family"] },
+      tags: ["friends-to-lovers","slow-burn"] },
     { id: "a-wind-breaker-counter", type: "anime", title: "WIND BREAKER", creator: "Studio: CloverWorks", year: 2024,
       cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20ANIME%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EWIND%20BREAKER%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
       blurb: "A delinquent transfers to a school where strength is used to protect the town, finding rivals, allies, and an unexpected found family.",
@@ -3758,7 +3772,7 @@
     { id: "m-kimi-ni-todoke-counter", type: "manhwa", format: "manga", title: "Kimi ni Todoke", creator: "Karuho Shiina", year: 2005,
       cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EKimi%20ni%20Todoke%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
       blurb: "A shy girl who is misunderstood by her classmates slowly finds friendship and love with the most open-hearted boy in school.",
-      tags: ["slow-burn","healing-from-trauma","academy","friends-to-lovers"] },
+      tags: ["slow-burn","academy","friends-to-lovers"] },
     { id: "m-wotakoi-counter", type: "manhwa", format: "manga", title: "Wotakoi: Love Is Hard for Otaku", creator: "Fujita", year: 2014,
       cover: "https://images.justwatch.com/poster/59619890/s718/saison-1.jpg",
       blurb: "Two working adults who are already best friends start dating while finally getting to be unapologetically themselves.",
@@ -3847,18 +3861,18 @@
     if (title.type === "book") {
       return [
         { label: "Buy the book", href: amazonSearch(title.title + " " + title.creator), primary: true },
-        { label: "See on Goodreads", href: goodreadsSearch(title.title + " " + title.creator), primary: false }
+        { label: "Find on Goodreads", href: goodreadsSearch(title.title + " " + title.creator), primary: false }
       ];
     }
     if (title.type === "anime") {
       return [
-        { label: "Crunchyroll", href: title.crunchyrollUrl || crunchyrollSearch(title.title), primary: true },
-        { label: "Netflix", href: title.netflixUrl || netflixSearch(title.title), primary: false },
+        { label: "Find on Crunchyroll", href: title.crunchyrollUrl || crunchyrollSearch(title.title), primary: true },
+        { label: "Find on Netflix", href: title.netflixUrl || netflixSearch(title.title), primary: false },
         { label: "Find online", href: googleSearch("watch " + title.title + " online"), primary: false }
       ];
     }
     return [
-      { label: "Read on Webtoon", href: title.webtoonsUrl || webtoonSearch(title.title), primary: true },
+      { label: "Find on Webtoon", href: title.webtoonsUrl || webtoonSearch(title.title), primary: true },
       { label: "Buy the volumes", href: amazonSearch(title.title), primary: false },
       { label: "Find online", href: googleSearch("read " + title.title + " online"), primary: false }
     ];
@@ -3964,15 +3978,19 @@
     return bd ? bd.percent : null;
   }
 
-  // Books/anime/manga that share a `series` name are grouped into one
-  // recommendation instead of flooding the list with every entry from the
-  // same series — e.g. "Fourth Wing" and "Iron Flame" surface once, as
-  // "The Empyrean", with each matching book listed underneath so it's
-  // still clear which specific book earned which shared trope.
+  // Books in the same recommendation series are grouped together so one
+  // series does not flood the top-level list. Every scored book remains
+  // visible inside that series group, ordered by its own Kindred Score.
+  // Books belonging to the series currently being viewed are excluded.
   function topMatches(title, type, limit) {
     var perTitle = [];
     TITLES.forEach(function (other) {
       if (other.id === title.id || other.type !== type) return;
+      // Never recommend another volume from the same series as the title
+      // currently being viewed. Kindred recommendations are for discovering
+      // *new* stories, not routing a reader to the next volume they already
+      // know belongs to this saga.
+      if (type === "book" && hasRealSeries(title) && hasRealSeries(other) && title.series === other.series) return;
       var m = scoreMatch(title, other);
       if (m) perTitle.push({ title: other, shared: m.shared, score: m.score, percent: kindredScoreBetween(title, other, m.shared) });
     });
@@ -4001,12 +4019,11 @@
         var ai = a.title.seriesIndex || 0, bi = b.title.seriesIndex || 0;
         return ai - bi;
       });
-      // Book recommendations surface one representative per series. The
-      // series page still contains every book, so no content is lost — the
-      // recommendation list simply stops flooding the user with sequels.
-      if (title.type === "book" && isRealSeriesName(g.series) && g.books.length > 1) {
-        g.books = [g.books[0]];
-      }
+      // Keep every scored book from a matching series. Within the series,
+      // the strongest Kindred Score is always first. This lets readers see
+      // that (for example) Book 2 may match better than Book 1 without
+      // letting a single series occupy multiple top-level recommendation
+      // slots. The series group itself is ranked by its strongest book.
     });
     // Ranked by Kindred Score, not the raw trope-overlap score — this is
     // what lets match-quality votes (folded into percent, see
@@ -4073,20 +4090,8 @@
       results.push({ title: t, percent: ks.percent, shared: ks.shared, score: tropeSetScore(tagIds, t) });
     });
 
-    // For books, recommend a SERIES once rather than showing several books
-    // from the same saga. The strongest matching book represents the series,
-    // while the card itself opens the series page.
-    if (type === "book") {
-      var groups = {};
-      results.forEach(function (r) {
-        var key = hasRealSeries(r.title) ? "series:" + r.title.series : "solo:" + r.title.id;
-        if (!groups[key] || r.percent > groups[key].percent ||
-            (r.percent === groups[key].percent && r.score > groups[key].score)) {
-          groups[key] = r;
-        }
-      });
-      results = Object.keys(groups).map(function (k) { return groups[k]; });
-    }
+    // Start Here has no source title, so there is no same-series exclusion.
+    // Keep every scored book available; strongest matches naturally sort first.
 
     // Sorted by Kindred Score first — the whole point is that this order
     // re-shuffles live as votes move a title's percent past its neighbors.
@@ -4109,7 +4114,8 @@
     matchLimit: 5,
     showFavoritesOnly: false,
     bookBrowseMode: "individual", // individual | series — Books tab only, see renderBrowseModeToggle
-    startHere: { mode: "picking", picks: [] } // mode: picking | results | hidden — picks are trope ids
+    startHere: { mode: "picking", picks: [] }, // mode: picking | results | hidden — picks are trope ids
+    lastFocusedElement: null
   };
 
   // Every localStorage-backed value on this page (Start Here picks, votes,
@@ -4169,6 +4175,10 @@
   // Start Here picks only ever get written to storage once a full set of 3
   // is chosen — a half-finished edit in progress never overwrites a
   // previously saved set (see renderStartHerePicker below).
+  // Keep the v1 localStorage keys stable for now. If the product later
+  // moves into a framework/app shell, the new implementation can read these
+  // keys once and migrate them into a new namespace without losing favorites,
+  // votes, display name, Start Here picks, or fullscreen preference.
   var START_HERE_KEY = "tropeatlas_start_here_tropes_v1";
   var startHereStore = makeJSONStore(START_HERE_KEY, []);
   function getStartHerePicks() {
@@ -4882,7 +4892,7 @@
       el("span", {}, [text("Tell us what you love — we'll find what you'll love next.")]),
       el("button", {
         class: "btn btn-primary btn-small",
-        onclick: function () { state.startHere.mode = "picking"; state.startHere.picks = []; state.startHere.cameFromResults = false; renderStartHere(); }
+        onclick: function () { trackEvent("start_here_started", {}); state.startHere.mode = "picking"; state.startHere.picks = []; state.startHere.cameFromResults = false; renderStartHere(); }
       }, [text("Find My Kindred")])
     ]));
   }
@@ -4939,6 +4949,7 @@
         onclick: function () {
           state.startHere.picks = state.startHere.picks.slice(0, 3);
           setStartHerePicks(state.startHere.picks);
+          trackEvent("start_here_completed", { tropes: state.startHere.picks.slice() });
           state.startHere.mode = "results";
           state.startHere.cameFromResults = true;
           renderStartHere();
@@ -4958,6 +4969,7 @@
           if (isPicked) { state.startHere.picks.splice(picks.indexOf(tagId), 1); renderStartHerePicker(); return; }
           if (atLimit) return;
           state.startHere.picks.push(tagId);
+          trackEvent("start_here_trope_selected", { tag: tagId, position: state.startHere.picks.length });
           renderStartHerePicker();
         }
       }, [text(TAGS[tagId])]));
@@ -5326,6 +5338,7 @@
   function openDetail(id) {
     var openedTitle = TITLE_BY_ID[id];
     if (!openedTitle) return;
+    state.lastFocusedElement = document.activeElement;
     trackEvent("title_open", { title_id: id, title: openedTitle.title, type: openedTitle.type });
     state.openTitleId = id;
     state.openSeriesName = null;
@@ -5344,6 +5357,8 @@
     // scroll position you'd read down to on the PREVIOUS title, landing you
     // mid-way through the new one's matches instead of at its header.
     document.getElementById("detail").scrollTop = 0;
+    var firstFocus = document.querySelector("#detail .detail-close");
+    if (firstFocus) firstFocus.focus();
   }
   // Opens the same side panel, but with a series' full book list instead of
   // one title — reached by clicking a "By Series" card, or the "Book N of
@@ -5358,6 +5373,7 @@
       return;
     }
     trackEvent("series_open", { series_name: seriesName });
+    state.lastFocusedElement = document.activeElement;
     state.openSeriesName = seriesName;
     state.openTitleId = null;
     state.activeMainTab = "book";
@@ -5371,6 +5387,8 @@
     unwatchAllMatches();
     renderDetail();
     document.getElementById("detail").scrollTop = 0;
+    var firstFocus = document.querySelector("#detail .detail-close");
+    if (firstFocus) firstFocus.focus();
   }
   function closeDetail() {
     state.openTitleId = null;
@@ -5380,10 +5398,25 @@
     document.getElementById("detail").setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
     unwatchAllMatches();
+    var restore = state.lastFocusedElement;
+    state.lastFocusedElement = null;
+    if (restore && typeof restore.focus === "function") { try { restore.focus(); } catch (e) {} }
   }
   document.getElementById("scrim").addEventListener("click", closeDetail);
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" && state.openTitleId) closeDetail();
+    var detail = document.getElementById("detail");
+    var modalOpen = detail.classList.contains("open");
+    if (!modalOpen) return;
+    if (e.key === "Escape") { closeDetail(); return; }
+    if (e.key === "Tab") {
+      var focusables = Array.prototype.slice.call(detail.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])')).filter(function (el) {
+        return !el.hidden && el.offsetParent !== null;
+      });
+      if (!focusables.length) { e.preventDefault(); detail.focus(); return; }
+      var first = focusables[0], last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
   });
 
   // The Kindred Score badge, plus a small "ⓘ" next to it that reveals the
@@ -5589,7 +5622,7 @@
         title: "See every book in " + t.series,
         onclick: function (e) { e.stopPropagation(); openSeriesPage(t.series); }
       }, [text(seriesLabel(t)), el("span", { class: "series-badge-arrow", "aria-hidden": "true" }, [text("→")])]) : null,
-      el("h2", { class: "detail-title" }, [text(t.title)]),
+      el("h2", { class: "detail-title", id: "detailTitle" }, [text(t.title)]),
       el("div", { class: "detail-creator" }, [text(t.creator)]),
       t.year ? el("div", { class: "detail-year" }, [text(yearLabel(t))]) : null
     ]);
@@ -5858,9 +5891,15 @@
 
   /* ============================= INIT ============================= */
 
+  var lastTrackedSearch = "";
   document.getElementById("searchInput").addEventListener("input", function (e) {
     state.query = e.target.value;
     renderGrid();
+    var q = state.query.trim();
+    if (q.length >= 2 && q !== lastTrackedSearch) {
+      lastTrackedSearch = q;
+      trackEvent("search_performed", { query: q.slice(0, 100) });
+    }
   });
 
   var favToggleBtn = document.getElementById("favToggle");
@@ -5882,6 +5921,7 @@
     feedbackSubmitBtn.disabled = true;
     feedbackStatus.className = "feedback-status";
     feedbackStatus.textContent = "Sending…";
+    trackEvent("feedback_submitted", { has_contact: !!feedbackContact.value.trim() });
     submitFeedback(message, feedbackContact.value).then(function (res) {
       feedbackSubmitBtn.disabled = false;
       if (res.ok) {
