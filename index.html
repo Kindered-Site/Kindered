@@ -3936,7 +3936,14 @@
   // that could drift out of sync.
   function kindredScoreBreakdown(a, b, shared) {
     if (!shared || !shared.length) return null;
-    var matchFraction = Math.min(1, shared.length / a.tags.length);
+    // The title-to-title Kindred Score must be symmetric: opening A and
+    // opening B should show the same score for the same pairing. The old
+    // formula divided by A's tag count, which made a broad-tagged title
+    // look weak when viewed first and a narrow-tagged title look artificially
+    // strong when viewed first. Use Dice-style overlap instead: shared tags
+    // divided by the average tag count of the two titles.
+    var tagTotal = a.tags.length + b.tags.length;
+    var matchFraction = tagTotal ? Math.min(1, (2 * shared.length) / tagTotal) : 0;
     // Capped just under 100 so a match starts high when tag overlap is
     // high, but "100% Kindred" is only ever reached once votes push it
     // the rest of the way there.
@@ -3970,7 +3977,8 @@
       matchAdjust: matchAdjust,
       matchFraction: matchFraction,
       sharedCount: shared.length,
-      totalTags: a.tags.length,
+      totalTagsA: a.tags.length,
+      totalTagsB: b.tags.length,
       matchUp: mUp,
       matchDown: mDown
     };
@@ -5433,7 +5441,7 @@
     if (breakdown) {
       var bd = breakdown;
       var tooltip = el("span", { class: "score-tooltip", role: "tooltip" }, [
-        el("span", { class: "score-tooltip-row" }, [text(bd.sharedCount + " of " + bd.totalTags + " tropes shared → " + Math.round(bd.basePercent) + "% baseline")]),
+        el("span", { class: "score-tooltip-row" }, [text(bd.sharedCount + " shared (" + bd.totalTagsA + " + " + bd.totalTagsB + " tropes) → " + Math.round(bd.basePercent) + "% baseline")]),
         el("span", { class: "score-tooltip-row" }, [text((bd.tropeAdjust >= 0 ? "+" : "") + Math.round(bd.tropeAdjust) + " from trope-accuracy votes")]),
         el("span", { class: "score-tooltip-row" }, [text((bd.matchAdjust >= 0 ? "+" : "") + Math.round(bd.matchAdjust) + " from match votes (" + bd.matchUp + "▲ " + bd.matchDown + "▼)")]),
         el("span", { class: "score-tooltip-total" }, [text("= " + bd.percent + "% Kindred")])
@@ -5445,7 +5453,7 @@
       var info = el("span", {
         class: "score-info",
         tabindex: "0",
-        "aria-label": "How this score is calculated: " + bd.sharedCount + " of " + bd.totalTags + " tropes shared, " + (bd.tropeAdjust >= 0 ? "+" : "") + Math.round(bd.tropeAdjust) + " from trope votes, " + (bd.matchAdjust >= 0 ? "+" : "") + Math.round(bd.matchAdjust) + " from match votes.",
+        "aria-label": "How this score is calculated: " + bd.sharedCount + " shared across " + bd.totalTagsA + " and " + bd.totalTagsB + " tropes, " + (bd.tropeAdjust >= 0 ? "+" : "") + Math.round(bd.tropeAdjust) + " from trope votes, " + (bd.matchAdjust >= 0 ? "+" : "") + Math.round(bd.matchAdjust) + " from match votes.",
         onclick: function (e) { e.stopPropagation(); }
       }, [el("span", { class: "score-info-icon", "aria-hidden": "true" }, [text("i")]), tooltip]);
       wrap.appendChild(info);
