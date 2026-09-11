@@ -1057,31 +1057,73 @@
      primary matching signal, so give them more visual weight than the
      compact scores used elsewhere in the library. */
   .detail .match-card > .match-head .kindred-score-badge {
-    min-width: 88px;
-    padding: 9px 13px 8px;
-    border-radius: 14px;
+    min-width: 104px;
+    padding: 11px 15px 10px;
+    border-radius: 16px;
+    flex-shrink: 0;
   }
   .detail .match-card > .match-head .kindred-score-number {
-    font-size: 1.34rem;
+    font-size: 1.58rem;
+    line-height: 1.05;
+    font-weight: 700;
   }
   .detail .match-card > .match-head .kindred-score-word {
-    font-size: .54rem;
-    margin-top: 4px;
+    font-size: .62rem;
+    margin-top: 5px;
+    letter-spacing: .2em;
+  }
+  /* Same-media recommendations (especially Books → Books) get a little
+     more breathing room because this is the most important discovery list
+     when a reader opens a title. */
+  .detail .same-media-matches .match-card {
+    padding: 16px 18px;
+  }
+  .detail .same-media-matches .match-title {
+    font-size: 1.24rem;
+    line-height: 1.16;
+  }
+  .detail .same-media-matches .match-creator {
+    font-size: .84rem;
+    margin-top: 2px;
+  }
+  .detail .same-media-matches .match-reason {
+    font-size: .84rem;
+    line-height: 1.45;
+    margin-top: 9px;
+  }
+  .detail .same-media-matches .match-tags {
+    gap: 6px;
+    margin-top: 9px;
+  }
+  .detail .same-media-matches .tagpill {
+    font-size: .72rem;
+    padding: 4px 8px;
+  }
+  .detail .same-media-matches .vote-row {
+    margin-top: 12px;
   }
   .detail .series-book-name-line .kindred-score-badge {
-    min-width: 62px;
-    padding: 6px 9px 5px;
-    border-radius: 11px;
+    min-width: 72px;
+    padding: 7px 10px 6px;
+    border-radius: 12px;
   }
   .detail .series-book-name-line .kindred-score-number {
-    font-size: .94rem;
+    font-size: 1.08rem;
+    line-height: 1.05;
   }
   .detail .series-book-name-line .kindred-score-word {
-    font-size: .42rem;
+    font-size: .46rem;
     margin-top: 3px;
   }
 
   @media (max-width: 560px) {
+    .detail .match-card > .match-head .kindred-score-badge {
+      min-width: 88px;
+      padding: 9px 11px 8px;
+    }
+    .detail .match-card > .match-head .kindred-score-number { font-size: 1.38rem; }
+    .detail .same-media-matches .match-card { padding: 14px 15px; }
+    .detail .same-media-matches .match-title { font-size: 1.16rem; }
     header.site { padding: 11px 0 10px; }
     .brand-glyph, .brand-glyph img { width: 27px; height: 39px; }
     .wordmark { font-size: 1.42rem; letter-spacing: .13em; }
@@ -6026,7 +6068,7 @@
     }, [text("More " + TYPE_META[t.type].label)]));
     inner.appendChild(matchTabs);
 
-    var list = el("div", { class: "match-list" });
+    var list = el("div", { class: "match-list" + (state.openMatchType === t.type ? " same-media-matches" : "") });
     var allMatchGroups = topMatches(t, state.openMatchType, null);
     var matchGroups = allMatchGroups.slice(0, state.matchLimit);
     if (!matchGroups.length) {
