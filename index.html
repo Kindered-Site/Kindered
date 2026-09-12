@@ -323,22 +323,61 @@
      class only adds the stacked-column spacing the grid gets from its
      CSS-grid `gap` instead. */
   .start-here-mini-card { width: 100%; margin-bottom: 10px; }
+  /* Kindred Score badge — the single definition. (This used to be spread
+     across four separate re-declarations added in three different passes;
+     consolidated here so a future change only has one place to make it.) */
   .kindred-score-badge {
-    display: inline-flex; align-items: baseline; gap: 4px;
-    background: color-mix(in srgb, var(--accent) 18%, var(--card-bg));
-    color: var(--accent);
-    border-radius: 999px;
-    padding: 4px 11px;
-    font-size: 0.82rem;
-    font-weight: 800;
+    display: inline-flex;
     white-space: nowrap;
     flex-shrink: 0;
+    min-width: 0;
+    width: auto;
+    flex-direction: row;
+    justify-content: center;
+    align-items: baseline;
+    gap: 5px;
+    line-height: 1;
+    border-radius: 999px;
+    padding: 5px 9px 4px;
+    background: color-mix(in srgb, var(--paper) 78%, var(--gilt));
+    border: 1px solid color-mix(in srgb, var(--gilt) 52%, var(--line));
+    box-shadow: none;
+    color: var(--ink);
+    font-family: "Cormorant Garamond", ui-serif, Georgia, serif;
+    font-size: .98rem;
+    font-weight: 600;
+    letter-spacing: .025em;
+  }
+  .kindred-score-badge:focus-visible { outline: 2px solid var(--gilt); outline-offset: 3px; }
+  .kindred-score-number {
+    font-size: .98rem;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: .01em;
+    font-variant-numeric: tabular-nums;
+  }
+  .kindred-score-word {
+    margin-top: 0;
+    font: 600 .54rem/1 "Cormorant Garamond", ui-serif, Georgia, serif;
+    letter-spacing: .13em;
+    color: var(--gilt-deep);
+  }
+  /* The grouped-series row inside a match card packs an index label, the
+     title, and the score onto one line, so its badge runs a size smaller
+     than the standalone match card's. */
+  .series-book-name-line .kindred-score-badge { font-size: .64rem; min-width: 72px; padding: 7px 10px 6px; border-radius: 12px; }
+  .series-book-name-line .kindred-score-number { font-size: 1.08rem; line-height: 1.05; }
+  .series-book-name-line .kindred-score-word { font-size: .46rem; margin-top: 3px; }
+  @media (max-width: 560px) {
+    .kindred-score-badge { padding: 4px 8px 3px; }
+    .kindred-score-number { font-size: .9rem; }
+    .kindred-score-word { font-size: .5rem; }
   }
   .kindred-match-label { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-soft); width: 100%; margin-bottom: 1px; }
 
   /* The "ⓘ" next to a Kindred Score badge that reveals the actual math
      behind that number on hover or keyboard focus. */
-  .kindred-score-wrap { display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0; }
+  .kindred-score-wrap { display: inline-flex; align-items: center; gap: 5px; flex-shrink: 0; margin-left: auto; }
   .score-info { position: relative; display: inline-flex; cursor: help; outline: none; }
   .score-info-icon {
     width: 14px; height: 14px; flex-shrink: 0;
@@ -784,8 +823,6 @@
   .series-book { border-top: 1px dashed var(--line); padding-top: 12px; }
   .series-book:first-child { border-top: none; padding-top: 0; }
   .series-book-name-line { display: flex; align-items: center; gap: 8px; }
-  .series-book-name-line .kindred-score-wrap { margin-left: auto; flex-shrink: 0; }
-  .series-book-name-line .kindred-score-badge { font-size: 0.64rem; padding: 3px 7px; }
   .series-book-name-line .score-info-icon { width: 15px; height: 15px; font-size: 0.58rem; }
   .series-book-index {
     font-size: 0.68rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase;
@@ -874,36 +911,6 @@
   .kindred-toast.error { border-color: color-mix(in srgb, var(--bloom) 55%, var(--line)); }
   .kindred-toast.success { border-color: color-mix(in srgb, var(--gilt) 60%, var(--line)); }
 
-  /* ---------- Kindred visual identity ---------- */
-  /* Score is Kindred’s signature element: editorial rather than dashboard-like. */
-  .kindred-score-wrap { align-items: center; gap: 5px; }
-  .kindred-score-badge {
-    min-width: 72px; flex-direction: column; justify-content: center; align-items: center;
-    gap: 0; line-height: 1; border-radius: 12px; padding: 7px 10px 6px;
-    background: linear-gradient(180deg, color-mix(in srgb, var(--paper) 88%, var(--gilt)), var(--card-bg));
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--gilt) 18%, transparent);
-  }
-  .kindred-score-number { font-size: 1.08rem; font-weight: 700; letter-spacing: .01em; }
-  .kindred-score-word { margin-top: 3px; font: 600 .48rem/1 "Cormorant Garamond", ui-serif, Georgia, serif; letter-spacing: .18em; }
-  .series-book-name-line .kindred-score-badge { min-width: 48px; padding: 5px 7px 4px; }
-  .series-book-name-line .kindred-score-number { font-size: .78rem; }
-  .series-book-name-line .kindred-score-word { font-size: .4rem; }
-  .kindred-score-badge:focus-visible { outline: 2px solid var(--gilt); outline-offset: 3px; }
-  .kindred-score-number { font-variant-numeric: tabular-nums; }
-
-  /* Detail-page recommendations: give the Kindred Score a little more visual
-     weight than the compact library cards, without changing the score itself. */
-  .detail .match-card > .match-head .kindred-score-badge {
-    min-width: 84px; padding: 9px 12px 8px; border-radius: 14px;
-  }
-  .detail .match-card > .match-head .kindred-score-number { font-size: 1.28rem; }
-  .detail .match-card > .match-head .kindred-score-word { font-size: .54rem; margin-top: 4px; }
-  .detail .series-book-name-line .kindred-score-badge {
-    min-width: 68px; padding: 7px 9px 6px; border-radius: 11px;
-  }
-  .detail .series-book-name-line .kindred-score-number { font-size: .98rem; }
-  .detail .series-book-name-line .kindred-score-word { font-size: .44rem; margin-top: 3px; }
-
   @media (max-width: 560px) {
     header.site { padding: 10px 0 9px; }
     .brand-row { gap: 12px; }
@@ -912,8 +919,6 @@
     .wordmark { font-size: 1.35rem; letter-spacing: .14em; }
     .brand-actions { gap: 5px; }
     .brand-actions .btn { padding: 7px 9px; }
-    .kindred-score-badge { min-width: 66px; padding: 6px 8px 5px; }
-    .kindred-score-number { font-size: 1rem; }
   }
 
   /* Keep the new identity coherent: the old four-colour accents become warm
@@ -1027,14 +1032,6 @@
     font-family: "Cormorant Garamond", ui-serif, Georgia, serif;
   }
   .card-title { font-size: 1.28rem; }
-  .kindred-score-badge {
-    border: 1px solid color-mix(in srgb, var(--gilt) 58%, var(--line));
-    background: color-mix(in srgb, var(--paper) 86%, var(--gilt));
-    color: var(--gilt-deep);
-    font-family: "Cormorant Garamond", ui-serif, Georgia, serif;
-    font-size: .98rem; font-weight: 600; letter-spacing: .025em;
-    padding: 5px 12px;
-  }
   .kindred-match-label { color: var(--ink-soft); letter-spacing: .12em; }
   .fav-btn.active { color: var(--gilt-deep); }
   .share-btn:hover { color: var(--gilt-deep); }
@@ -1053,25 +1050,6 @@
     border-top-color: color-mix(in srgb, var(--gilt) 24%, var(--line));
   }
   footer.site { background: color-mix(in srgb, var(--paper) 96%, var(--ink)); }
-  /* Larger scores in the title-detail recommendation list: these are the
-     primary matching signal, so give them more visual weight than the
-     compact scores used elsewhere in the library. */
-  .detail .match-card > .match-head .kindred-score-badge {
-    min-width: 104px;
-    padding: 11px 15px 10px;
-    border-radius: 16px;
-    flex-shrink: 0;
-  }
-  .detail .match-card > .match-head .kindred-score-number {
-    font-size: 1.58rem;
-    line-height: 1.05;
-    font-weight: 700;
-  }
-  .detail .match-card > .match-head .kindred-score-word {
-    font-size: .62rem;
-    margin-top: 5px;
-    letter-spacing: .2em;
-  }
   /* Same-media recommendations (especially Books → Books) get a little
      more breathing room because this is the most important discovery list
      when a reader opens a title. */
@@ -1102,26 +1080,7 @@
   .detail .same-media-matches .vote-row {
     margin-top: 12px;
   }
-  .detail .series-book-name-line .kindred-score-badge {
-    min-width: 72px;
-    padding: 7px 10px 6px;
-    border-radius: 12px;
-  }
-  .detail .series-book-name-line .kindred-score-number {
-    font-size: 1.08rem;
-    line-height: 1.05;
-  }
-  .detail .series-book-name-line .kindred-score-word {
-    font-size: .46rem;
-    margin-top: 3px;
-  }
-
   @media (max-width: 560px) {
-    .detail .match-card > .match-head .kindred-score-badge {
-      min-width: 88px;
-      padding: 9px 11px 8px;
-    }
-    .detail .match-card > .match-head .kindred-score-number { font-size: 1.38rem; }
     .detail .same-media-matches .match-card { padding: 14px 15px; }
     .detail .same-media-matches .match-title { font-size: 1.16rem; }
     header.site { padding: 11px 0 10px; }
@@ -3812,11 +3771,11 @@
       tags: ["found-family","slow-burn","healing-from-trauma"] },
     // ---------------- Anime (expanded) ----------------
     { id: "a-nisekoi", type: "anime", title: "Nisekoi", creator: "Studio: Shaft", year: 2014,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20ANIME%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3ENisekoi%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "",
       blurb: "Two rival heirs are forced to pretend they are a couple to keep their families from starting a gang war — while neither knows where the act will lead.",
       tags: ["fake-dating","enemies-to-lovers","love-triangle","academy","slow-burn"] },
     { id: "a-more-than-married-couple", type: "anime", title: "More than a Married Couple, but Not Lovers", creator: "Studio: Mother", year: 2022,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20ANIME%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EMore%20than%20a%20Married%20Couple%2C%20but%20Not%20Lovers%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "",
       blurb: "A school marriage-practice program pairs two students who could hardly be more different, forcing them to live and act like a couple.",
       tags: ["forced-proximity","academy","slow-burn","love-triangle"] },
     { id: "a-yakuza-fiance", type: "anime", title: "Yakuza Fiancé: Raise wa Tanin ga Ii", creator: "Studio: Studio Deen", year: 2024,
@@ -3824,7 +3783,7 @@
       blurb: "A sheltered heiress is sent to live with the grandson of a rival yakuza family after an arranged engagement binds their futures together.",
       tags: ["arranged-marriage","forced-proximity","morally-grey","slow-burn"] },
     { id: "a-7th-time-loop", type: "anime", title: "7th Time Loop: The Villainess Enjoys a Carefree Life Married to Her Worst Enemy!", creator: "Studio: Kai", year: 2024,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20ANIME%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3E7th%20Time%20Loop%3A%20The%20Villainess%20Enjoys%20a%20Carefree%20Life%20Married%20to%20Her%20Worst%20Enemy%21%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "",
       blurb: "After dying and restarting her life six times, a former villainess accepts a marriage proposal from the prince who will one day destroy the world.",
       tags: ["arranged-marriage","enemies-to-lovers","regression","court-politics","slow-burn"] },
     { id: "a-why-raeliana", type: "anime", title: "Why Raeliana Ended Up at the Duke's Mansion", creator: "Studio: Typhoon Graphics", year: 2023,
@@ -3836,7 +3795,7 @@
       blurb: "Two brilliant student-council rivals are hopelessly in love but each is determined to make the other confess first.",
       tags: ["academy","slow-burn","tsundere","ensemble"] },
     { id: "a-horimiya-missing-pieces", type: "anime", title: "Horimiya: The Missing Pieces", creator: "Studio: CloverWorks", year: 2023,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20ANIME%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EHorimiya%3A%20The%20Missing%20Pieces%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "",
       blurb: "More of the quiet school-life moments that fill in the gaps around Hori and Miyamura's relationship and their friends.",
       tags: ["friends-to-lovers","academy","found-family","slow-burn"] },
     { id: "a-kakuriyo", type: "anime", title: "Kakuriyo: Bed & Breakfast for Spirits", creator: "Studio: Gonzo", year: 2025,
@@ -3848,7 +3807,7 @@
       blurb: "A quiet high-school friendship gradually becomes something more as a manga-loving student realizes his feelings for an older classmate.",
       tags: ["friends-to-lovers","academy","slow-burn","queer-romance"] },
     { id: "a-stranger-by-the-shore", type: "anime", title: "The Stranger by the Shore", creator: "Studio: Studio Hibari", year: 2020,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20ANIME%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EThe%20Stranger%20by%20the%20Shore%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "",
       blurb: "Two young men meet by the sea and reconnect years later when one returns with feelings he can no longer hide.",
       tags: ["queer-romance","slow-burn","healing-from-trauma","friends-to-lovers"] },
     { id: "a-doukyuusei", type: "anime", title: "Doukyuusei -Classmates-", creator: "Studio: A-1 Pictures", year: 2016,
@@ -3856,7 +3815,7 @@
       blurb: "A casual guitar lesson turns into a tender relationship between two male classmates who could hardly seem more different.",
       tags: ["queer-romance","academy","slow-burn","friends-to-lovers"] },
     { id: "a-recovery-of-an-mmo-junkie", type: "anime", title: "Recovery of an MMO Junkie", creator: "Studio: Signal.MD", year: 2017,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20ANIME%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3ERecovery%20of%20an%20MMO%20Junkie%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "",
       blurb: "A woman who retreats from work and real life finds an unexpected second chance at connection through an online game.",
       tags: ["slow-burn","hidden-identity","friends-to-lovers","healing-from-trauma"] },
     { id: "a-spice-wolf-merchant", type: "anime", title: "Spice and Wolf: MERCHANT MEETS THE WISE WOLF", creator: "Studio: Passione", year: 2024,
@@ -3872,11 +3831,11 @@
       blurb: "A romance-averse gamer is forced into increasingly ridiculous situations designed to make her fall in love.",
       tags: ["academy","ensemble","friends-to-lovers","slow-burn"] },
     { id: "a-kiss-sixth-sense", type: "anime", title: "Kiss Him, Not Me", creator: "Studio: Brain's Base", year: 2016,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20ANIME%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EKiss%20Him%2C%20Not%20Me%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "",
       blurb: "After a dramatic transformation, a devoted fan finds herself pursued by several classmates while she would rather watch them fall for each other.",
       tags: ["academy","ensemble","love-triangle","slow-burn"] },
     { id: "a-rascal-bunny-girl", type: "anime", title: "Rascal Does Not Dream of Bunny Girl Senpai", creator: "Studio: CloverWorks", year: 2018,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20ANIME%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3ERascal%20Does%20Not%20Dream%20of%20Bunny%20Girl%20Senpai%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "",
       blurb: "A cynical student becomes involved in supernatural mysteries surrounding people he cares about, including a girl only he seems able to see.",
       tags: ["slow-burn","healing-from-trauma","academy","found-family"] },
     { id: "a-tamako-love-story", type: "anime", title: "Tamako Love Story", creator: "Studio: Kyoto Animation", year: 2014,
@@ -3890,7 +3849,7 @@
 
     // ---------------- Manga / Manhwa / Webtoon (expanded) ----------------
     { id: "m-your-smile-is-a-trap", type: "manhwa", format: "webtoon", title: "Your Smile Is a Trap", creator: "AENG", year: 2020,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EYour%20Smile%20Is%20a%20Trap%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "",
       blurb: "A former idol trainee and a cheerful classmate try to navigate high school while hiding the awkward truths that make them stand out.",
       tags: ["grumpy-sunshine","academy","slow-burn","friends-to-lovers"] },
     { id: "m-happily-ever-afterwards", type: "manhwa", format: "webtoon", title: "Happily Ever Afterwards", creator: "Siren", year: 2021,
@@ -3934,7 +3893,7 @@
       blurb: "A young man finds an alien girl crash-landed in his backyard and reluctantly becomes her guide to life on Earth.",
       tags: ["forced-proximity","grumpy-sunshine","slow-burn","found-family"] },
     { id: "m-unholy-blood", type: "manhwa", format: "webtoon", title: "Unholy Blood", creator: "LINA", year: 2020,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EUnholy%20Blood%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "",
       blurb: "A powerful vampire hiding among humans is pulled back into a violent conflict when a relentless investigator begins hunting the monsters around her.",
       tags: ["vampire","hidden-identity","revenge-plot","found-family","slow-burn"] },
     { id: "m-wind-breaker", type: "manhwa", format: "webtoon", title: "Wind Breaker", creator: "Yongseok Jo", year: 2013,
@@ -3942,15 +3901,15 @@
       blurb: "A gifted student cyclist is drawn into an underground racing community where competition, friendship, and personal growth collide.",
       tags: ["found-family","academy","ensemble","slow-burn"] },
     { id: "m-omniscient-reader", type: "manhwa", format: "webtoon", title: "Omniscient Reader", creator: "singNsong / Sleepy-C", year: 2020,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EOmniscient%20Reader%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "",
       blurb: "The only person who finished a doomed web novel discovers its apocalypse has become reality and uses his knowledge to survive.",
       tags: ["found-family","ensemble","isekai","regression"] },
     { id: "m-true-education", type: "manhwa", format: "webtoon", title: "True Education", creator: "Chae Yong-taek / Han Gar-ram", year: 2020,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3ETrue%20Education%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "",
       blurb: "A special teacher is sent into schools where violence and corruption have spiraled beyond control to restore order by unconventional means.",
       tags: ["academy","revenge-plot","morally-grey"] },
     { id: "m-noblesse", type: "manhwa", format: "webtoon", title: "Noblesse", creator: "Son Je-ho / Lee Kwang-su", year: 2007,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3ENoblesse%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "",
       blurb: "A powerful vampire awakens after centuries and tries to adapt to modern school life while protecting the friends he makes there.",
       tags: ["vampire","academy","found-family","hidden-identity","ensemble"] },
     { id: "m-bastard", type: "manhwa", format: "webtoon", title: "Bastard", creator: "Carnby Kim / Youngchan Hwang", year: 2014,
@@ -3966,7 +3925,7 @@
       blurb: "A small but frighteningly analytical student uses strategy and determination to survive a school ruled by violence.",
       tags: ["academy","found-family","revenge-plot"] },
     { id: "m-my-dear-cold-blooded-king", type: "manhwa", format: "webtoon", title: "My Dear Cold-Blooded King", creator: "Lifelover", year: 2017,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EMy%20Dear%20Cold-Blooded%20King%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "",
       blurb: "A young woman is caught between assassins, rival factions, and a dangerously charismatic king whose true identity is anything but simple.",
       tags: ["hidden-identity","court-politics","morally-grey","slow-burn","love-triangle"] },
     { id: "m-like-wind-on-a-dry-branch", type: "manhwa", format: "webtoon", title: "Like Wind on a Dry Branch", creator: "Dalsaeowl / Haeon", year: 2021,
@@ -3974,127 +3933,127 @@
       blurb: "A grieving woman accepts a place in the court of a feared prince while a plague and political conspiracies threaten the kingdom.",
       tags: ["court-politics","healing-from-trauma","slow-burn","morally-grey","grumpy-sunshine"] },
     { id: "m-siren-lament-2", type: "manhwa", format: "webtoon", title: "Edith", creator: "Swansgarden", year: 2020,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EEdith%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "",
       blurb: "A young woman enters a complicated new life surrounded by romance, family expectations, and people whose feelings are not always what they seem.",
       tags: ["love-triangle","hidden-identity","slow-burn","found-family"] },
     { id: "m-something-about-us", type: "manhwa", format: "manhwa", title: "Something About Us", creator: "Lee Yunji", year: 2014,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3ESomething%20About%20Us%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "",
       blurb: "Two longtime university friends insist there is nothing romantic between them even as everyone around them sees the relationship changing.",
       tags: ["friends-to-lovers","academy","slow-burn","found-family"] },
     { id: "m-daytime-star", type: "manhwa", format: "webtoon", title: "Daytime Star", creator: "Chae Eun", year: 2021,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EDaytime%20Star%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+      cover: "",
       blurb: "A struggling actress lands a role opposite a famous actor and finds their professional chemistry turning into something much more personal.",
       tags: ["grumpy-sunshine","forced-proximity","slow-burn","friends-to-lovers"] },
-    { id: "m-see-you-in-my-19th-life-duplicate", type: "manhwa", format: "manhwa", title: "My Reason to Die", creator: "Yuriki", year: 2021,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EMy%20Reason%20to%20Die%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+    { id: "m-my-reason-to-die", type: "manhwa", format: "manhwa", title: "My Reason to Die", creator: "Yuriki", year: 2021,
+      cover: "",
       blurb: "A young woman recovering from loss becomes drawn into an intense relationship with a dangerous boy whose own wounds are close to the surface.",
       tags: ["healing-from-trauma","slow-burn","grumpy-sunshine","academy"] },
 
     // ---------------- Cross-format counterparts ----------------
-    { id: "m-tamako-market-counter", type: "manhwa", format: "manga", title: "Tamako Market", creator: "Mako Komao / Kyoto Animation", year: 2012,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3ETamako%20Market%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+    { id: "m-tamako-market", type: "manhwa", format: "manga", title: "Tamako Market", creator: "Mako Komao / Kyoto Animation", year: 2012,
+      cover: "",
       blurb: "A cheerful shopkeeper’s daughter balances family, friendship, and a quietly growing connection with the boy next door.",
       tags: ["friends-to-lovers","slow-burn"] },
-    { id: "a-wind-breaker-counter", type: "anime", title: "WIND BREAKER", creator: "Studio: CloverWorks", year: 2024,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20ANIME%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EWIND%20BREAKER%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+    { id: "a-wind-breaker", type: "anime", title: "WIND BREAKER", creator: "Studio: CloverWorks", year: 2024,
+      cover: "",
       blurb: "A delinquent transfers to a school where strength is used to protect the town, finding rivals, allies, and an unexpected found family.",
       tags: ["academy","found-family","enemies-to-lovers"] },
-    { id: "a-bastard-counter", type: "anime", title: "BASTARD!! -Heavy Metal, Dark Fantasy-", creator: "Studio: Liden Films", year: 2022,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%20viewBox%3D%220%200%20600%20900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20ANIME%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EBASTARD%21%21%20-Heavy%20Metal%2C%20Dark%20Fantasy-%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+    { id: "a-bastard", type: "anime", title: "BASTARD!! -Heavy Metal, Dark Fantasy-", creator: "Studio: Liden Films", year: 2022,
+      cover: "",
       blurb: "A legendary sorcerer is awakened to defend a dark fantasy kingdom filled with magic, war, and dangerous alliances.",
       tags: ["war-and-rebellion","morally-grey","found-family"] },
 
 
 
-    { id: "m-nisekoi-counter", type: "manhwa", format: "manga", title: "Nisekoi", creator: "Naoshi Komi", year: 2011,
+    { id: "m-nisekoi", type: "manhwa", format: "manga", title: "Nisekoi", creator: "Naoshi Komi", year: 2011,
       cover: "https://cdn.myanimelist.net/images/anime/11/55125.jpg",
       blurb: "A fake relationship between rival yakuza heirs becomes complicated by old promises and a growing real attachment.",
       tags: ["fake-dating","enemies-to-lovers","love-triangle","academy","slow-burn"] },
-    { id: "m-more-than-married-counter", type: "manhwa", format: "manga", title: "More than a Married Couple, but Not Lovers", creator: "Yūki Kanamaru", year: 2018,
+    { id: "m-more-than-married", type: "manhwa", format: "manga", title: "More than a Married Couple, but Not Lovers", creator: "Yūki Kanamaru", year: 2018,
       cover: "https://cdn.myanimelist.net/images/anime/1258/127168.jpg",
       blurb: "A school marriage-practice program forces two students to live as a couple while their feelings become harder to fake.",
       tags: ["forced-proximity","academy","slow-burn","love-triangle"] },
-    { id: "m-yakuza-fiance-counter", type: "manhwa", format: "manga", title: "Yakuza Fiancé: Raise wa Tanin ga Ii", creator: "Asuka Konishi", year: 2017,
+    { id: "m-yakuza-fiance", type: "manhwa", format: "manga", title: "Yakuza Fiancé: Raise wa Tanin ga Ii", creator: "Asuka Konishi", year: 2017,
       cover: "https://static.animecorner.me/2024/07/1720342405-4a60b15da73ebd6e1e164d2e9027fcf3.jpg",
       blurb: "A yakuza heiress is pushed into an engagement with a dangerous heir from a rival family, setting up a volatile slow-burn romance.",
       tags: ["arranged-marriage","forced-proximity","morally-grey","slow-burn"] },
-    { id: "m-7th-time-loop-counter", type: "manhwa", format: "manga", title: "7th Time Loop: The Villainess Enjoys a Carefree Life Married to Her Worst Enemy!", creator: "Touko Amekawa / Hinoki Kino", year: 2020,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3E7th%20Time%20Loop%3A%20The%20Villainess%20Enjoys%20a%20Carefree%20Life%20Married%20to%20Her%20Worst%20Enemy%21%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+    { id: "m-7th-time-loop", type: "manhwa", format: "manga", title: "7th Time Loop: The Villainess Enjoys a Carefree Life Married to Her Worst Enemy!", creator: "Touko Amekawa / Hinoki Kino", year: 2020,
+      cover: "",
       blurb: "On her seventh life, Rishe agrees to marry the prince who killed her in a previous one and uses everything she learned to change their fate.",
       tags: ["arranged-marriage","enemies-to-lovers","regression","court-politics","slow-burn"] },
-    { id: "m-horimiya-counter", type: "manhwa", format: "manga", title: "Horimiya", creator: "HERO / Daisuke Hagiwara", year: 2011,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EHorimiya%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+    { id: "m-horimiya", type: "manhwa", format: "manga", title: "Horimiya", creator: "HERO / Daisuke Hagiwara", year: 2011,
+      cover: "",
       blurb: "Two classmates discover the hidden sides of each other and build a relationship that feels more honest than either expected.",
       tags: ["slow-burn","academy","found-family","friends-to-lovers"] },
-    { id: "m-kakuriyo-counter", type: "manhwa", format: "manga", title: "Kakuriyo: Bed & Breakfast for Spirits", creator: "Midori Yuma / Waco Ioka", year: 2018,
+    { id: "m-kakuriyo", type: "manhwa", format: "manga", title: "Kakuriyo: Bed & Breakfast for Spirits", creator: "Midori Yuma / Waco Ioka", year: 2018,
       cover: "https://images.justwatch.com/poster/307057561/s718/kakuriyo-bed-und-breakfast-for-spirits.jpg",
       blurb: "A young woman is taken to a spirit realm and works at an inn while navigating a growing bond with its powerful owner.",
       tags: ["mythology","forced-proximity","slow-burn","found-family"] },
-    { id: "m-sasaki-miyano-counter", type: "manhwa", format: "manga", title: "Sasaki and Miyano", creator: "Shō Harusono", year: 2016,
+    { id: "m-sasaki-miyano", type: "manhwa", format: "manga", title: "Sasaki and Miyano", creator: "Shō Harusono", year: 2016,
       cover: "https://i0.wp.com/brainstomping.com/wp-content/uploads/2022/04/Sasaki-to-Miyano-scaled-poster-anime.jpg?resize=790%2C952&ssl=1",
       blurb: "A high-school friendship grows into a gentle romance as Miyano begins to recognize his feelings for Sasaki.",
       tags: ["queer-romance","slow-burn","academy","friends-to-lovers"] },
-    { id: "m-stranger-shore-counter", type: "manhwa", format: "manga", title: "The Stranger by the Shore", creator: "Kanna Kii", year: 2013,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EThe%20Stranger%20by%20the%20Shore%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+    { id: "m-stranger-shore", type: "manhwa", format: "manga", title: "The Stranger by the Shore", creator: "Kanna Kii", year: 2013,
+      cover: "",
       blurb: "A guarded young man and a writer meet by the sea and slowly become each other’s safe place.",
       tags: ["queer-romance","slow-burn","healing-from-trauma"] },
-    { id: "m-doukyuusei-counter", type: "manhwa", format: "manga", title: "Doukyuusei -Classmates-", creator: "Asumiko Nakamura", year: 2006,
+    { id: "m-doukyuusei", type: "manhwa", format: "manga", title: "Doukyuusei -Classmates-", creator: "Asumiko Nakamura", year: 2006,
       cover: "https://cdn.myanimelist.net/images/anime/3/78606.jpg",
       blurb: "Two boys who barely notice each other are drawn together through music and discover an unexpectedly tender romance.",
       tags: ["queer-romance","academy","slow-burn"] },
-    { id: "m-mmo-junkie-counter", type: "manhwa", format: "manga", title: "Recovery of an MMO Junkie", creator: "Rin Kokuyō", year: 2013,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3ERecovery%20of%20an%20MMO%20Junkie%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+    { id: "m-mmo-junkie", type: "manhwa", format: "manga", title: "Recovery of an MMO Junkie", creator: "Rin Kokuyō", year: 2013,
+      cover: "",
       blurb: "A burned-out woman retreats into an online game and finds friendship and romance both online and in real life.",
       tags: ["slow-burn","friends-to-lovers","found-family"] },
-    { id: "m-sugar-apple-counter", type: "manhwa", format: "manga", title: "Sugar Apple Fairy Tale", creator: "Miri Mikawa / Alto Yukimura", year: 2010,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3ESugar%20Apple%20Fairy%20Tale%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+    { id: "m-sugar-apple", type: "manhwa", format: "manga", title: "Sugar Apple Fairy Tale", creator: "Miri Mikawa / Alto Yukimura", year: 2010,
+      cover: "",
       blurb: "A young confectioner buys a fairy warrior as a bodyguard and slowly builds a partnership based on trust.",
       tags: ["fae","slow-burn","forced-proximity"] },
-    { id: "m-ancient-magus-counter", type: "manhwa", format: "manga", title: "The Ancient Magus’ Bride", creator: "Kore Yamazaki", year: 2013,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EThe%20Ancient%20Magus%E2%80%99%20Bride%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+    { id: "m-ancient-magus", type: "manhwa", format: "manga", title: "The Ancient Magus’ Bride", creator: "Kore Yamazaki", year: 2013,
+      cover: "",
       blurb: "A lonely girl is taken in by a nonhuman mage and discovers a strange new family and a complicated bond.",
       tags: ["mythology","healing-from-trauma","power-imbalance","slow-burn"] },
-    { id: "m-spice-wolf-remake-counter", type: "manhwa", format: "manga", title: "Spice and Wolf", creator: "Isuna Hasekura / Keito Koume", year: 2007,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3ESpice%20and%20Wolf%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+    { id: "m-spice-wolf-remake", type: "manhwa", format: "manga", title: "Spice and Wolf", creator: "Isuna Hasekura / Keito Koume", year: 2007,
+      cover: "",
       blurb: "A traveling merchant and a wolf deity journey together while trade, trust, and attraction slowly intertwine.",
       tags: ["slow-burn","forced-proximity"] },
-    { id: "m-my-little-monster-counter", type: "manhwa", format: "manga", title: "My Little Monster", creator: "Robico", year: 2008,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EMy%20Little%20Monster%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+    { id: "m-my-little-monster", type: "manhwa", format: "manga", title: "My Little Monster", creator: "Robico", year: 2008,
+      cover: "",
       blurb: "A studious girl and a volatile boy form an awkward friendship that quickly turns into something neither understands.",
       tags: ["slow-burn","academy","friends-to-lovers"] },
-    { id: "m-kimi-ni-todoke-counter", type: "manhwa", format: "manga", title: "Kimi ni Todoke", creator: "Karuho Shiina", year: 2005,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EKimi%20ni%20Todoke%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+    { id: "m-kimi-ni-todoke", type: "manhwa", format: "manga", title: "Kimi ni Todoke", creator: "Karuho Shiina", year: 2005,
+      cover: "",
       blurb: "A shy girl who is misunderstood by her classmates slowly finds friendship and love with the most open-hearted boy in school.",
       tags: ["slow-burn","academy","friends-to-lovers"] },
-    { id: "m-wotakoi-counter", type: "manhwa", format: "manga", title: "Wotakoi: Love Is Hard for Otaku", creator: "Fujita", year: 2014,
+    { id: "m-wotakoi", type: "manhwa", format: "manga", title: "Wotakoi: Love Is Hard for Otaku", creator: "Fujita", year: 2014,
       cover: "https://images.justwatch.com/poster/59619890/s718/saison-1.jpg",
       blurb: "Two working adults who are already best friends start dating while finally getting to be unapologetically themselves.",
       tags: ["found-family","slow-burn","friends-to-lovers"] },
-    { id: "m-ao-haru-ride-counter", type: "manhwa", format: "manga", title: "Ao Haru Ride", creator: "Io Sakisaka", year: 2011,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EAo%20Haru%20Ride%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+    { id: "m-ao-haru-ride", type: "manhwa", format: "manga", title: "Ao Haru Ride", creator: "Io Sakisaka", year: 2011,
+      cover: "",
       blurb: "Reunited with her first love, a girl finds that time has changed them both and must decide whether to start over.",
       tags: ["slow-burn","academy","healing-from-trauma","friends-to-lovers"] },
-    { id: "m-yamada-lv999-counter", type: "manhwa", format: "manga", title: "My Love Story with Yamada-kun at Lv999", creator: "Mashiro", year: 2018,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EMy%20Love%20Story%20with%20Yamada-kun%20at%20Lv999%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+    { id: "m-yamada-lv999", type: "manhwa", format: "manga", title: "My Love Story with Yamada-kun at Lv999", creator: "Mashiro", year: 2018,
+      cover: "",
       blurb: "After a breakup, a college student meets an aloof gamer and slowly finds herself falling for him both in and out of the game.",
       tags: ["slow-burn","friends-to-lovers"] },
-    { id: "m-snow-white-red-hair-counter", type: "manhwa", format: "manga", title: "Snow White with the Red Hair", creator: "Sorata Akizuki", year: 2006,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3ESnow%20White%20with%20the%20Red%20Hair%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+    { id: "m-snow-white-red-hair", type: "manhwa", format: "manga", title: "Snow White with the Red Hair", creator: "Sorata Akizuki", year: 2006,
+      cover: "",
       blurb: "A herbalist with striking red hair escapes an unwanted prince and finds a steady romance with a kind-hearted prince in a neighboring kingdom.",
       tags: ["court-politics","slow-burn","found-family"] },
-    { id: "m-romantic-killer-counter", type: "manhwa", format: "manga", title: "Romantic Killer", creator: "Wataru Momose", year: 2019,
+    { id: "m-romantic-killer", type: "manhwa", format: "manga", title: "Romantic Killer", creator: "Wataru Momose", year: 2019,
       cover: "https://cdn.aniplaylist.com/thumbnails/f790460ef9a94e6da8b99db56a16dc13839c5723.jpeg",
       blurb: "A gamer determined to stay single is forced into romantic scenarios by a matchmaking wizard and unexpectedly builds real connections.",
       tags: ["academy","love-triangle","slow-burn","found-family"] },
-    { id: "m-kiss-him-not-me-counter", type: "manhwa", format: "manga", title: "Kiss Him, Not Me", creator: "Junko", year: 2013,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3EKiss%20Him%2C%20Not%20Me%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+    { id: "m-kiss-him-not-me", type: "manhwa", format: "manga", title: "Kiss Him, Not Me", creator: "Junko", year: 2013,
+      cover: "",
       blurb: "After a dramatic transformation, a devoted fan suddenly becomes the center of attention for four boys while wishing they would leave her alone.",
       tags: ["love-triangle","academy","found-family"] },
-    { id: "m-rascal-bunny-counter", type: "manhwa", format: "manga", title: "Rascal Does Not Dream of Bunny Girl Senpai", creator: "Hajime Kamoshida / Tsugumi Nanamiya", year: 2014,
-      cover: "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22900%22%3E%3Crect%20width%3D%22600%22%20height%3D%22900%22%20fill%3D%22%23f4efe7%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2234%22%20width%3D%22532%22%20height%3D%22832%22%20rx%3D%2218%22%20fill%3D%22none%22%20stroke%3D%22%231d1d1d%22%20stroke-width%3D%223%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22105%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2222%22%20letter-spacing%3D%224%22%20fill%3D%22%23555%22%3EKINDRED%20%E2%80%A2%20MANGA%20%2F%20WEBTOON%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22360%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2242%22%20fill%3D%22%23171717%22%3ERascal%20Does%20Not%20Dream%20of%20Bunny%20Girl%20Senpai%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22395%22%20x2%3D%22540%22%20y2%3D%22395%22%20stroke%3D%22%23777%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22820%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23777%22%3EStory%20discovery%20%E2%80%A2%20trope%20matched%3C%2Ftext%3E%3C%2Fsvg%3E",
+    { id: "m-rascal-bunny", type: "manhwa", format: "manga", title: "Rascal Does Not Dream of Bunny Girl Senpai", creator: "Hajime Kamoshida / Tsugumi Nanamiya", year: 2014,
+      cover: "",
       blurb: "A high-school boy helps a girl everyone has stopped noticing as strange phenomena turn their romance into something deeply personal.",
       tags: ["academy","slow-burn","healing-from-trauma"] },
-    { id: "m-honey-clover-counter", type: "manhwa", format: "manga", title: "Honey and Clover", creator: "Chica Umino", year: 2000,
+    { id: "m-honey-clover", type: "manhwa", format: "manga", title: "Honey and Clover", creator: "Chica Umino", year: 2000,
       cover: "https://cdn.myanimelist.net/images/anime/11/73923.jpg",
       blurb: "A group of art-school friends navigate unrequited love, friendship, and growing into adulthood together.",
       tags: ["love-triangle","academy","found-family","slow-burn"] },
@@ -4126,9 +4085,15 @@
     return url;
   }
   function goodreadsSearch(q) { return "https://www.goodreads.com/search?q=" + encodeURIComponent(q); }
-  function crunchyrollSearch(q) { return "https://www.crunchyroll.com/search?q=" + encodeURIComponent(q); }
-  function netflixSearch(q) { return "https://www.netflix.com/search?q=" + encodeURIComponent(q); }
-  function webtoonSearch(q) { return "https://www.webtoons.com/en/search?keyword=" + encodeURIComponent(q); }
+  // Platform search pages can redirect to a generic homepage or change their
+  // query-string format. Use Google site-search for discovery links so the
+  // user's exact title is preserved and the link reliably opens a results page.
+  function platformSearch(domain, q) {
+    return "https://www.google.com/search?q=" + encodeURIComponent('site:' + domain + ' "' + q + '"');
+  }
+  function crunchyrollSearch(q) { return platformSearch("crunchyroll.com", q); }
+  function netflixSearch(q) { return platformSearch("netflix.com", q); }
+  function webtoonSearch(q) { return platformSearch("webtoons.com", q); }
   function googleSearch(q) { return "https://www.google.com/search?q=" + encodeURIComponent(q); }
 
   // Anime and manga/manhwa/webtoon titles were individually checked against
@@ -4159,13 +4124,13 @@
     }
     if (title.type === "anime") {
       return [
-        { label: "Find on Crunchyroll", href: title.crunchyrollUrl || crunchyrollSearch(title.title), primary: true },
-        { label: "Find on Netflix", href: title.netflixUrl || netflixSearch(title.title), primary: false },
+        { label: "Search Crunchyroll", href: crunchyrollSearch(title.title), primary: true },
+        { label: "Search Netflix", href: netflixSearch(title.title), primary: false },
         { label: "Find online", href: googleSearch("watch " + title.title + " online"), primary: false }
       ];
     }
     return [
-      { label: "Find on Webtoon", href: title.webtoonsUrl || webtoonSearch(title.title), primary: true },
+      { label: "Search Webtoon", href: webtoonSearch(title.title), primary: true },
       { label: "Buy the volumes", href: amazonSearch(title.title), primary: false },
       { label: "Find online", href: googleSearch("read " + title.title + " online"), primary: false }
     ];
@@ -4173,52 +4138,68 @@
 
   /* ============================= MATCHING ============================= */
 
+  // Tag rarity (IDF) is computed separately WITHIN each media type, not
+  // pooled across all 490 titles. A book is never matched against an anime
+  // (matches only ever rank candidates of one destination type at a time),
+  // so a tag's "distinctiveness" should reflect how common it is inside the
+  // pool it's actually being ranked within — a tag that's rare across the
+  // whole catalogue but ordinary within, say, the 113-title anime pool
+  // shouldn't get credit for rarity it doesn't have where it's used.
   var TAG_IDF = (function () {
-    var counts = {};
-    Object.keys(TAGS).forEach(function (k) { counts[k] = 0; });
-    TITLES.forEach(function (t) { t.tags.forEach(function (tag) { counts[tag] = (counts[tag] || 0) + 1; }); });
-    var idf = {};
-    var N = TITLES.length;
-    Object.keys(counts).forEach(function (tag) {
-      idf[tag] = Math.log((N + 1) / (counts[tag] + 1)) + 1;
+    var titlesByType = {};
+    TITLES.forEach(function (t) { (titlesByType[t.type] = titlesByType[t.type] || []).push(t); });
+    var idfByType = {};
+    Object.keys(titlesByType).forEach(function (type) {
+      var titles = titlesByType[type];
+      var counts = {};
+      Object.keys(TAGS).forEach(function (k) { counts[k] = 0; });
+      titles.forEach(function (t) { t.tags.forEach(function (tag) { counts[tag] = (counts[tag] || 0) + 1; }); });
+      var idf = {};
+      var N = titles.length;
+      Object.keys(counts).forEach(function (tag) {
+        idf[tag] = Math.log((N + 1) / (counts[tag] + 1)) + 1;
+      });
+      idfByType[type] = idf;
     });
-    return idf;
+    return idfByType;
   })();
 
-  function scoreMatch(a, b) {
-    var shared = a.tags.filter(function (t) { return b.tags.indexOf(t) !== -1; });
-    if (!shared.length) return null;
-    // Base weight is how distinctive the tag is (rare tags matter more than
-    // common ones); a tag the community has confirmed as strong for either
-    // title gets an extra boost, so well-voted tropes drive more matches.
-    var score = shared.reduce(function (sum, t) {
-      var boost = 1 + 0.12 * Math.max(0, netTagScore(a.id, t)) + 0.12 * Math.max(0, netTagScore(b.id, t));
-      return sum + TAG_IDF[t] * boost;
-    }, 0);
-    return { shared: shared, score: score };
+  function tagIdf(type, tag) {
+    var byType = TAG_IDF[type];
+    return (byType && byType[tag]) || 1;
   }
 
   // The "Kindred Score" shown on a title's own "You might also like"
-  // matches — how much of what YOU'RE currently looking at (title `a`)
-  // carries over into the candidate `b`. Two community signals feed it:
-  //   1. how confidently readers have confirmed the specific shared tropes
-  //      on either title (a Laplace-smoothed rate, not just a net tally —
-  //      one lone upvote shouldn't read as confidently as a dozen votes
-  //      that happen to net the same) — this is the estimate before anyone
-  //      has weighed in on the PAIRING itself, and it's what a brand new
-  //      match starts from.
+  // matches — a SYMMETRIC measure of how much of these two titles' combined
+  // trope weight is actually shared between them. It answers "how much of
+  // A and B's trope DNA overlaps", not "how much of A specifically shows up
+  // in B" — a one-directional containment measure would put a different
+  // number on A's page than on B's for the same pairing, and the badge is
+  // meant to be the same fact seen from either side. Two community signals
+  // feed it:
+  //   1. how confidently readers have confirmed EVERY tag on EITHER title
+  //      (a Laplace-smoothed rate, not just a net tally — one lone upvote
+  //      shouldn't read as confidently as a dozen votes that happen to net
+  //      the same). This reshapes each tag's own weight before the
+  //      shared-vs-total ratio is ever computed, so it's baked directly
+  //      into the baseline rather than layered on afterward.
   //   2. the direct "yes, these two are actually alike" votes cast on this
   //      specific pairing (the same ▲/▼ shown under the match below) — a
-  //      more direct signal than trope math, so it carries more weight.
+  //      more direct signal than trope-level confidence, so it's applied as
+  //      its own bounded nudge on top of the baseline instead of being
+  //      folded into individual tag weights.
   //
-  // Both signals are BOUNDED NUDGES on top of the shared-trope baseline,
-  // not a full blend that can replace it. A full blend let heavy downvotes
-  // drag a title sharing 3 tropes below one sharing only 1 unvoted trope —
-  // votes are opinions about a match already grounded in real shared
-  // tropes, not a verdict that can erase that overlap outright. So the
-  // baseline always reflects how much of A's trope profile B actually
-  // covers, and votes can only move the number up or down within a capped
-  // range around it.
+  // Signal 2 is a BOUNDED NUDGE on top of the shared-trope baseline, not a
+  // full blend that can replace it. A full blend let heavy downvotes drag a
+  // title sharing 3 tropes below one sharing only 1 unvoted trope — votes
+  // are opinions about a match already grounded in real shared tropes, not
+  // a verdict that can erase that overlap outright. (An earlier version of
+  // this formula also added a SEPARATE nudge from the average confidence of
+  // just the shared tags — that double-counted the same vote data signal 1
+  // already bakes into the baseline, so a confirmed trope was quietly
+  // moving the score twice. Removed; signal 1 alone now carries that
+  // effect, and it does so for every tag on a title, not only the ones
+  // that happen to be shared with this particular candidate.)
   // Same formula as kindredScoreBetween, but returns every term that went
   // into it instead of just the final number — this is what powers the
   // "how is this calculated" hover tooltip on each score badge, so the
@@ -4227,51 +4208,70 @@
   function kindredScoreBreakdown(a, b, shared) {
     if (!shared || !shared.length) return null;
 
-    // Kindred Score is a symmetric, weighted-overlap score. The baseline
-    // answers "how much of the two stories' trope DNA is actually shared?"
-    // rather than "how many of A's tags appear in B?". Rare/distinctive
-    // tropes carry more information than very common ones (TAG_IDF), while
-    // reader votes change the confidence of the SPECIFIC shared trope.
+    // Kindred Score is a symmetric, weighted-overlap (Dice) score. The
+    // baseline answers "how much of the two stories' trope DNA is actually
+    // shared?" rather than "how many of A's tags appear in B?". Rare,
+    // distinctive tropes carry more information than very common ones
+    // (TAG_IDF — computed separately per media type, since a book is never
+    // matched against an anime and shouldn't be weighted against a rarity
+    // scale it doesn't actually compete on). Reader votes then adjust the
+    // confidence of every individual tag, whether or not it happens to be
+    // one of the tags shared with this specific candidate.
     //
-    // A heavily-upvoted shared trope therefore helps the match more than an
-    // unvoted shared trope. A heavily-downvoted shared trope does the reverse.
-    // Importantly, popularity alone does not make a trope more important:
-    // the IDF weight still controls how distinctive the trope is across the
-    // catalogue, while votes control confidence that the tag is correct for
-    // these particular titles.
+    // A heavily-upvoted tag therefore counts for more than an unvoted one —
+    // including a title's own unshared tags, so a title carrying several
+    // tags the community has flagged as inaccurate doesn't get a bigger
+    // "total trope weight" just because this particular candidate doesn't
+    // happen to share those specific tags. A heavily-downvoted tag does the
+    // reverse. Popularity alone still doesn't make a trope more important:
+    // the IDF weight controls how distinctive it is within its catalogue,
+    // while votes only control confidence that the tag is correct for the
+    // title it's on.
     //
     // The confidence multiplier is deliberately modest (0.88–1.24). This
     // prevents a highly-voted common trope from overwhelming several other
     // genuine differences, while still making strong reader confirmation
     // visible in the score.
+    var idfType = b.type || a.type;
+    function confidenceWeightFor(titleId, tag) {
+      var c = tagVoteCounts(titleId, tag);
+      var up = c.up || 0, down = c.down || 0;
+      var rate = (up + 1) / (up + down + 2); // 0.5 = neutral/no votes
+      var confidence = (rate - 0.5) * 2; // -1 .. +1
+      return 1 + (confidence * 0.24); // 0.88 .. 1.24
+    }
     var sharedWeights = shared.map(function (tag) {
       var ca = tagVoteCounts(a.id, tag), cb = tagVoteCounts(b.id, tag);
       var up = (ca.up || 0) + (cb.up || 0);
       var down = (ca.down || 0) + (cb.down || 0);
-      var rate = (up + 1) / (up + down + 2); // 0.5 = neutral/no votes
-      var confidence = (rate - 0.5) * 2; // -1 .. +1
-      var confidenceWeight = 1 + (confidence * 0.24); // 0.88 .. 1.24
+      var rate = (up + 1) / (up + down + 2);
+      var confidence = (rate - 0.5) * 2;
+      var confidenceWeight = 1 + (confidence * 0.24);
       return {
         tag: tag,
         up: up,
         down: down,
         confidence: confidence,
         confidenceWeight: confidenceWeight,
-        weight: (TAG_IDF[tag] || 1) * confidenceWeight
+        weight: tagIdf(idfType, tag) * confidenceWeight
       };
     });
 
     // Weighted Dice keeps the score symmetric and avoids the harshness of
-    // plain Jaccard for a broad title paired with a narrow one. Non-shared
-    // tags retain their ordinary IDF weight; shared tags use their
-    // reader-confidence-adjusted weight. Identical trope profiles can reach
-    // 100% before votes because they are a perfect structural match.
+    // plain Jaccard for a broad title paired with a narrow one. Shared tags
+    // use the pairing's combined-vote confidence weight computed above;
+    // every OTHER tag on either title is weighted by that title's own
+    // per-tag vote confidence, so an unconfirmed or crowd-rejected tag
+    // that's unique to one title no longer inflates its total weight at
+    // plain, un-adjusted IDF. Identical, fully-confirmed trope profiles can
+    // reach 100%.
     var sharedWeight = sharedWeights.reduce(function (sum, item) { return sum + item.weight; }, 0);
     var sharedWeightByTag = {};
     sharedWeights.forEach(function (item) { sharedWeightByTag[item.tag] = item.weight; });
     var weightForTitle = function (title) {
       return title.tags.reduce(function (sum, tag) {
-        return sum + (sharedWeightByTag[tag] || TAG_IDF[tag] || 1);
+        if (sharedWeightByTag[tag] !== undefined) return sum + sharedWeightByTag[tag];
+        return sum + tagIdf(idfType, tag) * confidenceWeightFor(title.id, tag);
       }, 0);
     };
     var totalWeightA = weightForTitle(a);
@@ -4281,28 +4281,17 @@
       : 0;
     var basePercent = 100 * matchFraction;
 
-    // A small overall trope-confirmation nudge remains so a pairing with
-    // broadly positive community confirmation is visibly rewarded even when
-    // several shared tags have mixed vote histories. This is intentionally
-    // close to the direct-match influence rather than dwarfed by it.
-    var tropeNudge = sharedWeights.reduce(function (sum, item) {
-      return sum + item.confidence;
-    }, 0) / sharedWeights.length;
-    var tropeAdjust = tropeNudge * 8;
-
     // Direct match-quality votes are the clearest community signal about the
-    // recommendation itself, so they have a somewhat larger — but not huge —
-    // influence than aggregate trope confirmation. Saturates around a net
-    // +/-8 votes so raw popularity cannot overwhelm the actual trope match.
+    // recommendation itself. Saturates around a net +/-8 votes so raw
+    // popularity cannot overwhelm the actual trope match.
     var mv = matchVoteCounts(matchId(a.id, b.id));
     var mUp = mv.upvotes || 0, mDown = mv.downvotes || 0;
     var matchAdjust = 12 * Math.max(-1, Math.min(1, (mUp - mDown) / 8));
 
-    var percent = Math.max(1, Math.min(100, Math.round(basePercent + tropeAdjust + matchAdjust)));
+    var percent = Math.max(1, Math.min(100, Math.round(basePercent + matchAdjust)));
     return {
       percent: percent,
       basePercent: basePercent,
-      tropeAdjust: tropeAdjust,
       matchAdjust: matchAdjust,
       matchFraction: matchFraction,
       sharedCount: shared.length,
@@ -4319,6 +4308,10 @@
     return bd ? bd.percent : null;
   }
 
+  function sharedTags(a, b) {
+    return a.tags.filter(function (t) { return b.tags.indexOf(t) !== -1; });
+  }
+
   // Books in the same recommendation series are grouped together so one
   // series does not flood the top-level list. Every scored book remains
   // visible inside that series group, ordered by its own Kindred Score.
@@ -4332,8 +4325,18 @@
       // *new* stories, not routing a reader to the next volume they already
       // know belongs to this saga.
       if (type === "book" && hasRealSeries(title) && hasRealSeries(other) && title.series === other.series) return;
-      var m = scoreMatch(title, other);
-      if (m) perTitle.push({ title: other, shared: m.shared, score: m.score, percent: kindredScoreBetween(title, other, m.shared) });
+      var shared = sharedTags(title, other);
+      if (!shared.length) return;
+      var bd = kindredScoreBreakdown(title, other, shared);
+      if (!bd) return;
+      // `score` here is the unrounded, pre-vote-adjustment baseline percent —
+      // used only to break ties when two candidates land on the exact same
+      // displayed (rounded) percent. This used to be a second, differently-
+      // weighted similarity formula (scoreMatch) computed from scratch; now
+      // it's just a more precise reading of the same math that produced the
+      // displayed score, so a tie-break can never disagree with the number
+      // shown on the two tied matches.
+      perTitle.push({ title: other, shared: shared, score: bd.basePercent, percent: bd.percent });
     });
 
     var groups = {};
@@ -4392,7 +4395,7 @@
     if (!shared.length) return null;
     var score = shared.reduce(function (sum, t) {
       var boost = 1 + 0.12 * Math.max(0, netTagScore(candidate.id, t));
-      return sum + TAG_IDF[t] * boost;
+      return sum + tagIdf(candidate.type, t) * boost;
     }, 0);
     score *= (1 + 0.15 * (shared.length - 1));
     return score;
@@ -5803,8 +5806,7 @@
     if (breakdown) {
       var bd = breakdown;
       var tooltip = el("span", { class: "score-tooltip", role: "tooltip" }, [
-        el("span", { class: "score-tooltip-row" }, [text(bd.sharedCount + " shared (" + bd.totalTagsA + " + " + bd.totalTagsB + " tropes) → " + Math.round(bd.basePercent) + "% baseline")]),
-        el("span", { class: "score-tooltip-row" }, [text((bd.tropeAdjust >= 0 ? "+" : "") + Math.round(bd.tropeAdjust) + " from trope-accuracy votes")]),
+        el("span", { class: "score-tooltip-row" }, [text(bd.sharedCount + " shared (" + bd.totalTagsA + " + " + bd.totalTagsB + " tropes, vote-confidence weighted) → " + Math.round(bd.basePercent) + "% baseline")]),
         el("span", { class: "score-tooltip-row" }, [text((bd.matchAdjust >= 0 ? "+" : "") + Math.round(bd.matchAdjust) + " from match votes (" + bd.matchUp + "▲ " + bd.matchDown + "▼)")]),
         el("span", { class: "score-tooltip-total" }, [text("= " + bd.percent + "% Kindred")])
       ]);
@@ -5815,7 +5817,7 @@
       var info = el("span", {
         class: "score-info",
         tabindex: "0",
-        "aria-label": "How this score is calculated: " + bd.sharedCount + " shared across " + bd.totalTagsA + " and " + bd.totalTagsB + " tropes, " + (bd.tropeAdjust >= 0 ? "+" : "") + Math.round(bd.tropeAdjust) + " from trope votes, " + (bd.matchAdjust >= 0 ? "+" : "") + Math.round(bd.matchAdjust) + " from match votes.",
+        "aria-label": "How this score is calculated: " + bd.sharedCount + " shared across " + bd.totalTagsA + " and " + bd.totalTagsB + " vote-confidence-weighted tropes, " + (bd.matchAdjust >= 0 ? "+" : "") + Math.round(bd.matchAdjust) + " from match votes.",
         onclick: function (e) { e.stopPropagation(); }
       }, [el("span", { class: "score-info-icon", "aria-hidden": "true" }, [text("i")]), tooltip]);
       wrap.appendChild(info);
@@ -5897,7 +5899,7 @@
 
     inner.appendChild(el("div", { class: "detail-head-text series-detail-head" }, [
       el("div", { class: "detail-kicker", style: "color:" + meta.accent }, [text("Series")]),
-      el("h2", { class: "detail-title" }, [text(seriesName)]),
+      el("h2", { class: "detail-title", id: "detailTitle" }, [text(seriesName)]),
       el("div", { class: "detail-creator" }, [text(creators.join(", "))]),
       el("div", { class: "detail-year" }, [text(mainCount + (mainCount === 1 ? " book" : " books") + (yearRange ? " · " + yearRange : ""))])
     ]));
