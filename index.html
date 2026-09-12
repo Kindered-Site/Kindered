@@ -378,28 +378,36 @@
     line-height: 1;
     border-radius: 999px;
     padding: 5px 9px 4px;
-    background: color-mix(in srgb, var(--paper) 78%, var(--gilt));
-    border: 1px solid color-mix(in srgb, var(--gilt) 52%, var(--line));
+    /* Tinted from the match's own --accent (set inline per badge — gilt for
+       a book match, jade for anime, bloom for manhwa) rather than a fixed
+       gilt tone, so the badge reads as one piece with the kicker/trope tags
+       already in that color on the same card, instead of a gold pill sitting
+       on top of a jade-accented anime match. The number and word below pull
+       from the same --accent for the same reason — a plain --ink number
+       next to a --gilt-deep word used to read as two unrelated colors stuck
+       together, regardless of which type's card the badge was actually on. */
+    background: color-mix(in srgb, var(--accent, var(--gilt)) 14%, var(--paper));
+    border: 1px solid color-mix(in srgb, var(--accent, var(--gilt)) 45%, var(--line));
     box-shadow: none;
-    color: var(--ink);
     font-family: "Cormorant Garamond", ui-serif, Georgia, serif;
     font-size: .98rem;
     font-weight: 600;
     letter-spacing: .025em;
   }
-  .kindred-score-badge:focus-visible { outline: 2px solid var(--gilt); outline-offset: 3px; }
+  .kindred-score-badge:focus-visible { outline: 2px solid var(--accent, var(--gilt)); outline-offset: 3px; }
   .kindred-score-number {
     font-size: .98rem;
     line-height: 1;
     font-weight: 700;
     letter-spacing: .01em;
     font-variant-numeric: tabular-nums;
+    color: var(--accent, var(--gilt-deep));
   }
   .kindred-score-word {
     margin-top: 0;
     font: 600 .54rem/1 "Cormorant Garamond", ui-serif, Georgia, serif;
     letter-spacing: .13em;
-    color: var(--gilt-deep);
+    color: color-mix(in srgb, var(--accent, var(--gilt-deep)) 72%, var(--ink));
   }
   /* The grouped-series row inside a match card packs an index label, the
      title, and the score onto one line, so its badge runs a size smaller
