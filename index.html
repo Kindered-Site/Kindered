@@ -4138,68 +4138,52 @@
 
   /* ============================= MATCHING ============================= */
 
-  // Tag rarity (IDF) is computed separately WITHIN each media type, not
-  // pooled across all 490 titles. A book is never matched against an anime
-  // (matches only ever rank candidates of one destination type at a time),
-  // so a tag's "distinctiveness" should reflect how common it is inside the
-  // pool it's actually being ranked within — a tag that's rare across the
-  // whole catalogue but ordinary within, say, the 113-title anime pool
-  // shouldn't get credit for rarity it doesn't have where it's used.
   var TAG_IDF = (function () {
-    var titlesByType = {};
-    TITLES.forEach(function (t) { (titlesByType[t.type] = titlesByType[t.type] || []).push(t); });
-    var idfByType = {};
-    Object.keys(titlesByType).forEach(function (type) {
-      var titles = titlesByType[type];
-      var counts = {};
-      Object.keys(TAGS).forEach(function (k) { counts[k] = 0; });
-      titles.forEach(function (t) { t.tags.forEach(function (tag) { counts[tag] = (counts[tag] || 0) + 1; }); });
-      var idf = {};
-      var N = titles.length;
-      Object.keys(counts).forEach(function (tag) {
-        idf[tag] = Math.log((N + 1) / (counts[tag] + 1)) + 1;
-      });
-      idfByType[type] = idf;
+    var counts = {};
+    Object.keys(TAGS).forEach(function (k) { counts[k] = 0; });
+    TITLES.forEach(function (t) { t.tags.forEach(function (tag) { counts[tag] = (counts[tag] || 0) + 1; }); });
+    var idf = {};
+    var N = TITLES.length;
+    Object.keys(counts).forEach(function (tag) {
+      idf[tag] = Math.log((N + 1) / (counts[tag] + 1)) + 1;
     });
-    return idfByType;
+    return idf;
   })();
 
-  function tagIdf(type, tag) {
-    var byType = TAG_IDF[type];
-    return (byType && byType[tag]) || 1;
+  function scoreMatch(a, b) {
+    var shared = a.tags.filter(function (t) { return b.tags.indexOf(t) !== -1; });
+    if (!shared.length) return null;
+    // Base weight is how distinctive the tag is (rare tags matter more than
+    // common ones); a tag the community has confirmed as strong for either
+    // title gets an extra boost, so well-voted tropes drive more matches.
+    var score = shared.reduce(function (sum, t) {
+      var boost = 1 + 0.12 * Math.max(0, netTagScore(a.id, t)) + 0.12 * Math.max(0, netTagScore(b.id, t));
+      return sum + TAG_IDF[t] * boost;
+    }, 0);
+    return { shared: shared, score: score };
   }
 
   // The "Kindred Score" shown on a title's own "You might also like"
-  // matches — a SYMMETRIC measure of how much of these two titles' combined
-  // trope weight is actually shared between them. It answers "how much of
-  // A and B's trope DNA overlaps", not "how much of A specifically shows up
-  // in B" — a one-directional containment measure would put a different
-  // number on A's page than on B's for the same pairing, and the badge is
-  // meant to be the same fact seen from either side. Two community signals
-  // feed it:
-  //   1. how confidently readers have confirmed EVERY tag on EITHER title
-  //      (a Laplace-smoothed rate, not just a net tally — one lone upvote
-  //      shouldn't read as confidently as a dozen votes that happen to net
-  //      the same). This reshapes each tag's own weight before the
-  //      shared-vs-total ratio is ever computed, so it's baked directly
-  //      into the baseline rather than layered on afterward.
+  // matches — how much of what YOU'RE currently looking at (title `a`)
+  // carries over into the candidate `b`. Two community signals feed it:
+  //   1. how confidently readers have confirmed the specific shared tropes
+  //      on either title (a Laplace-smoothed rate, not just a net tally —
+  //      one lone upvote shouldn't read as confidently as a dozen votes
+  //      that happen to net the same) — this is the estimate before anyone
+  //      has weighed in on the PAIRING itself, and it's what a brand new
+  //      match starts from.
   //   2. the direct "yes, these two are actually alike" votes cast on this
   //      specific pairing (the same ▲/▼ shown under the match below) — a
-  //      more direct signal than trope-level confidence, so it's applied as
-  //      its own bounded nudge on top of the baseline instead of being
-  //      folded into individual tag weights.
+  //      more direct signal than trope math, so it carries more weight.
   //
-  // Signal 2 is a BOUNDED NUDGE on top of the shared-trope baseline, not a
-  // full blend that can replace it. A full blend let heavy downvotes drag a
-  // title sharing 3 tropes below one sharing only 1 unvoted trope — votes
-  // are opinions about a match already grounded in real shared tropes, not
-  // a verdict that can erase that overlap outright. (An earlier version of
-  // this formula also added a SEPARATE nudge from the average confidence of
-  // just the shared tags — that double-counted the same vote data signal 1
-  // already bakes into the baseline, so a confirmed trope was quietly
-  // moving the score twice. Removed; signal 1 alone now carries that
-  // effect, and it does so for every tag on a title, not only the ones
-  // that happen to be shared with this particular candidate.)
+  // Both signals are BOUNDED NUDGES on top of the shared-trope baseline,
+  // not a full blend that can replace it. A full blend let heavy downvotes
+  // drag a title sharing 3 tropes below one sharing only 1 unvoted trope —
+  // votes are opinions about a match already grounded in real shared
+  // tropes, not a verdict that can erase that overlap outright. So the
+  // baseline always reflects how much of A's trope profile B actually
+  // covers, and votes can only move the number up or down within a capped
+  // range around it.
   // Same formula as kindredScoreBetween, but returns every term that went
   // into it instead of just the final number — this is what powers the
   // "how is this calculated" hover tooltip on each score badge, so the
@@ -4208,70 +4192,51 @@
   function kindredScoreBreakdown(a, b, shared) {
     if (!shared || !shared.length) return null;
 
-    // Kindred Score is a symmetric, weighted-overlap (Dice) score. The
-    // baseline answers "how much of the two stories' trope DNA is actually
-    // shared?" rather than "how many of A's tags appear in B?". Rare,
-    // distinctive tropes carry more information than very common ones
-    // (TAG_IDF — computed separately per media type, since a book is never
-    // matched against an anime and shouldn't be weighted against a rarity
-    // scale it doesn't actually compete on). Reader votes then adjust the
-    // confidence of every individual tag, whether or not it happens to be
-    // one of the tags shared with this specific candidate.
+    // Kindred Score is a symmetric, weighted-overlap score. The baseline
+    // answers "how much of the two stories' trope DNA is actually shared?"
+    // rather than "how many of A's tags appear in B?". Rare/distinctive
+    // tropes carry more information than very common ones (TAG_IDF), while
+    // reader votes change the confidence of the SPECIFIC shared trope.
     //
-    // A heavily-upvoted tag therefore counts for more than an unvoted one —
-    // including a title's own unshared tags, so a title carrying several
-    // tags the community has flagged as inaccurate doesn't get a bigger
-    // "total trope weight" just because this particular candidate doesn't
-    // happen to share those specific tags. A heavily-downvoted tag does the
-    // reverse. Popularity alone still doesn't make a trope more important:
-    // the IDF weight controls how distinctive it is within its catalogue,
-    // while votes only control confidence that the tag is correct for the
-    // title it's on.
+    // A heavily-upvoted shared trope therefore helps the match more than an
+    // unvoted shared trope. A heavily-downvoted shared trope does the reverse.
+    // Importantly, popularity alone does not make a trope more important:
+    // the IDF weight still controls how distinctive the trope is across the
+    // catalogue, while votes control confidence that the tag is correct for
+    // these particular titles.
     //
     // The confidence multiplier is deliberately modest (0.88–1.24). This
     // prevents a highly-voted common trope from overwhelming several other
     // genuine differences, while still making strong reader confirmation
     // visible in the score.
-    var idfType = b.type || a.type;
-    function confidenceWeightFor(titleId, tag) {
-      var c = tagVoteCounts(titleId, tag);
-      var up = c.up || 0, down = c.down || 0;
-      var rate = (up + 1) / (up + down + 2); // 0.5 = neutral/no votes
-      var confidence = (rate - 0.5) * 2; // -1 .. +1
-      return 1 + (confidence * 0.24); // 0.88 .. 1.24
-    }
     var sharedWeights = shared.map(function (tag) {
       var ca = tagVoteCounts(a.id, tag), cb = tagVoteCounts(b.id, tag);
       var up = (ca.up || 0) + (cb.up || 0);
       var down = (ca.down || 0) + (cb.down || 0);
-      var rate = (up + 1) / (up + down + 2);
-      var confidence = (rate - 0.5) * 2;
-      var confidenceWeight = 1 + (confidence * 0.24);
+      var rate = (up + 1) / (up + down + 2); // 0.5 = neutral/no votes
+      var confidence = (rate - 0.5) * 2; // -1 .. +1
+      var confidenceWeight = 1 + (confidence * 0.24); // 0.88 .. 1.24
       return {
         tag: tag,
         up: up,
         down: down,
         confidence: confidence,
         confidenceWeight: confidenceWeight,
-        weight: tagIdf(idfType, tag) * confidenceWeight
+        weight: (TAG_IDF[tag] || 1) * confidenceWeight
       };
     });
 
     // Weighted Dice keeps the score symmetric and avoids the harshness of
-    // plain Jaccard for a broad title paired with a narrow one. Shared tags
-    // use the pairing's combined-vote confidence weight computed above;
-    // every OTHER tag on either title is weighted by that title's own
-    // per-tag vote confidence, so an unconfirmed or crowd-rejected tag
-    // that's unique to one title no longer inflates its total weight at
-    // plain, un-adjusted IDF. Identical, fully-confirmed trope profiles can
-    // reach 100%.
+    // plain Jaccard for a broad title paired with a narrow one. Non-shared
+    // tags retain their ordinary IDF weight; shared tags use their
+    // reader-confidence-adjusted weight. Identical trope profiles can reach
+    // 100% before votes because they are a perfect structural match.
     var sharedWeight = sharedWeights.reduce(function (sum, item) { return sum + item.weight; }, 0);
     var sharedWeightByTag = {};
     sharedWeights.forEach(function (item) { sharedWeightByTag[item.tag] = item.weight; });
     var weightForTitle = function (title) {
       return title.tags.reduce(function (sum, tag) {
-        if (sharedWeightByTag[tag] !== undefined) return sum + sharedWeightByTag[tag];
-        return sum + tagIdf(idfType, tag) * confidenceWeightFor(title.id, tag);
+        return sum + (sharedWeightByTag[tag] || TAG_IDF[tag] || 1);
       }, 0);
     };
     var totalWeightA = weightForTitle(a);
@@ -4281,17 +4246,28 @@
       : 0;
     var basePercent = 100 * matchFraction;
 
+    // A small overall trope-confirmation nudge remains so a pairing with
+    // broadly positive community confirmation is visibly rewarded even when
+    // several shared tags have mixed vote histories. This is intentionally
+    // close to the direct-match influence rather than dwarfed by it.
+    var tropeNudge = sharedWeights.reduce(function (sum, item) {
+      return sum + item.confidence;
+    }, 0) / sharedWeights.length;
+    var tropeAdjust = tropeNudge * 8;
+
     // Direct match-quality votes are the clearest community signal about the
-    // recommendation itself. Saturates around a net +/-8 votes so raw
-    // popularity cannot overwhelm the actual trope match.
+    // recommendation itself, so they have a somewhat larger — but not huge —
+    // influence than aggregate trope confirmation. Saturates around a net
+    // +/-8 votes so raw popularity cannot overwhelm the actual trope match.
     var mv = matchVoteCounts(matchId(a.id, b.id));
     var mUp = mv.upvotes || 0, mDown = mv.downvotes || 0;
     var matchAdjust = 12 * Math.max(-1, Math.min(1, (mUp - mDown) / 8));
 
-    var percent = Math.max(1, Math.min(100, Math.round(basePercent + matchAdjust)));
+    var percent = Math.max(1, Math.min(100, Math.round(basePercent + tropeAdjust + matchAdjust)));
     return {
       percent: percent,
       basePercent: basePercent,
+      tropeAdjust: tropeAdjust,
       matchAdjust: matchAdjust,
       matchFraction: matchFraction,
       sharedCount: shared.length,
@@ -4308,10 +4284,6 @@
     return bd ? bd.percent : null;
   }
 
-  function sharedTags(a, b) {
-    return a.tags.filter(function (t) { return b.tags.indexOf(t) !== -1; });
-  }
-
   // Books in the same recommendation series are grouped together so one
   // series does not flood the top-level list. Every scored book remains
   // visible inside that series group, ordered by its own Kindred Score.
@@ -4325,18 +4297,8 @@
       // *new* stories, not routing a reader to the next volume they already
       // know belongs to this saga.
       if (type === "book" && hasRealSeries(title) && hasRealSeries(other) && title.series === other.series) return;
-      var shared = sharedTags(title, other);
-      if (!shared.length) return;
-      var bd = kindredScoreBreakdown(title, other, shared);
-      if (!bd) return;
-      // `score` here is the unrounded, pre-vote-adjustment baseline percent —
-      // used only to break ties when two candidates land on the exact same
-      // displayed (rounded) percent. This used to be a second, differently-
-      // weighted similarity formula (scoreMatch) computed from scratch; now
-      // it's just a more precise reading of the same math that produced the
-      // displayed score, so a tie-break can never disagree with the number
-      // shown on the two tied matches.
-      perTitle.push({ title: other, shared: shared, score: bd.basePercent, percent: bd.percent });
+      var m = scoreMatch(title, other);
+      if (m) perTitle.push({ title: other, shared: m.shared, score: m.score, percent: kindredScoreBetween(title, other, m.shared) });
     });
 
     var groups = {};
@@ -4395,7 +4357,7 @@
     if (!shared.length) return null;
     var score = shared.reduce(function (sum, t) {
       var boost = 1 + 0.12 * Math.max(0, netTagScore(candidate.id, t));
-      return sum + tagIdf(candidate.type, t) * boost;
+      return sum + TAG_IDF[t] * boost;
     }, 0);
     score *= (1 + 0.15 * (shared.length - 1));
     return score;
@@ -5806,7 +5768,8 @@
     if (breakdown) {
       var bd = breakdown;
       var tooltip = el("span", { class: "score-tooltip", role: "tooltip" }, [
-        el("span", { class: "score-tooltip-row" }, [text(bd.sharedCount + " shared (" + bd.totalTagsA + " + " + bd.totalTagsB + " tropes, vote-confidence weighted) → " + Math.round(bd.basePercent) + "% baseline")]),
+        el("span", { class: "score-tooltip-row" }, [text(bd.sharedCount + " shared (" + bd.totalTagsA + " + " + bd.totalTagsB + " tropes) → " + Math.round(bd.basePercent) + "% baseline")]),
+        el("span", { class: "score-tooltip-row" }, [text((bd.tropeAdjust >= 0 ? "+" : "") + Math.round(bd.tropeAdjust) + " from trope-accuracy votes")]),
         el("span", { class: "score-tooltip-row" }, [text((bd.matchAdjust >= 0 ? "+" : "") + Math.round(bd.matchAdjust) + " from match votes (" + bd.matchUp + "▲ " + bd.matchDown + "▼)")]),
         el("span", { class: "score-tooltip-total" }, [text("= " + bd.percent + "% Kindred")])
       ]);
@@ -5817,7 +5780,7 @@
       var info = el("span", {
         class: "score-info",
         tabindex: "0",
-        "aria-label": "How this score is calculated: " + bd.sharedCount + " shared across " + bd.totalTagsA + " and " + bd.totalTagsB + " vote-confidence-weighted tropes, " + (bd.matchAdjust >= 0 ? "+" : "") + Math.round(bd.matchAdjust) + " from match votes.",
+        "aria-label": "How this score is calculated: " + bd.sharedCount + " shared across " + bd.totalTagsA + " and " + bd.totalTagsB + " tropes, " + (bd.tropeAdjust >= 0 ? "+" : "") + Math.round(bd.tropeAdjust) + " from trope votes, " + (bd.matchAdjust >= 0 ? "+" : "") + Math.round(bd.matchAdjust) + " from match votes.",
         onclick: function (e) { e.stopPropagation(); }
       }, [el("span", { class: "score-info-icon", "aria-hidden": "true" }, [text("i")]), tooltip]);
       wrap.appendChild(info);
