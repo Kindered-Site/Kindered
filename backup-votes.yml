@@ -1,0 +1,45 @@
+name: Backup voting data
+
+# Runs weekly and pulls a full copy of the site's vote data (Kindred Score
+# match votes, trope confirmation votes, comments, favorite counts) out of
+# Supabase and commits it into backups/ in this repo — so if anything ever
+# happens to the Supabase project (accidental deletion, a bad migration,
+# a payment lapse, etc.) there's an independent, versioned copy sitting
+# right here in git history, separate from Supabase entirely.
+#
+# Change the schedule below to back up more or less often. Cron is UTC.
+# You can also click "Run workflow" on the Actions tab any time you want
+# an extra snapshot on demand.
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # every Monday at 06:00 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Export vote tables from Supabase
+        run: node scripts/backup-votes.mjs backups
+
+      - name: Commit backup if anything changed
+        run: |
+          git config user.name "kindred-backup-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add backups/
+          if git diff --cached --quiet; then
+            echo "No vote changes since the last backup — nothing to commit."
+          else
+            git commit -m "Automated vote backup ($(date -u +%Y-%m-%d))"
+            git push
+          fi
