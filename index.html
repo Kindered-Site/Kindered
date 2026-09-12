@@ -62,10 +62,16 @@
     --card-bg: #FCF6E9;
     --gilt: #C17F3E;
     --gilt-deep: #96602A;
-    --jade: #BE5E28;
-    --jade-deep: #96481E;
-    --bloom: #93402C;
-    --bloom-deep: #722F20;
+    /* Anime and manhwa get real, distinct hues (not more shades of gold) —
+       a muted forest jade and a dusty rose — so the three media types read
+       apart at a glance instead of every card converging on the same
+       amber-brown. Chosen at roughly the same lightness/saturation as
+       --gilt so nothing pops harder than another; still one warm, muted
+       "aged paper" family, just with three colors in it instead of one. */
+    --jade: #4C7A5E;
+    --jade-deep: #35573F;
+    --bloom: #A14B64;
+    --bloom-deep: #7C3850;
     --ember: #A93A3F;
     --shadow: 0 1px 2px rgba(46,32,19,0.08), 0 8px 24px -12px rgba(46,32,19,0.22);
   }
@@ -79,10 +85,10 @@
       --card-bg: #241A10;
       --gilt: #E0A868;
       --gilt-deep: #F2C084;
-      --jade: #E2925A;
-      --jade-deep: #F0AD7C;
-      --bloom: #CB8266;
-      --bloom-deep: #E0A088;
+      --jade: #7FB799;
+      --jade-deep: #9ED4B7;
+      --bloom: #E093AC;
+      --bloom-deep: #F0B3C7;
       --ember: #D9756F;
       --shadow: 0 1px 2px rgba(0,0,0,0.35), 0 8px 24px -12px rgba(0,0,0,0.55);
     }
@@ -178,6 +184,34 @@
     margin: 0;
   }
 
+  /* Header nav — deliberately just three shortcuts to real, existing parts
+     of this one-page site (the trope picker, the library grid, and the
+     favorites filter). No "Explore"/"Match"/"Community" — there's nothing
+     behind those that isn't already one of these three. */
+  .site-nav {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+  }
+  .site-nav button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-family: "Cormorant Garamond", ui-serif, Georgia, serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: var(--ink-soft);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .site-nav button svg { width: 14px; height: 14px; flex-shrink: 0; }
+  .site-nav button:hover, .site-nav button:focus-visible { color: var(--gilt-deep); }
+  .site-nav button:focus-visible { outline: 2px solid var(--gilt); outline-offset: 3px; border-radius: 3px; }
+  .site-nav button.active-fav { color: var(--ember); }
+
   /* ---------- Capability strip ---------- */
   .capability-strip-band {
     border-top: 1px solid var(--line);
@@ -245,7 +279,12 @@
     cursor: pointer;
     white-space: nowrap;
     transition: color .15s ease, border-color .15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
   }
+  .tab-icon svg { width: 15px; height: 15px; display: block; opacity: 0.75; }
+  .tab-btn.active .tab-icon svg { opacity: 1; }
   .tab-btn .count {
     font-weight: 500;
     font-variant-numeric: tabular-nums;
@@ -887,6 +926,8 @@
        do-nothing button taking up space next to Close. */
     .detail-fullscreen-toggle { display: none; }
     .tagline { display: none; }
+    .site-nav { gap: 14px; }
+    .site-nav button span { display: none; }
     .kindred-hero-title { font-size: 1.7rem; }
     .cap-item { flex: 1 1 100%; padding: 14px 0; border-left: none !important; }
     .cap-item + .cap-item { border-top: 1px solid var(--line); border-left: none; padding-left: 0; }
@@ -921,26 +962,14 @@
     .brand-actions .btn { padding: 7px 9px; }
   }
 
-  /* Keep the new identity coherent: the old four-colour accents become warm
-     variations of the same brown/gold family, while up/down state remains
-     distinguishable through weight and borders as well as colour. */
-  :root {
-    --jade: #9A7047; --jade-deep: #79512F;
-    --bloom: #9A624B; --bloom-deep: #784432;
-    --ember: #8C5140;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --jade: #D1A778; --jade-deep: #E3BB8D;
-      --bloom: #C98E78; --bloom-deep: #DDA58F;
-      --ember: #C98272;
-    }
-  }
-  :root[data-theme="dark"] {
-    --jade: #D1A778; --jade-deep: #E3BB8D;
-    --bloom: #C98E78; --bloom-deep: #DDA58F;
-    --ember: #C98272;
-  }
+  /* A later pass used to collapse jade/bloom/ember down into near-gilt
+     browns here, on the theory that one unified brown/gold family reads as
+     more coherent. In practice it meant every card, tab, and badge on the
+     site converged on the same amber regardless of whether you were
+     looking at a book, an anime, or a manhwa — the single biggest reason
+     the site read as flat. Removed; the real jade/rose/red values now live
+     once, up in the main :root block, where a maintainer would look for
+     them first. */
   .tagvote-btn.up.voted, .vote-btn.up.voted { background: color-mix(in srgb, var(--jade) 14%, var(--card-bg)); }
   .tagvote-btn.down.voted, .vote-btn.down.voted { background: color-mix(in srgb, var(--bloom) 12%, var(--card-bg)); }
 
@@ -992,15 +1021,50 @@
   }
   .start-here::before { left: 3.5%; }
   .start-here::after { right: 3.5%; }
+  /* A single soft glow behind the trope picker — the section already has
+     overflow:hidden, so this never bleeds into the header or the section
+     below it the way an unclipped decorative ring can. Kept to exactly one
+     instance of this kind of flourish (see the ::before/::after sparkles
+     above) rather than stacking several at once, since that's what made an
+     earlier "atmosphere" pass feel busy instead of warm. */
+  .hero-halo {
+    position: absolute;
+    left: 50%;
+    top: -320px;
+    width: min(680px, 88vw);
+    height: 680px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    border: 1px solid color-mix(in srgb, var(--gilt) 18%, transparent);
+    box-shadow:
+      0 0 0 28px color-mix(in srgb, var(--gilt) 3%, transparent),
+      0 0 0 70px color-mix(in srgb, var(--gilt) 1.5%, transparent);
+    pointer-events: none;
+    z-index: 0;
+  }
+  /* Keeps the actual picker content painting above the halo — an
+     absolutely-positioned decorative element otherwise layers above
+     ordinary in-flow content regardless of DOM order. */
+  .start-here .wrap { position: relative; z-index: 1; }
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-halo { animation: kindred-halo-breathe 10s ease-in-out infinite; }
+    @keyframes kindred-halo-breathe {
+      0%, 100% { opacity: .7; transform: translateX(-50%) scale(1); }
+      50% { opacity: 1; transform: translateX(-50%) scale(1.02); }
+    }
+  }
+  @media (max-width: 560px) {
+    .hero-halo { width: 92vw; height: 92vw; top: -46vw; }
+  }
   .start-here-inner { padding: 30px 0 28px; }
   .kindred-hero-title { letter-spacing: .01em; }
   .kindred-hero-title-accent { color: var(--gilt-deep); }
-  .pick-chip, .pick-slot-empty, .chip {
-    background: color-mix(in srgb, var(--paper) 76%, var(--gilt));
-    border-color: color-mix(in srgb, var(--gilt) 38%, var(--line));
-    color: var(--ink);
-  }
-  .chip:hover, .pick-chip:hover { border-color: var(--gilt-deep); }
+  /* Unselected chips keep their own card-bg/line styling (defined above)
+     for real contrast against the page — an earlier pass here washed every
+     chip in the same gilt tint as the surrounding gradient, which is what
+     made the trope picker read as a flat, undifferentiated "wall of pills."
+     Only the hover/active treatment is refined here. */
+  .chip:hover, .pick-chip:hover { border-color: var(--gilt-deep); background: color-mix(in srgb, var(--gilt) 10%, var(--card-bg)); }
   .chip.active { background: var(--gilt-deep); border-color: var(--gilt-deep); color: #fff8ed; }
   .capability-strip-band {
     background: color-mix(in srgb, var(--paper) 96%, var(--gilt));
@@ -1018,16 +1082,32 @@
     background: color-mix(in srgb, var(--paper) 74%, var(--card-bg));
     border-color: color-mix(in srgb, var(--gilt) 30%, var(--line));
   }
-  .search-box input { border-radius: 999px; padding-top: 11px; padding-bottom: 11px; }
+  .search-box input {
+    border-radius: 999px;
+    padding-top: 11px;
+    padding-bottom: 11px;
+    box-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 4%, transparent);
+    transition: box-shadow .15s ease, border-color .15s ease;
+  }
+  .search-box input:focus-visible {
+    box-shadow: 0 2px 10px color-mix(in srgb, var(--gilt) 18%, transparent);
+    border-color: var(--gilt-deep);
+  }
   .card {
+    /* --accent (book=gilt, anime=jade, manhwa=bloom) is set per-card by JS.
+       A warm 30%-gilt border on every card regardless of type is what used
+       to flatten the whole grid into one color; the left edge and the
+       kicker label below now actually use it, and a faint accent wash in
+       the background keeps a whole tab (all-anime, say) feeling like one
+       coherent, distinctly-colored shelf. */
     border: 1px solid color-mix(in srgb, var(--gilt) 30%, var(--line));
-    border-left: 1px solid color-mix(in srgb, var(--gilt) 30%, var(--line));
+    border-left: 4px solid var(--accent);
     border-radius: 6px;
-    background: color-mix(in srgb, var(--paper) 72%, var(--card-bg));
+    background: color-mix(in srgb, var(--accent) 5%, color-mix(in srgb, var(--paper) 72%, var(--card-bg)));
     box-shadow: 0 1px 2px rgba(46,32,19,.05), 0 9px 22px -16px rgba(46,32,19,.28);
   }
   .card:hover { transform: translateY(-3px); box-shadow: 0 2px 4px rgba(46,32,19,.06), 0 14px 28px -17px rgba(46,32,19,.34); }
-  .card-kicker { color: var(--gilt-deep); }
+  .card-kicker { color: var(--accent); }
   .card-title, .match-title, .series-book-name {
     font-family: "Cormorant Garamond", ui-serif, Georgia, serif;
   }
@@ -1101,12 +1181,27 @@
         <div class="brand-glyph"><img src="data:image/png;base64,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" alt="" aria-hidden="true"></div>
         <div class="wordmark">KINDRED</div>
       </div>
+      <nav class="site-nav" aria-label="Primary">
+        <button type="button" id="navStartHere">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l1.8 5.6L19 9l-5.2 1.4L12 16l-1.8-5.6L5 9l5.2-1.4L12 2z"/></svg>
+          <span>Start Here</span>
+        </button>
+        <button type="button" id="navBrowse">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3.5" y="5" width="17" height="14" rx="2"/><path d="M3.5 9.5h17"/></svg>
+          <span>Browse Library</span>
+        </button>
+        <button type="button" id="navFavorites">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20.5l-1.4-1.3C5.6 14.7 2.5 11.9 2.5 8.4 2.5 5.6 4.7 3.4 7.5 3.4c1.6 0 3.2.8 4.5 2.1 1.3-1.3 2.9-2.1 4.5-2.1 2.8 0 5 2.2 5 5 0 3.5-3.1 6.3-8.1 10.8L12 20.5z"/></svg>
+          <span>Favorites</span>
+        </button>
+      </nav>
       <div class="tagline">Stories kindred to the ones you already love.</div>
     </div>
   </div>
 </header>
 
 <section class="start-here" id="startHere">
+  <div class="hero-halo" aria-hidden="true"></div>
   <div class="wrap">
     <div class="start-here-inner">
       <div class="start-here-prompt" id="startHerePrompt"></div>
@@ -1151,7 +1246,7 @@
   </div>
 </div>
 
-<div class="wrap browse-heading-wrap">
+<div class="wrap browse-heading-wrap" id="library">
   <div class="browse-title">Or browse the full library</div>
   <nav class="tabs" id="mainTabs"></nav>
 </div>
@@ -1465,7 +1560,7 @@
       cover: "https://covers.openlibrary.org/b/id/10136462-L.jpg",
       series: "Serpent & Dove", seriesIndex: 2,
       blurb: "With her secret out and a witch hunt closing in on both of them, their marriage of convenience has to become a real alliance to survive it.",
-      tags: ["forced-proximity","hidden-identity","slow-burn","revenge-plot","war-and-rebellion"] },
+      tags: ["forced-proximity","hidden-identity","slow-burn","revenge-plot","war-and-rebellion","arranged-marriage"] },
     { id: "b-gods-monsters", type: "book", title: "Gods & Monsters", creator: "Shelby Mahurin",
       year: 2021,
       series: "Serpent & Dove", seriesIndex: 3,
@@ -1505,7 +1600,7 @@
       year: 2021,
       series: "The Bridge Kingdom", seriesIndex: 3,
       blurb: "Raised to avenge her murdered mother by conquering an empire, she falls for a mysterious soldier in a contested city — never suspecting he's actually the enemy king she's sworn to destroy.",
-      tags: ["hidden-identity","enemies-to-lovers","war-and-rebellion","slow-burn","high-heat"] },
+      tags: ["hidden-identity","enemies-to-lovers","war-and-rebellion","revenge-plot","slow-burn","high-heat"] },
     { id: "b-endless-war", type: "book", title: "The Endless War", creator: "Danielle L. Jensen",
       year: 2023,
       series: "The Bridge Kingdom", seriesIndex: 4,
@@ -1575,7 +1670,7 @@
       cover: "https://covers.openlibrary.org/b/id/15102361-L.jpg",
       series: "Crescent City", seriesIndex: 1,
       blurb: "A half-fae party girl teams up with a fallen warrior-angel to hunt down whoever murdered her best friend.",
-      tags: ["found-family","morally-grey","slow-burn","revenge-plot","forced-proximity","enemies-to-lovers","court-politics","high-heat"] },
+      tags: ["found-family","morally-grey","slow-burn","revenge-plot","forced-proximity","enemies-to-lovers","court-politics","high-heat","fae"] },
 
     // ---------------- Anime ----------------
     { id: "a-snow-white-rh", type: "anime", title: "Snow White with the Red Hair", creator: "Studio: Bones",
@@ -1627,7 +1722,7 @@
       crunchyrollUrl: "https://www.crunchyroll.com/watch/GE00264120PLPL",
       netflixUrl: "https://www.netflix.com/title/81091393",
       blurb: "A boy joins an order of demon hunters to save his sister and avenge his family, gathering a found family of fellow slayers along the way.",
-      tags: ["found-family","ensemble"] },
+      tags: ["found-family","ensemble","revenge-plot"] },
     { id: "a-given", type: "anime", title: "Given", creator: "Studio: Lerche",
       year: 2019,
       cover: "https://cdn.myanimelist.net/images/anime/1666/102238.jpg",
@@ -2085,7 +2180,7 @@
       cover: "https://covers.openlibrary.org/b/id/12371689-L.jpg",
       series: "Fate & Flame", seriesIndex: 1,
       blurb: "A jewel thief who wakes up in someone else's body in a world of warring fae courts has to out-scheme people who've had centuries of practice.",
-      tags: ["enemies-to-lovers","hidden-identity"] },
+      tags: ["enemies-to-lovers","hidden-identity","fae"] },
     { id: "b-girl-goddess-queen", type: "book", title: "Girl, Goddess, Queen", creator: "Bea Fitzgerald",
       year: 2023,
       cover: "https://covers.openlibrary.org/b/id/15139921-L.jpg",
@@ -2162,7 +2257,7 @@
       cover: "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1721226024i/181919782.jpg",
       series: "Sisters of the Occult", seriesIndex: 1,
       blurb: "A dark academia mystery unfolds inside a school for demons, where the conspiracy might be closer than any of the students realize.",
-      tags: ["hidden-identity","ensemble"] },
+      tags: ["hidden-identity","ensemble","academy"] },
     { id: "b-tearsmith", type: "book", title: "The Tearsmith", creator: "Erin Doom",
       year: 2021,
       cover: "https://covers.openlibrary.org/b/id/14614806-L.jpg",
@@ -2710,7 +2805,7 @@
       year: 2021,
       cover: "https://cdn.myanimelist.net/images/manga/4/291250.jpg",
       blurb: "A modern woman reborn as an assassin novel's side character sets out to kill every villainess marked for death — before finding out she might be one of them.",
-      tags: ["morally-grey","revenge-plot","isekai","power-imbalance","hidden-identity"] },
+      tags: ["morally-grey","revenge-plot","isekai","power-imbalance","hidden-identity","reincarnated-villain"] },
     { id: "m-semantic-error", type: "manhwa", format: "webtoon", title: "Semantic Error", creator: "Sizzle",
       year: 2021,
       cover: "https://cdn.myanimelist.net/images/manga/1/259484.jpg",
@@ -4124,13 +4219,13 @@
     }
     if (title.type === "anime") {
       return [
-        { label: "Search Crunchyroll", href: crunchyrollSearch(title.title), primary: true },
-        { label: "Search Netflix", href: netflixSearch(title.title), primary: false },
+        { label: title.crunchyrollUrl ? "Watch on Crunchyroll" : "Search Crunchyroll", href: title.crunchyrollUrl || crunchyrollSearch(title.title), primary: true },
+        { label: title.netflixUrl ? "Watch on Netflix" : "Search Netflix", href: title.netflixUrl || netflixSearch(title.title), primary: false },
         { label: "Find online", href: googleSearch("watch " + title.title + " online"), primary: false }
       ];
     }
     return [
-      { label: "Search Webtoon", href: webtoonSearch(title.title), primary: true },
+      { label: title.webtoonsUrl ? "Read on Webtoon" : "Search Webtoon", href: title.webtoonsUrl || webtoonSearch(title.title), primary: true },
       { label: "Buy the volumes", href: amazonSearch(title.title), primary: false },
       { label: "Find online", href: googleSearch("read " + title.title + " online"), primary: false }
     ];
@@ -4138,52 +4233,68 @@
 
   /* ============================= MATCHING ============================= */
 
+  // Tag rarity (IDF) is computed separately WITHIN each media type, not
+  // pooled across all 490 titles. A book is never matched against an anime
+  // (matches only ever rank candidates of one destination type at a time),
+  // so a tag's "distinctiveness" should reflect how common it is inside the
+  // pool it's actually being ranked within — a tag that's rare across the
+  // whole catalogue but ordinary within, say, the 113-title anime pool
+  // shouldn't get credit for rarity it doesn't have where it's used.
   var TAG_IDF = (function () {
-    var counts = {};
-    Object.keys(TAGS).forEach(function (k) { counts[k] = 0; });
-    TITLES.forEach(function (t) { t.tags.forEach(function (tag) { counts[tag] = (counts[tag] || 0) + 1; }); });
-    var idf = {};
-    var N = TITLES.length;
-    Object.keys(counts).forEach(function (tag) {
-      idf[tag] = Math.log((N + 1) / (counts[tag] + 1)) + 1;
+    var titlesByType = {};
+    TITLES.forEach(function (t) { (titlesByType[t.type] = titlesByType[t.type] || []).push(t); });
+    var idfByType = {};
+    Object.keys(titlesByType).forEach(function (type) {
+      var titles = titlesByType[type];
+      var counts = {};
+      Object.keys(TAGS).forEach(function (k) { counts[k] = 0; });
+      titles.forEach(function (t) { t.tags.forEach(function (tag) { counts[tag] = (counts[tag] || 0) + 1; }); });
+      var idf = {};
+      var N = titles.length;
+      Object.keys(counts).forEach(function (tag) {
+        idf[tag] = Math.log((N + 1) / (counts[tag] + 1)) + 1;
+      });
+      idfByType[type] = idf;
     });
-    return idf;
+    return idfByType;
   })();
 
-  function scoreMatch(a, b) {
-    var shared = a.tags.filter(function (t) { return b.tags.indexOf(t) !== -1; });
-    if (!shared.length) return null;
-    // Base weight is how distinctive the tag is (rare tags matter more than
-    // common ones); a tag the community has confirmed as strong for either
-    // title gets an extra boost, so well-voted tropes drive more matches.
-    var score = shared.reduce(function (sum, t) {
-      var boost = 1 + 0.12 * Math.max(0, netTagScore(a.id, t)) + 0.12 * Math.max(0, netTagScore(b.id, t));
-      return sum + TAG_IDF[t] * boost;
-    }, 0);
-    return { shared: shared, score: score };
+  function tagIdf(type, tag) {
+    var byType = TAG_IDF[type];
+    return (byType && byType[tag]) || 1;
   }
 
   // The "Kindred Score" shown on a title's own "You might also like"
-  // matches — how much of what YOU'RE currently looking at (title `a`)
-  // carries over into the candidate `b`. Two community signals feed it:
-  //   1. how confidently readers have confirmed the specific shared tropes
-  //      on either title (a Laplace-smoothed rate, not just a net tally —
-  //      one lone upvote shouldn't read as confidently as a dozen votes
-  //      that happen to net the same) — this is the estimate before anyone
-  //      has weighed in on the PAIRING itself, and it's what a brand new
-  //      match starts from.
+  // matches — a SYMMETRIC measure of how much of these two titles' combined
+  // trope weight is actually shared between them. It answers "how much of
+  // A and B's trope DNA overlaps", not "how much of A specifically shows up
+  // in B" — a one-directional containment measure would put a different
+  // number on A's page than on B's for the same pairing, and the badge is
+  // meant to be the same fact seen from either side. Two community signals
+  // feed it:
+  //   1. how confidently readers have confirmed EVERY tag on EITHER title
+  //      (a Laplace-smoothed rate, not just a net tally — one lone upvote
+  //      shouldn't read as confidently as a dozen votes that happen to net
+  //      the same). This reshapes each tag's own weight before the
+  //      shared-vs-total ratio is ever computed, so it's baked directly
+  //      into the baseline rather than layered on afterward.
   //   2. the direct "yes, these two are actually alike" votes cast on this
   //      specific pairing (the same ▲/▼ shown under the match below) — a
-  //      more direct signal than trope math, so it carries more weight.
+  //      more direct signal than trope-level confidence, so it's applied as
+  //      its own bounded nudge on top of the baseline instead of being
+  //      folded into individual tag weights.
   //
-  // Both signals are BOUNDED NUDGES on top of the shared-trope baseline,
-  // not a full blend that can replace it. A full blend let heavy downvotes
-  // drag a title sharing 3 tropes below one sharing only 1 unvoted trope —
-  // votes are opinions about a match already grounded in real shared
-  // tropes, not a verdict that can erase that overlap outright. So the
-  // baseline always reflects how much of A's trope profile B actually
-  // covers, and votes can only move the number up or down within a capped
-  // range around it.
+  // Signal 2 is a BOUNDED NUDGE on top of the shared-trope baseline, not a
+  // full blend that can replace it. A full blend let heavy downvotes drag a
+  // title sharing 3 tropes below one sharing only 1 unvoted trope — votes
+  // are opinions about a match already grounded in real shared tropes, not
+  // a verdict that can erase that overlap outright. (An earlier version of
+  // this formula also added a SEPARATE nudge from the average confidence of
+  // just the shared tags — that double-counted the same vote data signal 1
+  // already bakes into the baseline, so a confirmed trope was quietly
+  // moving the score twice. Removed; signal 1 alone now carries that
+  // effect, and it does so for every tag on a title, not only the ones
+  // that happen to be shared with this particular candidate.)
   // Same formula as kindredScoreBetween, but returns every term that went
   // into it instead of just the final number — this is what powers the
   // "how is this calculated" hover tooltip on each score badge, so the
@@ -4192,51 +4303,70 @@
   function kindredScoreBreakdown(a, b, shared) {
     if (!shared || !shared.length) return null;
 
-    // Kindred Score is a symmetric, weighted-overlap score. The baseline
-    // answers "how much of the two stories' trope DNA is actually shared?"
-    // rather than "how many of A's tags appear in B?". Rare/distinctive
-    // tropes carry more information than very common ones (TAG_IDF), while
-    // reader votes change the confidence of the SPECIFIC shared trope.
+    // Kindred Score is a symmetric, weighted-overlap (Dice) score. The
+    // baseline answers "how much of the two stories' trope DNA is actually
+    // shared?" rather than "how many of A's tags appear in B?". Rare,
+    // distinctive tropes carry more information than very common ones
+    // (TAG_IDF — computed separately per media type, since a book is never
+    // matched against an anime and shouldn't be weighted against a rarity
+    // scale it doesn't actually compete on). Reader votes then adjust the
+    // confidence of every individual tag, whether or not it happens to be
+    // one of the tags shared with this specific candidate.
     //
-    // A heavily-upvoted shared trope therefore helps the match more than an
-    // unvoted shared trope. A heavily-downvoted shared trope does the reverse.
-    // Importantly, popularity alone does not make a trope more important:
-    // the IDF weight still controls how distinctive the trope is across the
-    // catalogue, while votes control confidence that the tag is correct for
-    // these particular titles.
+    // A heavily-upvoted tag therefore counts for more than an unvoted one —
+    // including a title's own unshared tags, so a title carrying several
+    // tags the community has flagged as inaccurate doesn't get a bigger
+    // "total trope weight" just because this particular candidate doesn't
+    // happen to share those specific tags. A heavily-downvoted tag does the
+    // reverse. Popularity alone still doesn't make a trope more important:
+    // the IDF weight controls how distinctive it is within its catalogue,
+    // while votes only control confidence that the tag is correct for the
+    // title it's on.
     //
     // The confidence multiplier is deliberately modest (0.88–1.24). This
     // prevents a highly-voted common trope from overwhelming several other
     // genuine differences, while still making strong reader confirmation
     // visible in the score.
+    var idfType = b.type || a.type;
+    function confidenceWeightFor(titleId, tag) {
+      var c = tagVoteCounts(titleId, tag);
+      var up = c.up || 0, down = c.down || 0;
+      var rate = (up + 1) / (up + down + 2); // 0.5 = neutral/no votes
+      var confidence = (rate - 0.5) * 2; // -1 .. +1
+      return 1 + (confidence * 0.24); // 0.88 .. 1.24
+    }
     var sharedWeights = shared.map(function (tag) {
       var ca = tagVoteCounts(a.id, tag), cb = tagVoteCounts(b.id, tag);
       var up = (ca.up || 0) + (cb.up || 0);
       var down = (ca.down || 0) + (cb.down || 0);
-      var rate = (up + 1) / (up + down + 2); // 0.5 = neutral/no votes
-      var confidence = (rate - 0.5) * 2; // -1 .. +1
-      var confidenceWeight = 1 + (confidence * 0.24); // 0.88 .. 1.24
+      var rate = (up + 1) / (up + down + 2);
+      var confidence = (rate - 0.5) * 2;
+      var confidenceWeight = 1 + (confidence * 0.24);
       return {
         tag: tag,
         up: up,
         down: down,
         confidence: confidence,
         confidenceWeight: confidenceWeight,
-        weight: (TAG_IDF[tag] || 1) * confidenceWeight
+        weight: tagIdf(idfType, tag) * confidenceWeight
       };
     });
 
     // Weighted Dice keeps the score symmetric and avoids the harshness of
-    // plain Jaccard for a broad title paired with a narrow one. Non-shared
-    // tags retain their ordinary IDF weight; shared tags use their
-    // reader-confidence-adjusted weight. Identical trope profiles can reach
-    // 100% before votes because they are a perfect structural match.
+    // plain Jaccard for a broad title paired with a narrow one. Shared tags
+    // use the pairing's combined-vote confidence weight computed above;
+    // every OTHER tag on either title is weighted by that title's own
+    // per-tag vote confidence, so an unconfirmed or crowd-rejected tag
+    // that's unique to one title no longer inflates its total weight at
+    // plain, un-adjusted IDF. Identical, fully-confirmed trope profiles can
+    // reach 100%.
     var sharedWeight = sharedWeights.reduce(function (sum, item) { return sum + item.weight; }, 0);
     var sharedWeightByTag = {};
     sharedWeights.forEach(function (item) { sharedWeightByTag[item.tag] = item.weight; });
     var weightForTitle = function (title) {
       return title.tags.reduce(function (sum, tag) {
-        return sum + (sharedWeightByTag[tag] || TAG_IDF[tag] || 1);
+        if (sharedWeightByTag[tag] !== undefined) return sum + sharedWeightByTag[tag];
+        return sum + tagIdf(idfType, tag) * confidenceWeightFor(title.id, tag);
       }, 0);
     };
     var totalWeightA = weightForTitle(a);
@@ -4246,28 +4376,17 @@
       : 0;
     var basePercent = 100 * matchFraction;
 
-    // A small overall trope-confirmation nudge remains so a pairing with
-    // broadly positive community confirmation is visibly rewarded even when
-    // several shared tags have mixed vote histories. This is intentionally
-    // close to the direct-match influence rather than dwarfed by it.
-    var tropeNudge = sharedWeights.reduce(function (sum, item) {
-      return sum + item.confidence;
-    }, 0) / sharedWeights.length;
-    var tropeAdjust = tropeNudge * 8;
-
     // Direct match-quality votes are the clearest community signal about the
-    // recommendation itself, so they have a somewhat larger — but not huge —
-    // influence than aggregate trope confirmation. Saturates around a net
-    // +/-8 votes so raw popularity cannot overwhelm the actual trope match.
+    // recommendation itself. Saturates around a net +/-8 votes so raw
+    // popularity cannot overwhelm the actual trope match.
     var mv = matchVoteCounts(matchId(a.id, b.id));
     var mUp = mv.upvotes || 0, mDown = mv.downvotes || 0;
     var matchAdjust = 12 * Math.max(-1, Math.min(1, (mUp - mDown) / 8));
 
-    var percent = Math.max(1, Math.min(100, Math.round(basePercent + tropeAdjust + matchAdjust)));
+    var percent = Math.max(1, Math.min(100, Math.round(basePercent + matchAdjust)));
     return {
       percent: percent,
       basePercent: basePercent,
-      tropeAdjust: tropeAdjust,
       matchAdjust: matchAdjust,
       matchFraction: matchFraction,
       sharedCount: shared.length,
@@ -4284,6 +4403,10 @@
     return bd ? bd.percent : null;
   }
 
+  function sharedTags(a, b) {
+    return a.tags.filter(function (t) { return b.tags.indexOf(t) !== -1; });
+  }
+
   // Books in the same recommendation series are grouped together so one
   // series does not flood the top-level list. Every scored book remains
   // visible inside that series group, ordered by its own Kindred Score.
@@ -4297,8 +4420,18 @@
       // *new* stories, not routing a reader to the next volume they already
       // know belongs to this saga.
       if (type === "book" && hasRealSeries(title) && hasRealSeries(other) && title.series === other.series) return;
-      var m = scoreMatch(title, other);
-      if (m) perTitle.push({ title: other, shared: m.shared, score: m.score, percent: kindredScoreBetween(title, other, m.shared) });
+      var shared = sharedTags(title, other);
+      if (!shared.length) return;
+      var bd = kindredScoreBreakdown(title, other, shared);
+      if (!bd) return;
+      // `score` here is the unrounded, pre-vote-adjustment baseline percent —
+      // used only to break ties when two candidates land on the exact same
+      // displayed (rounded) percent. This used to be a second, differently-
+      // weighted similarity formula (scoreMatch) computed from scratch; now
+      // it's just a more precise reading of the same math that produced the
+      // displayed score, so a tie-break can never disagree with the number
+      // shown on the two tied matches.
+      perTitle.push({ title: other, shared: shared, score: bd.basePercent, percent: bd.percent });
     });
 
     var groups = {};
@@ -4357,7 +4490,7 @@
     if (!shared.length) return null;
     var score = shared.reduce(function (sum, t) {
       var boost = 1 + 0.12 * Math.max(0, netTagScore(candidate.id, t));
-      return sum + TAG_IDF[t] * boost;
+      return sum + tagIdf(candidate.type, t) * boost;
     }, 0);
     score *= (1 + 0.15 * (shared.length - 1));
     return score;
@@ -5438,6 +5571,14 @@
     ]));
   }
 
+  // Small monoline icons for the format tabs — purely decorative, so they
+  // carry no meaning on their own (the text label still says "Books" /
+  // "Anime" / "Manga & Webtoons"); hidden from screen readers accordingly.
+  var TAB_ICON_SVG = {
+    book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H12v16H5.5c-.8 0-1.5-.7-1.5-1.5v-13z"/><path d="M20 5.5c0-.8-.7-1.5-1.5-1.5H12v16h6.5c.8 0 1.5-.7 1.5-1.5v-13z"/></svg>',
+    anime: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 7l2.5-3h11L20 7"/><rect x="4" y="7" width="16" height="13" rx="1.5"/><path d="M4 11.5h16M9 7v4.5M15 7v4.5"/></svg>',
+    manhwa: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="16" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/></svg>'
+  };
   function renderTabs() {
     var nav = document.getElementById("mainTabs");
     nav.innerHTML = "";
@@ -5458,7 +5599,11 @@
           }
           renderTabs(); renderTagFilters(); renderBrowseModeToggle(); renderGrid();
         }
-      }, [text(TYPE_META[type].label + " "), el("span", { class: "count" }, [text("(" + count + ")")])]);
+      }, [
+        el("span", { class: "tab-icon", html: TAB_ICON_SVG[type] || "" }),
+        text(TYPE_META[type].label + " "),
+        el("span", { class: "count" }, [text("(" + count + ")")])
+      ]);
       nav.appendChild(btn);
     });
   }
@@ -5768,8 +5913,7 @@
     if (breakdown) {
       var bd = breakdown;
       var tooltip = el("span", { class: "score-tooltip", role: "tooltip" }, [
-        el("span", { class: "score-tooltip-row" }, [text(bd.sharedCount + " shared (" + bd.totalTagsA + " + " + bd.totalTagsB + " tropes) → " + Math.round(bd.basePercent) + "% baseline")]),
-        el("span", { class: "score-tooltip-row" }, [text((bd.tropeAdjust >= 0 ? "+" : "") + Math.round(bd.tropeAdjust) + " from trope-accuracy votes")]),
+        el("span", { class: "score-tooltip-row" }, [text(bd.sharedCount + " shared (" + bd.totalTagsA + " + " + bd.totalTagsB + " tropes, vote-confidence weighted) → " + Math.round(bd.basePercent) + "% baseline")]),
         el("span", { class: "score-tooltip-row" }, [text((bd.matchAdjust >= 0 ? "+" : "") + Math.round(bd.matchAdjust) + " from match votes (" + bd.matchUp + "▲ " + bd.matchDown + "▼)")]),
         el("span", { class: "score-tooltip-total" }, [text("= " + bd.percent + "% Kindred")])
       ]);
@@ -5780,7 +5924,7 @@
       var info = el("span", {
         class: "score-info",
         tabindex: "0",
-        "aria-label": "How this score is calculated: " + bd.sharedCount + " shared across " + bd.totalTagsA + " and " + bd.totalTagsB + " tropes, " + (bd.tropeAdjust >= 0 ? "+" : "") + Math.round(bd.tropeAdjust) + " from trope votes, " + (bd.matchAdjust >= 0 ? "+" : "") + Math.round(bd.matchAdjust) + " from match votes.",
+        "aria-label": "How this score is calculated: " + bd.sharedCount + " shared across " + bd.totalTagsA + " and " + bd.totalTagsB + " vote-confidence-weighted tropes, " + (bd.matchAdjust >= 0 ? "+" : "") + Math.round(bd.matchAdjust) + " from match votes.",
         onclick: function (e) { e.stopPropagation(); }
       }, [el("span", { class: "score-info-icon", "aria-hidden": "true" }, [text("i")]), tooltip]);
       wrap.appendChild(info);
@@ -6249,6 +6393,26 @@
     state.showFavoritesOnly = !state.showFavoritesOnly;
     favToggleBtn.classList.toggle("active", state.showFavoritesOnly);
     renderGrid();
+  });
+
+  // Header nav — each button just jumps to (or activates) a real part of
+  // this one-page site; nothing here is a separate screen.
+  var navStartHereBtn = document.getElementById("navStartHere");
+  if (navStartHereBtn) navStartHereBtn.addEventListener("click", function () {
+    var sec = document.getElementById("startHere");
+    if (sec) sec.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+  var navBrowseBtn = document.getElementById("navBrowse");
+  if (navBrowseBtn) navBrowseBtn.addEventListener("click", function () {
+    var sec = document.getElementById("library");
+    if (sec) sec.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+  var navFavoritesBtn = document.getElementById("navFavorites");
+  if (navFavoritesBtn) navFavoritesBtn.addEventListener("click", function () {
+    favToggleBtn.click(); // same real toggle the toolbar button uses
+    navFavoritesBtn.classList.toggle("active-fav", state.showFavoritesOnly);
+    var sec = document.getElementById("library");
+    if (sec) sec.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
   var feedbackForm = document.getElementById("feedbackForm");
