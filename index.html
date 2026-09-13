@@ -1130,6 +1130,13 @@
     font-family: "Cormorant Garamond", ui-serif, Georgia, serif;
   }
   .card-title { font-size: 1.28rem; }
+  /* Title text is now a real <a href> underneath (for search engines and
+     cmd/ctrl-click), styled to be visually identical to the plain text it
+     replaces — the card/row's own onclick still drives the normal click. */
+  .card-title a, .series-book-title a, a.match-title, a.series-book-name {
+    color: inherit;
+    text-decoration: none;
+  }
   .kindred-match-label { color: var(--ink-soft); letter-spacing: .12em; }
   .fav-btn.active { color: var(--gilt-deep); }
   .share-btn:hover { color: var(--gilt-deep); }
@@ -1213,7 +1220,7 @@
           <span>Favorites</span>
         </button>
       </nav>
-      <div class="tagline">Stories kindred to the ones you already love.</div>
+      <h1 class="tagline">Stories kindred to the ones you already love.</h1>
     </div>
   </div>
 </header>
@@ -4213,7 +4220,7 @@
   TITLES.forEach(function (t) { TITLE_BY_ID[t.id] = t; });
 
   /* ---- purchase / read links (real search links; no affiliate tag wired up yet) ---- */
-  var AMAZON_ASSOCIATE_TAG = ""; // fill in your Associates tag once approved, e.g. "tropeatlas-20"
+  var AMAZON_ASSOCIATE_TAG = ""; // approved tag is "kindred0b5-20" — leave blank until ready to start monetizing
   function amazonSearch(q) {
     var url = "https://www.amazon.com/s?k=" + encodeURIComponent(q);
     if (AMAZON_ASSOCIATE_TAG) url += "&tag=" + encodeURIComponent(AMAZON_ASSOCIATE_TAG);
@@ -4691,6 +4698,15 @@
   }
   function shareUrlForSeries(seriesName) {
     return baseShareUrl() + "?series=" + encodeURIComponent(seriesName);
+  }
+  // Title/series names are real <a href> links now (so search engines can
+  // discover and index each one), but clicking one still opens the fast
+  // in-page panel instead of a full navigation — UNLESS the click means
+  // "open this in a new tab/window" (cmd/ctrl/shift/alt-click, or anything
+  // but the plain left button), in which case we get out of the way and
+  // let the browser follow the href normally.
+  function isPlainLeftClick(e) {
+    return e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey;
   }
   function shareUrlForPicks(pickIds) {
     return baseShareUrl() + "?picks=" + pickIds.map(encodeURIComponent).join(",");
@@ -5537,7 +5553,18 @@
           }
         }, [
           el("div", { class: "card-kicker" }, [text(hasRealSeries(m.title) ? "Series · " + formatLabel(m.title) : formatLabel(m.title))]),
-          el("div", { class: "card-title display" }, [text(hasRealSeries(m.title) ? m.title.series : m.title.title)]),
+          el("div", { class: "card-title display" }, [
+            el("a", {
+              href: hasRealSeries(m.title) ? shareUrlForSeries(m.title.series) : shareUrlForTitle(m.title.id),
+              tabindex: "-1",
+              onclick: function (e) {
+                if (!isPlainLeftClick(e)) return;
+                e.preventDefault();
+                e.stopPropagation();
+                hasRealSeries(m.title) ? openSeriesPage(m.title.series) : openDetail(m.title.id);
+              }
+            }, [text(hasRealSeries(m.title) ? m.title.series : m.title.title)])
+          ]),
           el("div", { class: "card-creator" }, [
             text(m.title.creator), m.title.year ? el("span", { class: "card-year" }, [text(" · " + m.title.year)]) : null
           ].filter(Boolean)),
@@ -5737,7 +5764,18 @@
       }
     }, [
       el("div", { class: "card-kicker" }, [text(formatLabel(t))]),
-      el("div", { class: "card-title display" }, [text(t.title)]),
+      el("div", { class: "card-title display" }, [
+        el("a", {
+          href: shareUrlForTitle(t.id),
+          tabindex: "-1",
+          onclick: function (e) {
+            if (!isPlainLeftClick(e)) return;
+            e.preventDefault();
+            e.stopPropagation();
+            openDetail(t.id);
+          }
+        }, [text(t.title)])
+      ]),
       el("div", { class: "card-creator" }, [text(t.creator), t.year ? el("span", { class: "card-year" }, [text(" · " + t.year)]) : null].filter(Boolean)),
       el("div", { class: "card-blurb" }, [text(t.blurb)]),
       el("div", { class: "card-tags" }, shownTags.map(function (tag) {
@@ -5798,7 +5836,18 @@
       }
     }, [
       el("div", { class: "card-kicker" }, [text("SERIES · " + mainBooks.length + (mainBooks.length === 1 ? " BOOK" : " BOOKS"))]),
-      el("div", { class: "card-title display" }, [text(seriesName)]),
+      el("div", { class: "card-title display" }, [
+        el("a", {
+          href: shareUrlForSeries(seriesName),
+          tabindex: "-1",
+          onclick: function (e) {
+            if (!isPlainLeftClick(e)) return;
+            e.preventDefault();
+            e.stopPropagation();
+            openSeriesPage(seriesName);
+          }
+        }, [text(seriesName)])
+      ]),
       el("div", { class: "card-creator" }, [text(creators.join(", ")), yearLabelStr ? el("span", { class: "card-year" }, [text(" · " + yearLabelStr)]) : null].filter(Boolean)),
       el("div", { class: "card-blurb series-card-books" }, [text(preview)]),
       el("div", { class: "card-tags" }, shownTags.map(function (tag) {
@@ -5852,9 +5901,104 @@
     });
   }
 
+  /* ============================= ROUTE META ============================= */
+  // Each title/series panel now gets its own real URL (?title=id / ?series=
+  // name) pushed onto browser history, plus its own <title>/description/
+  // canonical/OG/Twitter tags, so search engines can index (and social
+  // shares can preview) an individual title instead of everything looking
+  // like one homepage. Captured once, before anything ever opens, so
+  // closing a panel can restore the exact original tags instead of
+  // hardcoding the homepage copy a second time here.
+  var routeTitleEl = document.querySelector("title");
+  var routeDescEl = document.querySelector('meta[name="description"]');
+  var routeCanonicalEl = document.querySelector('link[rel="canonical"]');
+  var routeOgTitleEl = document.querySelector('meta[property="og:title"]');
+  var routeOgDescEl = document.querySelector('meta[property="og:description"]');
+  var routeOgUrlEl = document.querySelector('meta[property="og:url"]');
+  var routeTwitterTitleEl = document.querySelector('meta[name="twitter:title"]');
+  var routeTwitterDescEl = document.querySelector('meta[name="twitter:description"]');
+  var DEFAULT_ROUTE_META = {
+    title: routeTitleEl ? routeTitleEl.textContent : document.title,
+    description: routeDescEl ? routeDescEl.getAttribute("content") : "",
+    ogTitle: routeOgTitleEl ? routeOgTitleEl.getAttribute("content") : "",
+    ogDescription: routeOgDescEl ? routeOgDescEl.getAttribute("content") : "",
+    canonical: routeCanonicalEl ? routeCanonicalEl.getAttribute("href") : baseShareUrl()
+  };
+  function routeMetaForTitle(t) {
+    var pageTitle = t.title + " — Kindred";
+    var desc = "Find anime, manhwa, webtoons, and books kindred to " + t.title +
+      " — matched by trope DNA, confirmed by other readers.";
+    return { title: pageTitle, description: desc, ogTitle: pageTitle, ogDescription: desc, canonical: shareUrlForTitle(t.id) };
+  }
+  function routeMetaForSeries(seriesName) {
+    var pageTitle = seriesName + " — Kindred";
+    var desc = "Every book in " + seriesName + ", matched to kindred anime, manhwa, and webtoons by trope DNA.";
+    return { title: pageTitle, description: desc, ogTitle: pageTitle, ogDescription: desc, canonical: shareUrlForSeries(seriesName) };
+  }
+  function setRouteMeta(meta) {
+    document.title = meta.title;
+    if (routeDescEl) routeDescEl.setAttribute("content", meta.description);
+    if (routeCanonicalEl) routeCanonicalEl.setAttribute("href", meta.canonical);
+    if (routeOgTitleEl) routeOgTitleEl.setAttribute("content", meta.ogTitle);
+    if (routeOgDescEl) routeOgDescEl.setAttribute("content", meta.ogDescription);
+    if (routeOgUrlEl) routeOgUrlEl.setAttribute("content", meta.canonical);
+    if (routeTwitterTitleEl) routeTwitterTitleEl.setAttribute("content", meta.ogTitle);
+    if (routeTwitterDescEl) routeTwitterDescEl.setAttribute("content", meta.ogDescription);
+  }
+  // The single place that reacts to "the open title/series changed" by
+  // updating the address bar + head tags + GA4 — called whether that change
+  // came from a click (push a new history entry) or the back/forward
+  // button (history already moved; just resync everything to match).
+  // route is {type:"title", id} / {type:"series", name} / null (closed).
+  function syncDetailRoute(route, opts) {
+    opts = opts || {};
+    var url, meta;
+    if (route && route.type === "title") {
+      var t = TITLE_BY_ID[route.id];
+      if (!t) return;
+      url = shareUrlForTitle(t.id);
+      meta = routeMetaForTitle(t);
+    } else if (route && route.type === "series") {
+      url = shareUrlForSeries(route.name);
+      meta = routeMetaForSeries(route.name);
+    } else {
+      url = baseShareUrl();
+      meta = DEFAULT_ROUTE_META;
+    }
+    setRouteMeta(meta);
+    if (!opts.fromPopstate) {
+      var historyMethod = opts.replace ? "replaceState" : "pushState";
+      window.history[historyMethod]({ kindredRoute: route }, "", url);
+    }
+    if (typeof window.gtag === "function") {
+      window.gtag("event", "page_view", { page_location: url, page_title: meta.title });
+    }
+  }
+  // Reacts to the browser's own back/forward buttons — the only other place
+  // state.openTitleId/openSeriesName should change, so the URL and what's
+  // on screen can never drift out of sync with each other.
+  window.addEventListener("popstate", function (e) {
+    var route = e.state && e.state.kindredRoute;
+    if (route && route.type === "title") {
+      if (state.openTitleId !== route.id) openDetailPanel(route.id);
+      syncDetailRoute(route, { fromPopstate: true });
+    } else if (route && route.type === "series") {
+      if (state.openSeriesName !== route.name) openSeriesPanel(route.name);
+      syncDetailRoute(route, { fromPopstate: true });
+    } else {
+      if (state.openTitleId || state.openSeriesName) closeDetailPanel();
+      syncDetailRoute(null, { fromPopstate: true });
+    }
+  });
+
   /* ============================= RENDER: detail ============================= */
 
-  function openDetail(id) {
+  function openDetail(id, opts) {
+    if (!TITLE_BY_ID[id]) return;
+    openDetailPanel(id);
+    syncDetailRoute({ type: "title", id: id }, opts);
+  }
+  function openDetailPanel(id) {
     var openedTitle = TITLE_BY_ID[id];
     if (!openedTitle) return;
     state.lastFocusedElement = document.activeElement;
@@ -5885,12 +6029,21 @@
   // Also switches the underlying Books tab into "By Series" mode so that
   // closing the panel (or a shared ?series= link landing here fresh) shows
   // a browsing context that actually matches what's open.
-  function openSeriesPage(seriesName) {
+  function openSeriesPage(seriesName, opts) {
     if (!isRealSeriesName(seriesName)) {
       var lone = TITLES.find(function (t) { return t.type === "book" && t.series === seriesName; });
-      if (lone) return openDetail(lone.id);
+      if (lone) return openDetail(lone.id, opts);
       return;
     }
+    openSeriesPanel(seriesName);
+    // renderSeriesDetail defensively self-closes (see the `!books.length`
+    // guard below) if it ends up with no books to show — in that case the
+    // panel is already closed, so sync the URL/meta to "closed" instead of
+    // pointing them at a series page nothing is actually displaying.
+    if (state.openSeriesName === seriesName) syncDetailRoute({ type: "series", name: seriesName }, opts);
+    else syncDetailRoute(null, opts);
+  }
+  function openSeriesPanel(seriesName) {
     trackEvent("series_open", { series_name: seriesName });
     state.lastFocusedElement = document.activeElement;
     state.openSeriesName = seriesName;
@@ -5909,7 +6062,10 @@
     var firstFocus = document.querySelector("#detail .detail-close");
     if (firstFocus) firstFocus.focus();
   }
-  function closeDetail() {
+  // The actual panel-closing work, shared by a direct UI close and a
+  // popstate-driven one (see closeDetail/requestCloseDetail below) — never
+  // touches history itself, so it can't create or consume entries twice.
+  function closeDetailPanel() {
     state.openTitleId = null;
     state.openSeriesName = null;
     document.getElementById("scrim").classList.remove("open");
@@ -5921,12 +6077,26 @@
     state.lastFocusedElement = null;
     if (restore && typeof restore.focus === "function") { try { restore.focus(); } catch (e) {} }
   }
-  document.getElementById("scrim").addEventListener("click", closeDetail);
+  function closeDetail(opts) {
+    closeDetailPanel();
+    if (!(opts && opts.fromPopstate)) syncDetailRoute(null, opts);
+  }
+  // Every direct UI close (✕ button, scrim click, Escape) goes through
+  // here instead of calling closeDetail() straight away: if opening the
+  // panel pushed a history entry, going back to close it keeps the
+  // back/forward button behaving the way people expect (back = "go to
+  // what I was looking at before"), rather than leaving a dangling forward
+  // entry that still points at a title/series the panel no longer shows.
+  function requestCloseDetail() {
+    if (window.history.state && window.history.state.kindredRoute) window.history.back();
+    else closeDetail();
+  }
+  document.getElementById("scrim").addEventListener("click", requestCloseDetail);
   document.addEventListener("keydown", function (e) {
     var detail = document.getElementById("detail");
     var modalOpen = detail.classList.contains("open");
     if (!modalOpen) return;
-    if (e.key === "Escape") { closeDetail(); return; }
+    if (e.key === "Escape") { requestCloseDetail(); return; }
     if (e.key === "Tab") {
       var focusables = Array.prototype.slice.call(detail.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])')).filter(function (el) {
         return !el.hidden && el.offsetParent !== null;
@@ -6034,7 +6204,7 @@
     inner.appendChild(el("div", { class: "detail-head-actions" }, [
       shareBtn,
       fsBtn,
-      el("button", { class: "detail-close", onclick: closeDetail, "aria-label": "Close" }, [text("✕")])
+      el("button", { class: "detail-close", onclick: requestCloseDetail, "aria-label": "Close" }, [text("✕")])
     ]));
 
     var mainCount = books.filter(function (b) { return Number.isInteger(b.seriesIndex); }).length;
@@ -6071,7 +6241,18 @@
           : el("div", { class: "series-book-cover series-book-cover-empty", "aria-hidden": "true" }),
         el("div", { class: "series-book-row-text" }, [
           el("div", { class: "series-book-index" }, [text(indexLabel)]),
-          el("div", { class: "series-book-title" }, [text(b.title)]),
+          el("div", { class: "series-book-title" }, [
+            el("a", {
+              href: shareUrlForTitle(b.id),
+              tabindex: "-1",
+              onclick: function (e) {
+                if (!isPlainLeftClick(e)) return;
+                e.preventDefault();
+                e.stopPropagation();
+                openDetail(b.id);
+              }
+            }, [text(b.title)])
+          ]),
           el("div", { class: "series-book-tags" }, b.tags.map(function (tag) {
             return el("span", { class: "tagpill", style: "--accent:" + meta.accent + ";--mix:" + tagMixPercent(b.id, tag) + "%" }, [text(TAGS[tag])]);
           })),
@@ -6125,7 +6306,7 @@
     inner.appendChild(el("div", { class: "detail-head-actions" }, [
       shareBtn,
       fsBtn,
-      el("button", { class: "detail-close", onclick: closeDetail, "aria-label": "Close" }, [text("✕")])
+      el("button", { class: "detail-close", onclick: requestCloseDetail, "aria-label": "Close" }, [text("✕")])
     ]));
 
     // The cover — a book's cover, an anime's key art, a manhwa/webtoon's
@@ -6199,6 +6380,12 @@
     });
     actions.appendChild(favBtn);
     inner.appendChild(actions);
+
+    if (AMAZON_ASSOCIATE_TAG && (t.type === "book" || t.type === "manhwa")) {
+      inner.appendChild(el("p", { class: "detail-year", style: "margin-top:6px;" }, [
+        text("As an Amazon Associate I earn from qualifying purchases.")
+      ]));
+    }
 
     inner.appendChild(el("div", { class: "section-label" }, [text("You might also like")]));
     var matchTabs = el("div", { class: "match-tabs" });
@@ -6361,7 +6548,14 @@
         card.appendChild(el("div", { class: "match-head" }, [
           el("div", {}, [
             el("div", { class: "match-kicker", style: "color:" + TYPE_META[m.title.type].accent }, [text(formatLabel(m.title))]),
-            el("div", { class: "match-title", onclick: function () { openDetail(m.title.id); } }, [text(m.title.title)]),
+            el("a", {
+              class: "match-title", href: shareUrlForTitle(m.title.id),
+              onclick: function (e) {
+                if (!isPlainLeftClick(e)) return;
+                e.preventDefault();
+                openDetail(m.title.id);
+              }
+            }, [text(m.title.title)]),
             el("div", { class: "match-creator" }, [text(m.title.creator)])
           ]),
           m.percent ? renderScoreBadge(m.percent, kindredScoreBreakdown(t, m.title, m.shared), TYPE_META[m.title.type].accent) : null
@@ -6379,7 +6573,14 @@
         el("div", {}, [
           el("div", { class: "match-kicker", style: "color:" + TYPE_META[g.books[0].title.type].accent }, [text(formatLabel(g.books[0].title))]),
           el("div", { class: "series-kicker" }, [text("Series match")]),
-          el("div", { class: "match-title", onclick: function () { openSeriesPage(g.series); } }, [text(g.series)]),
+          el("a", {
+            class: "match-title", href: shareUrlForSeries(g.series),
+            onclick: function (e) {
+              if (!isPlainLeftClick(e)) return;
+              e.preventDefault();
+              openSeriesPage(g.series);
+            }
+          }, [text(g.series)]),
           el("div", { class: "match-creator" }, [text(g.books[0].title.creator)])
         ]),
         null
@@ -6389,7 +6590,14 @@
         var bookRow = el("div", { class: "series-book" });
         bookRow.appendChild(el("div", { class: "series-book-name-line" }, [
           el("span", { class: "series-book-index" }, [text(m.title.seriesIndex ? ("Book " + m.title.seriesIndex) : "")]),
-          el("span", { class: "series-book-name", onclick: function () { openDetail(m.title.id); } }, [text(m.title.title)]),
+          el("a", {
+            class: "series-book-name", href: shareUrlForTitle(m.title.id),
+            onclick: function (e) {
+              if (!isPlainLeftClick(e)) return;
+              e.preventDefault();
+              openDetail(m.title.id);
+            }
+          }, [text(m.title.title)]),
           m.percent ? renderScoreBadge(m.percent, kindredScoreBreakdown(t, m.title, m.shared), TYPE_META[m.title.type].accent) : null
         ].filter(Boolean)));
         buildMatchBody(bookRow, m);
@@ -6521,8 +6729,11 @@
   renderBrowseModeToggle();
   renderGrid();
 
-  if (shareParams.titleId) openDetail(shareParams.titleId);
-  else if (shareParams.seriesName) openSeriesPage(shareParams.seriesName);
+  // {replace: true} — the browser already navigated to this ?title=/?series=
+  // URL to load the page, so this attaches our route metadata to that
+  // existing history entry instead of pushing a redundant second one.
+  if (shareParams.titleId) openDetail(shareParams.titleId, { replace: true });
+  else if (shareParams.seriesName) openSeriesPage(shareParams.seriesName, { replace: true });
 
   // Tag votes affect matching/sorting everywhere, so refresh whatever's on
   // screen whenever the live vote data changes (from any viewer) — this is
