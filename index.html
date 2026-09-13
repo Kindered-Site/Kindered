@@ -11,9 +11,19 @@
 <meta property="og:title" content="Kindred — Stories kindred to the ones you already love">
 <meta property="og:description" content="Discover stories matched by trope DNA, then let readers refine the connection.">
 <meta property="og:url" content="https://kindered-phi.vercel.app/">
-<meta name="twitter:card" content="summary">
+<!-- og-image.png lives at the repo root next to index.html — it has to be
+     a real fetchable file, not a data: URI, since social platforms (X,
+     Facebook, Discord, Slack, iMessage) won't render a data: URI as a
+     share-preview image. It was rendered from the site's own tokens/logo/
+     type so it matches the live page. -->
+<meta property="og:image" content="https://kindered-phi.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Kindred — Stories kindred to the ones you already love.">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Kindred — Stories kindred to the ones you already love">
 <meta name="twitter:description" content="Discover stories matched by trope DNA, then let readers refine the connection.">
+<meta name="twitter:image" content="https://kindered-phi.vercel.app/og-image.png">
 <title>Kindred — Stories kindred to the ones you already love</title>
 <!-- Same glyph and gradient as the header's brand mark (see .brand-glyph),
      baked into a plain SVG since a favicon can't read CSS custom
@@ -1263,8 +1273,13 @@
   <div class="toolbar">
     <div class="search-box">
       <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-      <label class="sr-only" for="searchInput">Search titles, authors, or tropes</label>
-      <input id="searchInput" type="search" placeholder="Search title, author, or trope…" autocomplete="off" aria-label="Search titles, authors, or tropes">
+      <!-- The visible sr-only label below is the input's accessible name.
+           An aria-label used to sit on the input too, worded slightly
+           differently from both this label and the placeholder — screen
+           reader users could hear one thing while sighted users read
+           another. Dropped it so there's a single, consistent name. -->
+      <label class="sr-only" for="searchInput">Search title, author, or trope</label>
+      <input id="searchInput" type="search" placeholder="Search title, author, or trope…" autocomplete="off">
     </div>
     <div class="browse-mode-toggle" id="browseModeToggle" role="group" aria-label="Browse books by"></div>
     <button class="fav-toggle" id="favToggle" type="button">
