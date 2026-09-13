@@ -1685,9 +1685,10 @@
       year: 2015,
       cover: "https://cdn.myanimelist.net/images/anime/10/75764.jpg",
       // crunchyrollUrl removed — confirmed dead (leads to Crunchyroll's error
-      // page as of Sept 2026). Falls back to a labeled Crunchyroll search
-      // instead of a link that's guaranteed to fail. Re-add once a real,
-      // working Crunchyroll URL for this title is confirmed.
+      // page as of Sept 2026), and not in Crunchyroll's current catalog
+      // either (checked live). Falls back to a labeled Crunchyroll search.
+      // netflixUrl below is a real, live-verified link (Sept 2026).
+      netflixUrl: "https://www.netflix.com/title/80220658",
       blurb: "A pharmacist with rare red hair flees an unwanted royal proposal and slowly builds a life — and a quiet, steady romance — in a neighboring kingdom's palace.",
       tags: ["court-politics","slow-burn","found-family"] },
     { id: "a-fruits-basket", type: "anime", title: "Fruits Basket", creator: "Studio: TMS Entertainment",
@@ -4204,15 +4205,15 @@
     return url;
   }
   function goodreadsSearch(q) { return "https://www.goodreads.com/search?q=" + encodeURIComponent(q); }
-  // Platform search pages can redirect to a generic homepage or change their
-  // query-string format. Use Google site-search for discovery links so the
-  // user's exact title is preserved and the link reliably opens a results page.
-  function platformSearch(domain, q) {
-    return "https://www.google.com/search?q=" + encodeURIComponent('site:' + domain + ' "' + q + '"');
-  }
-  function crunchyrollSearch(q) { return platformSearch("crunchyroll.com", q); }
-  function netflixSearch(q) { return platformSearch("netflix.com", q); }
-  function webtoonSearch(q) { return platformSearch("webtoons.com", q); }
+  // When a title has no confirmed direct URL, send the visitor straight to
+  // that platform's OWN search results page (not a Google site: search) so
+  // clicking "Search Crunchyroll"/"Search Netflix"/"Search Webtoon" actually
+  // lands on crunchyroll.com / netflix.com / webtoons.com with the title
+  // already searched, one click from playing/reading it. Verified live
+  // (Sept 2026) that each of these query formats returns real results.
+  function crunchyrollSearch(q) { return "https://www.crunchyroll.com/search?q=" + encodeURIComponent(q); }
+  function netflixSearch(q) { return "https://www.netflix.com/search?q=" + encodeURIComponent(q); }
+  function webtoonSearch(q) { return "https://www.webtoons.com/en/search?keyword=" + encodeURIComponent(q); }
   function googleSearch(q) { return "https://www.google.com/search?q=" + encodeURIComponent(q); }
 
   // Anime and manga/manhwa/webtoon titles were individually checked against
