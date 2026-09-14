@@ -144,6 +144,16 @@
     font-size: 0.76rem;
     line-height: 1.55;
   }
+  .footer-legal {
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
+  }
+  .footer-legal a { color: var(--ink-soft); text-decoration: none; }
+  .footer-legal a:hover, .footer-legal a:focus-visible { color: var(--gilt-deep); text-decoration: underline; }
+  .footer-legal span { color: var(--line); }
   .series-book-row:focus-visible, [role="button"]:focus-visible, button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible {
     outline: 3px solid color-mix(in srgb, var(--gilt) 72%, transparent);
     outline-offset: 3px;
@@ -1328,6 +1338,7 @@
   <div class="wrap">
     <div>Kindred is a growing library of well-known titles to prove out the matching idea — add your own picks as it grows.</div>
     <div class="footer-disclaimer">Community votes are shared live. Each browser can cast one vote per title/trope or match pairing; votes are not tied to a verified account.</div>
+    <div class="footer-legal"><a href="/privacy.html">Privacy Policy</a><span aria-hidden="true">&middot;</span><a href="/terms.html">Terms of Use</a></div>
   </div>
 </footer>
 
@@ -1497,27 +1508,50 @@
     // Using the normal https URL in the current browsing context gives iOS
     // Universal Links / Android App Links the best chance to hand the user
     // to the installed app; desktop still opens external links in a new tab.
-    return isMobileDevice() ? { href: link.href, rel: "noopener" } : { href: link.href, target: "_blank", rel: "noopener" };
+    if (!isMobileDevice()) return { href: link.href, target: "_blank", rel: "noopener" };
+    if (!link.isSearchLink) return { href: link.href, rel: "noopener" };
+    // SEARCH links (no confirmed direct URL for this exact title, so this is
+    // a best-effort "go search for it" link) need different handling on
+    // mobile. Several apps — confirmed on Netflix and Webtoons — register
+    // their whole domain for Universal Links/App Links but don't support
+    // deep-linking straight into a *search results* page: tapping the link
+    // still hands off to the installed app, which just opens to its own
+    // home/browse screen and silently drops the search term entirely. The
+    // app never even sees what we were searching for.
+    // iOS/Android only intercept a Universal Link / App Link on a *direct*,
+    // same-tick anchor tap. Deferring the actual navigation by a tick via
+    // JS (instead of letting the click itself perform it) keeps this a
+    // normal programmatic navigation, which stays in the mobile browser —
+    // so the search reliably lands on the real search-results page.
+    return {
+      href: link.href,
+      rel: "noopener",
+      onclick: function (e) {
+        e.preventDefault();
+        var url = link.href;
+        setTimeout(function () { window.location.href = url; }, 0);
+      }
+    };
   }
 
   function getLinks(title) {
     if (title.type === "book") {
       return [
-        { label: "Buy the book", href: amazonSearch(title.title + " " + title.creator), primary: true },
-        { label: "Find on Goodreads", href: goodreadsSearch(title.title + " " + title.creator), primary: false }
+        { label: "Buy the book", href: amazonSearch(title.title + " " + title.creator), primary: true, isSearchLink: true },
+        { label: "Find on Goodreads", href: goodreadsSearch(title.title + " " + title.creator), primary: false, isSearchLink: true }
       ];
     }
     if (title.type === "anime") {
       return [
-        { label: title.crunchyrollUrl ? "Watch on Crunchyroll" : "Search Crunchyroll", href: title.crunchyrollUrl || crunchyrollSearch(title.title), primary: true },
-        { label: title.netflixUrl ? "Watch on Netflix" : "Search Netflix", href: title.netflixUrl || netflixSearch(title.title), primary: false },
-        { label: "Find online", href: googleSearch("watch " + title.title + " online"), primary: false }
+        { label: title.crunchyrollUrl ? "Watch on Crunchyroll" : "Search Crunchyroll", href: title.crunchyrollUrl || crunchyrollSearch(title.title), primary: true, isSearchLink: !title.crunchyrollUrl },
+        { label: title.netflixUrl ? "Watch on Netflix" : "Search Netflix", href: title.netflixUrl || netflixSearch(title.title), primary: false, isSearchLink: !title.netflixUrl },
+        { label: "Find online", href: googleSearch("watch " + title.title + " online"), primary: false, isSearchLink: true }
       ];
     }
     return [
-      { label: title.webtoonsUrl ? "Read on Webtoon" : "Search Webtoon", href: title.webtoonsUrl || webtoonSearch(title.title), primary: true },
-      { label: "Buy the volumes", href: amazonSearch(title.title), primary: false },
-      { label: "Find online", href: googleSearch("read " + title.title + " online"), primary: false }
+      { label: title.webtoonsUrl ? "Read on Webtoon" : "Search Webtoon", href: title.webtoonsUrl || webtoonSearch(title.title), primary: true, isSearchLink: !title.webtoonsUrl },
+      { label: "Buy the volumes", href: amazonSearch(title.title), primary: false, isSearchLink: true },
+      { label: "Find online", href: googleSearch("read " + title.title + " online"), primary: false, isSearchLink: true }
     ];
   }
 
@@ -3617,7 +3651,14 @@
     var actions = el("div", { class: "detail-actions" });
     getLinks(t).forEach(function (link) {
       var attrs = Object.assign({ class: "btn " + (link.primary ? "btn-primary" : "btn-ghost") }, externalLinkAttrs(link));
-      attrs.onclick = function () { trackEvent("outbound_click", { title_id: t.id, title: t.title, destination: link.label }); };
+      // externalLinkAttrs sets its own onclick on mobile search links (to
+      // defer navigation past the app-hijack window — see its comment);
+      // chain it with the outbound-click tracker instead of clobbering it.
+      var navHandler = attrs.onclick;
+      attrs.onclick = function (e) {
+        trackEvent("outbound_click", { title_id: t.id, title: t.title, destination: link.label });
+        if (navHandler) navHandler(e);
+      };
       actions.appendChild(el("a", attrs, [text(link.label)]));
     });
     var favCount = favCountCache[t.id] || 0;
