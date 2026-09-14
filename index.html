@@ -144,6 +144,12 @@
     font-size: 0.76rem;
     line-height: 1.55;
   }
+  .affiliate-note {
+    margin-top: 10px;
+    color: var(--ink-soft);
+    font-size: 0.74rem;
+    line-height: 1.5;
+  }
   .footer-legal {
     margin-top: 14px;
     display: flex;
@@ -1338,6 +1344,7 @@
   <div class="wrap">
     <div>Kindred is a growing library of well-known titles to prove out the matching idea — add your own picks as it grows.</div>
     <div class="footer-disclaimer">Community votes are shared live. Each browser can cast one vote per title/trope or match pairing; votes are not tied to a verified account.</div>
+    <div class="footer-disclaimer">Kindred is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn advertising fees by linking to Amazon.com. As an Amazon Associate, Kindred earns from qualifying purchases.</div>
     <div class="footer-legal"><a href="/privacy.html">Privacy Policy</a><span aria-hidden="true">&middot;</span><a href="/terms.html">Terms of Use</a></div>
   </div>
 </footer>
@@ -1473,8 +1480,8 @@
   }
   TITLES.forEach(function (t) { TITLE_BY_ID[t.id] = t; });
 
-  /* ---- purchase / read links (real search links; no affiliate tag wired up yet) ---- */
-  var AMAZON_ASSOCIATE_TAG = ""; // approved tag is "kindred0b5-20" — leave blank until ready to start monetizing
+  /* ---- purchase / read links (Amazon Associates tag live as of Sept 2026) ---- */
+  var AMAZON_ASSOCIATE_TAG = "kindred0b5-20";
   function amazonSearch(q) {
     var url = "https://www.amazon.com/s?k=" + encodeURIComponent(q);
     if (AMAZON_ASSOCIATE_TAG) url += "&tag=" + encodeURIComponent(AMAZON_ASSOCIATE_TAG);
@@ -3222,12 +3229,6 @@
     if (routeTwitterTitleEl) routeTwitterTitleEl.setAttribute("content", meta.ogTitle);
     if (routeTwitterDescEl) routeTwitterDescEl.setAttribute("content", meta.ogDescription);
   }
-  // True once this page has ever pushed a history entry of its own — i.e.
-  // there's a real, same-app entry sitting directly behind whatever's
-  // showing now. False right after landing straight on a shared/Google
-  // ?title=/?series= link, where the entry behind us belongs to whatever
-  // site sent the visitor here, not to Kindred. See requestCloseDetail.
-  var hasPushedDetailRoute = false;
   // The single place that reacts to "the open title/series changed" by
   // updating the address bar + head tags + GA4 — called whether that change
   // came from a click (push a new history entry) or the back/forward
@@ -3252,10 +3253,6 @@
     if (!opts.fromPopstate) {
       var historyMethod = opts.replace ? "replaceState" : "pushState";
       window.history[historyMethod]({ kindredRoute: route }, "", url);
-      // Once we've ever pushed (as opposed to replaced) an entry, there's a
-      // real entry from THIS app sitting directly behind wherever we are
-      // now — see requestCloseDetail below for why that distinction matters.
-      if (historyMethod === "pushState") hasPushedDetailRoute = true;
     }
     if (typeof window.gtag === "function") {
       window.gtag("event", "page_view", { page_location: url, page_title: meta.title });
@@ -3369,22 +3366,26 @@
     if (!(opts && opts.fromPopstate)) syncDetailRoute(null, opts);
   }
   // Every direct UI close (✕ button, scrim click, Escape) goes through
-  // here instead of calling closeDetail() straight away: when this page has
-  // pushed a history entry of its own, going back to close keeps the
-  // back/forward button behaving the way people expect (back = "go to what
-  // I was looking at before"), rather than leaving a dangling forward entry
-  // that still points at a title/series the panel no longer shows.
+  // here, and it always EXITS — pushing a plain "closed" entry — rather
+  // than calling history.back(). ✕ means "I'm done looking at this," full
+  // stop, whether you got here by clicking straight in from the grid or by
+  // clicking through three matches first; it should never dump you back
+  // onto whatever title you were on two clicks ago.
   //
-  // But when someone lands STRAIGHT on a shared/Google ?title=/?series=
-  // link and closes it without ever navigating anywhere else first,
-  // hasPushedDetailRoute is still false — there's no Kindred entry behind
-  // this one, only whatever site sent them here. history.back() there
-  // would bounce the visitor off Kindred entirely just for closing a
-  // panel, so that case pushes a plain "closed" entry instead, the same
-  // way it would if history had been unavailable altogether.
+  // The browser's own Back button is the one that walks backward through
+  // previously-viewed titles/series — that already works for free, because
+  // every openDetail()/openSeriesPage() pushes its own history entry (see
+  // syncDetailRoute above) and the popstate listener re-opens whatever
+  // route it lands on. So ✕ and Back now do two different, non-overlapping
+  // things, instead of ✕ secretly being another way to trigger Back.
+  //
+  // This also happens to make the shared/Google ?title=/?series= landing
+  // case simpler than it used to be: there's no special-case branch needed
+  // for "no Kindred entry behind this one" — pushing a "closed" entry is
+  // correct either way, so it's fine if this leaves a harmless extra
+  // history entry on your way back out to wherever you came from.
   function requestCloseDetail() {
-    if (hasPushedDetailRoute && window.history.state && window.history.state.kindredRoute) window.history.back();
-    else closeDetail();
+    closeDetail();
   }
   document.getElementById("scrim").addEventListener("click", requestCloseDetail);
   document.addEventListener("keydown", function (e) {
@@ -3682,10 +3683,9 @@
     });
     actions.appendChild(favBtn);
     inner.appendChild(actions);
-
     if (AMAZON_ASSOCIATE_TAG && (t.type === "book" || t.type === "manhwa")) {
-      inner.appendChild(el("p", { class: "detail-year", style: "margin-top:6px;" }, [
-        text("As an Amazon Associate I earn from qualifying purchases.")
+      inner.appendChild(el("div", { class: "affiliate-note" }, [
+        text("As an Amazon Associate, Kindred earns from qualifying purchases made through the Amazon link above.")
       ]));
     }
 
