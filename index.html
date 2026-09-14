@@ -801,15 +801,16 @@
      sane and just center it in the extra room, same as a wide article page. */
   .detail.fullscreen .detail-inner { max-width: 760px; margin: 0 auto; }
   .detail-head-actions { float: right; display: flex; gap: 8px; }
-  .detail-close, .detail-fullscreen-toggle, .detail-share-btn {
+  .detail-close, .detail-fullscreen-toggle, .detail-share-btn, .detail-back-btn {
     appearance: none; border: 1px solid var(--line); background: var(--card-bg);
     color: var(--ink); width: 34px; height: 34px; border-radius: 50%;
     cursor: pointer; font-size: 1rem;
     display: flex; align-items: center; justify-content: center;
   }
+  .detail-back-btn[hidden] { display: none; }
   .detail-fullscreen-toggle { font-size: 0.85rem; }
   .detail-share-btn svg { width: 15px; height: 15px; }
-  .detail-fullscreen-toggle:hover, .detail-close:hover, .detail-share-btn:hover { border-color: var(--gilt); }
+  .detail-fullscreen-toggle:hover, .detail-close:hover, .detail-share-btn:hover, .detail-back-btn:hover { border-color: var(--gilt); }
   .detail-share-btn.copied { color: var(--jade); border-color: var(--jade); }
   .detail-kicker { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; }
   .detail-series-badge {
@@ -3234,6 +3235,27 @@
   // came from a click (push a new history entry) or the back/forward
   // button (history already moved; just resync everything to match).
   // route is {type:"title", id} / {type:"series", name} / null (closed).
+  // kindredNavDepth tracks how many real (non-replace) pushState calls deep
+  // the CURRENT history entry is within Kindred's own back/forward chain —
+  // stored on the entry itself (kindredDepth) so a popstate, even after a
+  // page reload, can resync it correctly. kindredRouteStack shadows it,
+  // recording the route TYPE ("title"/"series") that was open at each depth,
+  // so the in-panel back arrow (see the "◄ Back" button below) can tell
+  // whether going back would land on an actual title/series — worth
+  // surfacing an arrow for — versus just closing the panel, which the ✕
+  // already does. depth 0 is always "nothing Kindred-specific to go back
+  // to" (the tab's original load), so the arrow only shows past that.
+  var kindredNavDepth = 0;
+  var kindredRouteStack = [null];
+  function canGoBackToTitle() {
+    if (kindredNavDepth <= 0) return false;
+    var prev = kindredRouteStack[kindredNavDepth - 1];
+    // Unknown (e.g. right after a reload, landing deep in a share link's
+    // history with no in-memory record yet) defaults to showing the arrow —
+    // history.back() is always safe to call either way, and in practice a
+    // depth this deep almost always means a title/series is behind it.
+    return prev === undefined || (prev && (prev.type === "title" || prev.type === "series"));
+  }
   function syncDetailRoute(route, opts) {
     opts = opts || {};
     var url, meta;
@@ -3252,7 +3274,15 @@
     setRouteMeta(meta);
     if (!opts.fromPopstate) {
       var historyMethod = opts.replace ? "replaceState" : "pushState";
-      window.history[historyMethod]({ kindredRoute: route }, "", url);
+      if (historyMethod === "pushState") {
+        kindredRouteStack[kindredNavDepth] = kindredRouteStack[kindredNavDepth] || null;
+        kindredNavDepth++;
+        kindredRouteStack[kindredNavDepth] = route;
+        kindredRouteStack.length = kindredNavDepth + 1;
+      } else {
+        kindredRouteStack[kindredNavDepth] = route;
+      }
+      window.history[historyMethod]({ kindredRoute: route, kindredDepth: kindredNavDepth }, "", url);
     }
     if (typeof window.gtag === "function") {
       window.gtag("event", "page_view", { page_location: url, page_title: meta.title });
@@ -3263,6 +3293,8 @@
   // on screen can never drift out of sync with each other.
   window.addEventListener("popstate", function (e) {
     var route = e.state && e.state.kindredRoute;
+    kindredNavDepth = (e.state && typeof e.state.kindredDepth === "number") ? e.state.kindredDepth : 0;
+    if (kindredRouteStack[kindredNavDepth] === undefined) kindredRouteStack[kindredNavDepth] = route || null;
     if (route && route.type === "title") {
       if (state.openTitleId !== route.id) openDetailPanel(route.id);
       syncDetailRoute(route, { fromPopstate: true });
@@ -3274,6 +3306,21 @@
       syncDetailRoute(null, { fromPopstate: true });
     }
   });
+  // Bound to the in-panel back arrow (see renderDetail/renderSeriesDetail) —
+  // just replays the browser's own Back button, so it goes through the same
+  // popstate handling as clicking Back for real, rather than duplicating it.
+  function goBackToPreviousTitle() { window.history.back(); }
+  // renderDetail/renderSeriesDetail render the back-arrow button using
+  // whatever kindredNavDepth/kindredRouteStack held at render time — but
+  // that render happens (via openDetailPanel/openSeriesPanel) before the
+  // syncDetailRoute call further down updates them for THIS navigation.
+  // Rather than reorder those calls (openSeriesPage's self-closing guard
+  // depends on the panel having already opened first), just patch the
+  // button's visibility once more right after syncDetailRoute runs.
+  function refreshBackButtonVisibility() {
+    var btn = document.querySelector("#detail .detail-back-btn");
+    if (btn) btn.hidden = !canGoBackToTitle();
+  }
 
   /* ============================= RENDER: detail ============================= */
 
@@ -3281,6 +3328,7 @@
     if (!TITLE_BY_ID[id]) return;
     openDetailPanel(id);
     syncDetailRoute({ type: "title", id: id }, opts);
+    refreshBackButtonVisibility();
   }
   function openDetailPanel(id) {
     var openedTitle = TITLE_BY_ID[id];
@@ -3326,6 +3374,7 @@
     // pointing them at a series page nothing is actually displaying.
     if (state.openSeriesName === seriesName) syncDetailRoute({ type: "series", name: seriesName }, opts);
     else syncDetailRoute(null, opts);
+    refreshBackButtonVisibility();
   }
   function openSeriesPanel(seriesName) {
     trackEvent("series_open", { series_name: seriesName });
@@ -3497,7 +3546,15 @@
         shareOrCopy(shareUrlForSeries(seriesName), seriesName + " — Kindred", "Check out the " + seriesName + " series on Kindred:", shareBtn);
       }
     });
+    var backBtn = el("button", {
+      class: "detail-back-btn",
+      "aria-label": "Back to what you were looking at before",
+      title: "Back",
+      onclick: goBackToPreviousTitle
+    }, [text("←")]);
+    backBtn.hidden = !canGoBackToTitle();
     inner.appendChild(el("div", { class: "detail-head-actions" }, [
+      backBtn,
       shareBtn,
       fsBtn,
       el("button", { class: "detail-close", onclick: requestCloseDetail, "aria-label": "Close" }, [text("✕")])
@@ -3599,7 +3656,15 @@
         shareOrCopy(shareUrlForTitle(t.id), t.title + " — Kindred", "Check out " + t.title + " on Kindred:", shareBtn);
       }
     });
+    var backBtn = el("button", {
+      class: "detail-back-btn",
+      "aria-label": "Back to what you were looking at before",
+      title: "Back",
+      onclick: goBackToPreviousTitle
+    }, [text("←")]);
+    backBtn.hidden = !canGoBackToTitle();
     inner.appendChild(el("div", { class: "detail-head-actions" }, [
+      backBtn,
       shareBtn,
       fsBtn,
       el("button", { class: "detail-close", onclick: requestCloseDetail, "aria-label": "Close" }, [text("✕")])
