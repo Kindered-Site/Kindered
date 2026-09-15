@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Find your next romantasy book, anime, or manga/manhwa/webtoon — matched by the tropes you already love, confirmed by other readers.">
 <meta name="theme-color" content="#F6ECDD">
+<meta name="google-site-verification" content="LJZf752M2cOOS3_RQTwEb6DtrV6pW3s2vz5xzgnfgk0">
 <link rel="canonical" href="https://kindred-stories.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Kindred">
@@ -1345,7 +1346,7 @@
   <div class="wrap">
     <div>Kindred is a growing library of well-known titles to prove out the matching idea — add your own picks as it grows.</div>
     <div class="footer-disclaimer">Community votes are shared live. Each browser can cast one vote per title/trope or match pairing; votes are not tied to a verified account.</div>
-    <div class="footer-disclaimer">Kindred is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn advertising fees by linking to Amazon.com. As an Amazon Associate, Kindred earns from qualifying purchases.</div>
+    <div class="footer-disclaimer">Kindred is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn advertising fees by linking to Amazon.com, Audible.com, and other Amazon-affiliated sites. As an Amazon Associate, Kindred earns from qualifying purchases and free-trial sign-ups (including Audible and Prime Video).</div>
     <div class="footer-legal"><a href="/privacy.html">Privacy Policy</a><span aria-hidden="true">&middot;</span><a href="/terms.html">Terms of Use</a></div>
   </div>
 </footer>
@@ -1488,6 +1489,21 @@
     if (AMAZON_ASSOCIATE_TAG) url += "&tag=" + encodeURIComponent(AMAZON_ASSOCIATE_TAG);
     return url;
   }
+  // Audible and Prime Video are both Amazon-owned and both run on the same
+  // Amazon Associates tracking ID (bounty commissions for a free-trial
+  // sign-up use the same "?tag=" parameter as a regular product link, not
+  // a separate program/tag). These go straight to that service's own
+  // search results for the title, same pattern as amazonSearch() above.
+  function audibleSearch(q) {
+    var url = "https://www.audible.com/search?keywords=" + encodeURIComponent(q);
+    if (AMAZON_ASSOCIATE_TAG) url += "&tag=" + encodeURIComponent(AMAZON_ASSOCIATE_TAG);
+    return url;
+  }
+  function primeVideoSearch(q) {
+    var url = "https://www.amazon.com/gp/video/search?phrase=" + encodeURIComponent(q);
+    if (AMAZON_ASSOCIATE_TAG) url += "&tag=" + encodeURIComponent(AMAZON_ASSOCIATE_TAG);
+    return url;
+  }
   function goodreadsSearch(q) { return "https://www.goodreads.com/search?q=" + encodeURIComponent(q); }
   // When a title has no confirmed direct URL, send the visitor straight to
   // that platform's OWN search results page (not a Google site: search) so
@@ -1546,6 +1562,7 @@
     if (title.type === "book") {
       return [
         { label: "Buy the book", href: amazonSearch(title.title + " " + title.creator), primary: true, isSearchLink: true },
+        { label: "Find on Audible", href: audibleSearch(title.title + " " + title.creator), primary: false, isSearchLink: true },
         { label: "Find on Goodreads", href: goodreadsSearch(title.title + " " + title.creator), primary: false, isSearchLink: true }
       ];
     }
@@ -1553,6 +1570,7 @@
       return [
         { label: title.crunchyrollUrl ? "Watch on Crunchyroll" : "Search Crunchyroll", href: title.crunchyrollUrl || crunchyrollSearch(title.title), primary: true, isSearchLink: !title.crunchyrollUrl },
         { label: title.netflixUrl ? "Watch on Netflix" : "Search Netflix", href: title.netflixUrl || netflixSearch(title.title), primary: false, isSearchLink: !title.netflixUrl },
+        { label: "Find on Prime Video", href: primeVideoSearch(title.title), primary: false, isSearchLink: true },
         { label: "Find online", href: googleSearch("watch " + title.title + " online"), primary: false, isSearchLink: true }
       ];
     }
@@ -3748,9 +3766,9 @@
     });
     actions.appendChild(favBtn);
     inner.appendChild(actions);
-    if (AMAZON_ASSOCIATE_TAG && (t.type === "book" || t.type === "manhwa")) {
+    if (AMAZON_ASSOCIATE_TAG && (t.type === "book" || t.type === "manhwa" || t.type === "anime")) {
       inner.appendChild(el("div", { class: "affiliate-note" }, [
-        text("As an Amazon Associate, Kindred earns from qualifying purchases made through the Amazon link above.")
+        text("As an Amazon Associate, Kindred earns from qualifying purchases and free-trial sign-ups (Amazon, Audible, Prime Video) made through the links above.")
       ]));
     }
 
