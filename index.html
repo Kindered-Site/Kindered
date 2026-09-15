@@ -1568,14 +1568,14 @@
     }
     if (title.type === "anime") {
       return [
-        { label: title.crunchyrollUrl ? "Watch on Crunchyroll" : "Search Crunchyroll", href: title.crunchyrollUrl || crunchyrollSearch(title.title), primary: true, isSearchLink: !title.crunchyrollUrl },
-        { label: title.netflixUrl ? "Watch on Netflix" : "Search Netflix", href: title.netflixUrl || netflixSearch(title.title), primary: false, isSearchLink: !title.netflixUrl },
-        { label: "Find on Prime Video", href: primeVideoSearch(title.title), primary: false, isSearchLink: true },
+        { label: "Find on Crunchyroll", href: title.crunchyrollUrl || crunchyrollSearch(title.title), primary: true, isSearchLink: !title.crunchyrollUrl },
+        { label: "Find on Netflix", href: title.netflixUrl || netflixSearch(title.title), primary: false, isSearchLink: !title.netflixUrl },
+        { label: "Find on Prime", href: primeVideoSearch(title.title), primary: false, isSearchLink: true },
         { label: "Find online", href: googleSearch("watch " + title.title + " online"), primary: false, isSearchLink: true }
       ];
     }
     return [
-      { label: title.webtoonsUrl ? "Read on Webtoon" : "Search Webtoon", href: title.webtoonsUrl || webtoonSearch(title.title), primary: true, isSearchLink: !title.webtoonsUrl },
+      { label: "Find on Webtoon", href: title.webtoonsUrl || webtoonSearch(title.title), primary: true, isSearchLink: !title.webtoonsUrl },
       { label: "Buy the volumes", href: amazonSearch(title.title), primary: false, isSearchLink: true },
       { label: "Find online", href: googleSearch("read " + title.title + " online"), primary: false, isSearchLink: true }
     ];
