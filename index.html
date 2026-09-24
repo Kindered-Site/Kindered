@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Find your next romantasy book, anime, or manga/manhwa/webtoon — matched by the tropes you already love, confirmed by other readers.">
 <meta name="theme-color" content="#F6ECDD">
-<meta name="google-site-verification" content="LJZf752M2cOOS3_RQTwEb6DtrV6pW3s2vz5xzgnfgk0">
 <link rel="canonical" href="https://kindred-stories.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Kindred">
@@ -145,22 +144,6 @@
     font-size: 0.76rem;
     line-height: 1.55;
   }
-  .affiliate-note {
-    margin-top: 10px;
-    color: var(--ink-soft);
-    font-size: 0.74rem;
-    line-height: 1.5;
-  }
-  .footer-legal {
-    margin-top: 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 0.8rem;
-  }
-  .footer-legal a { color: var(--ink-soft); text-decoration: none; }
-  .footer-legal a:hover, .footer-legal a:focus-visible { color: var(--gilt-deep); text-decoration: underline; }
-  .footer-legal span { color: var(--line); }
   .series-book-row:focus-visible, [role="button"]:focus-visible, button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible {
     outline: 3px solid color-mix(in srgb, var(--gilt) 72%, transparent);
     outline-offset: 3px;
@@ -802,16 +785,15 @@
      sane and just center it in the extra room, same as a wide article page. */
   .detail.fullscreen .detail-inner { max-width: 760px; margin: 0 auto; }
   .detail-head-actions { float: right; display: flex; gap: 8px; }
-  .detail-close, .detail-fullscreen-toggle, .detail-share-btn, .detail-back-btn {
+  .detail-close, .detail-fullscreen-toggle, .detail-share-btn {
     appearance: none; border: 1px solid var(--line); background: var(--card-bg);
     color: var(--ink); width: 34px; height: 34px; border-radius: 50%;
     cursor: pointer; font-size: 1rem;
     display: flex; align-items: center; justify-content: center;
   }
-  .detail-back-btn[hidden] { display: none; }
   .detail-fullscreen-toggle { font-size: 0.85rem; }
   .detail-share-btn svg { width: 15px; height: 15px; }
-  .detail-fullscreen-toggle:hover, .detail-close:hover, .detail-share-btn:hover, .detail-back-btn:hover { border-color: var(--gilt); }
+  .detail-fullscreen-toggle:hover, .detail-close:hover, .detail-share-btn:hover { border-color: var(--gilt); }
   .detail-share-btn.copied { color: var(--jade); border-color: var(--jade); }
   .detail-kicker { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; }
   .detail-series-badge {
@@ -1346,8 +1328,6 @@
   <div class="wrap">
     <div>Kindred is a growing library of well-known titles to prove out the matching idea — add your own picks as it grows.</div>
     <div class="footer-disclaimer">Community votes are shared live. Each browser can cast one vote per title/trope or match pairing; votes are not tied to a verified account.</div>
-    <div class="footer-disclaimer">Kindred is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn advertising fees by linking to Amazon.com, Audible.com, and other Amazon-affiliated sites. As an Amazon Associate, Kindred earns from qualifying purchases and free-trial sign-ups (including Audible and Prime Video).</div>
-    <div class="footer-legal"><a href="/privacy.html">Privacy Policy</a><span aria-hidden="true">&middot;</span><a href="/terms.html">Terms of Use</a></div>
   </div>
 </footer>
 
@@ -1482,25 +1462,10 @@
   }
   TITLES.forEach(function (t) { TITLE_BY_ID[t.id] = t; });
 
-  /* ---- purchase / read links (Amazon Associates tag live as of Sept 2026) ---- */
-  var AMAZON_ASSOCIATE_TAG = "kindred0b5-20";
+  /* ---- purchase / read links (real search links; no affiliate tag wired up yet) ---- */
+  var AMAZON_ASSOCIATE_TAG = ""; // approved tag is "kindred0b5-20" — leave blank until ready to start monetizing
   function amazonSearch(q) {
     var url = "https://www.amazon.com/s?k=" + encodeURIComponent(q);
-    if (AMAZON_ASSOCIATE_TAG) url += "&tag=" + encodeURIComponent(AMAZON_ASSOCIATE_TAG);
-    return url;
-  }
-  // Audible and Prime Video are both Amazon-owned and both run on the same
-  // Amazon Associates tracking ID (bounty commissions for a free-trial
-  // sign-up use the same "?tag=" parameter as a regular product link, not
-  // a separate program/tag). These go straight to that service's own
-  // search results for the title, same pattern as amazonSearch() above.
-  function audibleSearch(q) {
-    var url = "https://www.audible.com/search?keywords=" + encodeURIComponent(q);
-    if (AMAZON_ASSOCIATE_TAG) url += "&tag=" + encodeURIComponent(AMAZON_ASSOCIATE_TAG);
-    return url;
-  }
-  function primeVideoSearch(q) {
-    var url = "https://www.amazon.com/gp/video/search?phrase=" + encodeURIComponent(q);
     if (AMAZON_ASSOCIATE_TAG) url += "&tag=" + encodeURIComponent(AMAZON_ASSOCIATE_TAG);
     return url;
   }
@@ -1532,52 +1497,27 @@
     // Using the normal https URL in the current browsing context gives iOS
     // Universal Links / Android App Links the best chance to hand the user
     // to the installed app; desktop still opens external links in a new tab.
-    if (!isMobileDevice()) return { href: link.href, target: "_blank", rel: "noopener" };
-    if (!link.isSearchLink) return { href: link.href, rel: "noopener" };
-    // SEARCH links (no confirmed direct URL for this exact title, so this is
-    // a best-effort "go search for it" link) need different handling on
-    // mobile. Several apps — confirmed on Netflix and Webtoons — register
-    // their whole domain for Universal Links/App Links but don't support
-    // deep-linking straight into a *search results* page: tapping the link
-    // still hands off to the installed app, which just opens to its own
-    // home/browse screen and silently drops the search term entirely. The
-    // app never even sees what we were searching for.
-    // iOS/Android only intercept a Universal Link / App Link on a *direct*,
-    // same-tick anchor tap. Deferring the actual navigation by a tick via
-    // JS (instead of letting the click itself perform it) keeps this a
-    // normal programmatic navigation, which stays in the mobile browser —
-    // so the search reliably lands on the real search-results page.
-    return {
-      href: link.href,
-      rel: "noopener",
-      onclick: function (e) {
-        e.preventDefault();
-        var url = link.href;
-        setTimeout(function () { window.location.href = url; }, 0);
-      }
-    };
+    return isMobileDevice() ? { href: link.href, rel: "noopener" } : { href: link.href, target: "_blank", rel: "noopener" };
   }
 
   function getLinks(title) {
     if (title.type === "book") {
       return [
-        { label: "Buy the book", href: amazonSearch(title.title + " " + title.creator), primary: true, isSearchLink: true },
-        { label: "Find on Audible", href: audibleSearch(title.title + " " + title.creator), primary: false, isSearchLink: true },
-        { label: "Find on Goodreads", href: goodreadsSearch(title.title + " " + title.creator), primary: false, isSearchLink: true }
+        { label: "Buy the book", href: amazonSearch(title.title + " " + title.creator), primary: true },
+        { label: "Find on Goodreads", href: goodreadsSearch(title.title + " " + title.creator), primary: false }
       ];
     }
     if (title.type === "anime") {
       return [
-        { label: "Find on Crunchyroll", href: title.crunchyrollUrl || crunchyrollSearch(title.title), primary: true, isSearchLink: !title.crunchyrollUrl },
-        { label: "Find on Netflix", href: title.netflixUrl || netflixSearch(title.title), primary: false, isSearchLink: !title.netflixUrl },
-        { label: "Find on Prime", href: primeVideoSearch(title.title), primary: false, isSearchLink: true },
-        { label: "Find online", href: googleSearch("watch " + title.title + " online"), primary: false, isSearchLink: true }
+        { label: title.crunchyrollUrl ? "Watch on Crunchyroll" : "Search Crunchyroll", href: title.crunchyrollUrl || crunchyrollSearch(title.title), primary: true },
+        { label: title.netflixUrl ? "Watch on Netflix" : "Search Netflix", href: title.netflixUrl || netflixSearch(title.title), primary: false },
+        { label: "Find online", href: googleSearch("watch " + title.title + " online"), primary: false }
       ];
     }
     return [
-      { label: "Find on Webtoon", href: title.webtoonsUrl || webtoonSearch(title.title), primary: true, isSearchLink: !title.webtoonsUrl },
-      { label: "Buy the volumes", href: amazonSearch(title.title), primary: false, isSearchLink: true },
-      { label: "Find online", href: googleSearch("read " + title.title + " online"), primary: false, isSearchLink: true }
+      { label: title.webtoonsUrl ? "Read on Webtoon" : "Search Webtoon", href: title.webtoonsUrl || webtoonSearch(title.title), primary: true },
+      { label: "Buy the volumes", href: amazonSearch(title.title), primary: false },
+      { label: "Find online", href: googleSearch("read " + title.title + " online"), primary: false }
     ];
   }
 
@@ -3248,32 +3188,17 @@
     if (routeTwitterTitleEl) routeTwitterTitleEl.setAttribute("content", meta.ogTitle);
     if (routeTwitterDescEl) routeTwitterDescEl.setAttribute("content", meta.ogDescription);
   }
+  // True once this page has ever pushed a history entry of its own — i.e.
+  // there's a real, same-app entry sitting directly behind whatever's
+  // showing now. False right after landing straight on a shared/Google
+  // ?title=/?series= link, where the entry behind us belongs to whatever
+  // site sent the visitor here, not to Kindred. See requestCloseDetail.
+  var hasPushedDetailRoute = false;
   // The single place that reacts to "the open title/series changed" by
   // updating the address bar + head tags + GA4 — called whether that change
   // came from a click (push a new history entry) or the back/forward
   // button (history already moved; just resync everything to match).
   // route is {type:"title", id} / {type:"series", name} / null (closed).
-  // kindredNavDepth tracks how many real (non-replace) pushState calls deep
-  // the CURRENT history entry is within Kindred's own back/forward chain —
-  // stored on the entry itself (kindredDepth) so a popstate, even after a
-  // page reload, can resync it correctly. kindredRouteStack shadows it,
-  // recording the route TYPE ("title"/"series") that was open at each depth,
-  // so the in-panel back arrow (see the "◄ Back" button below) can tell
-  // whether going back would land on an actual title/series — worth
-  // surfacing an arrow for — versus just closing the panel, which the ✕
-  // already does. depth 0 is always "nothing Kindred-specific to go back
-  // to" (the tab's original load), so the arrow only shows past that.
-  var kindredNavDepth = 0;
-  var kindredRouteStack = [null];
-  function canGoBackToTitle() {
-    if (kindredNavDepth <= 0) return false;
-    var prev = kindredRouteStack[kindredNavDepth - 1];
-    // Unknown (e.g. right after a reload, landing deep in a share link's
-    // history with no in-memory record yet) defaults to showing the arrow —
-    // history.back() is always safe to call either way, and in practice a
-    // depth this deep almost always means a title/series is behind it.
-    return prev === undefined || (prev && (prev.type === "title" || prev.type === "series"));
-  }
   function syncDetailRoute(route, opts) {
     opts = opts || {};
     var url, meta;
@@ -3292,15 +3217,11 @@
     setRouteMeta(meta);
     if (!opts.fromPopstate) {
       var historyMethod = opts.replace ? "replaceState" : "pushState";
-      if (historyMethod === "pushState") {
-        kindredRouteStack[kindredNavDepth] = kindredRouteStack[kindredNavDepth] || null;
-        kindredNavDepth++;
-        kindredRouteStack[kindredNavDepth] = route;
-        kindredRouteStack.length = kindredNavDepth + 1;
-      } else {
-        kindredRouteStack[kindredNavDepth] = route;
-      }
-      window.history[historyMethod]({ kindredRoute: route, kindredDepth: kindredNavDepth }, "", url);
+      window.history[historyMethod]({ kindredRoute: route }, "", url);
+      // Once we've ever pushed (as opposed to replaced) an entry, there's a
+      // real entry from THIS app sitting directly behind wherever we are
+      // now — see requestCloseDetail below for why that distinction matters.
+      if (historyMethod === "pushState") hasPushedDetailRoute = true;
     }
     if (typeof window.gtag === "function") {
       window.gtag("event", "page_view", { page_location: url, page_title: meta.title });
@@ -3311,8 +3232,6 @@
   // on screen can never drift out of sync with each other.
   window.addEventListener("popstate", function (e) {
     var route = e.state && e.state.kindredRoute;
-    kindredNavDepth = (e.state && typeof e.state.kindredDepth === "number") ? e.state.kindredDepth : 0;
-    if (kindredRouteStack[kindredNavDepth] === undefined) kindredRouteStack[kindredNavDepth] = route || null;
     if (route && route.type === "title") {
       if (state.openTitleId !== route.id) openDetailPanel(route.id);
       syncDetailRoute(route, { fromPopstate: true });
@@ -3324,21 +3243,6 @@
       syncDetailRoute(null, { fromPopstate: true });
     }
   });
-  // Bound to the in-panel back arrow (see renderDetail/renderSeriesDetail) —
-  // just replays the browser's own Back button, so it goes through the same
-  // popstate handling as clicking Back for real, rather than duplicating it.
-  function goBackToPreviousTitle() { window.history.back(); }
-  // renderDetail/renderSeriesDetail render the back-arrow button using
-  // whatever kindredNavDepth/kindredRouteStack held at render time — but
-  // that render happens (via openDetailPanel/openSeriesPanel) before the
-  // syncDetailRoute call further down updates them for THIS navigation.
-  // Rather than reorder those calls (openSeriesPage's self-closing guard
-  // depends on the panel having already opened first), just patch the
-  // button's visibility once more right after syncDetailRoute runs.
-  function refreshBackButtonVisibility() {
-    var btn = document.querySelector("#detail .detail-back-btn");
-    if (btn) btn.hidden = !canGoBackToTitle();
-  }
 
   /* ============================= RENDER: detail ============================= */
 
@@ -3346,7 +3250,6 @@
     if (!TITLE_BY_ID[id]) return;
     openDetailPanel(id);
     syncDetailRoute({ type: "title", id: id }, opts);
-    refreshBackButtonVisibility();
   }
   function openDetailPanel(id) {
     var openedTitle = TITLE_BY_ID[id];
@@ -3392,7 +3295,6 @@
     // pointing them at a series page nothing is actually displaying.
     if (state.openSeriesName === seriesName) syncDetailRoute({ type: "series", name: seriesName }, opts);
     else syncDetailRoute(null, opts);
-    refreshBackButtonVisibility();
   }
   function openSeriesPanel(seriesName) {
     trackEvent("series_open", { series_name: seriesName });
@@ -3433,26 +3335,22 @@
     if (!(opts && opts.fromPopstate)) syncDetailRoute(null, opts);
   }
   // Every direct UI close (✕ button, scrim click, Escape) goes through
-  // here, and it always EXITS — pushing a plain "closed" entry — rather
-  // than calling history.back(). ✕ means "I'm done looking at this," full
-  // stop, whether you got here by clicking straight in from the grid or by
-  // clicking through three matches first; it should never dump you back
-  // onto whatever title you were on two clicks ago.
+  // here instead of calling closeDetail() straight away: when this page has
+  // pushed a history entry of its own, going back to close keeps the
+  // back/forward button behaving the way people expect (back = "go to what
+  // I was looking at before"), rather than leaving a dangling forward entry
+  // that still points at a title/series the panel no longer shows.
   //
-  // The browser's own Back button is the one that walks backward through
-  // previously-viewed titles/series — that already works for free, because
-  // every openDetail()/openSeriesPage() pushes its own history entry (see
-  // syncDetailRoute above) and the popstate listener re-opens whatever
-  // route it lands on. So ✕ and Back now do two different, non-overlapping
-  // things, instead of ✕ secretly being another way to trigger Back.
-  //
-  // This also happens to make the shared/Google ?title=/?series= landing
-  // case simpler than it used to be: there's no special-case branch needed
-  // for "no Kindred entry behind this one" — pushing a "closed" entry is
-  // correct either way, so it's fine if this leaves a harmless extra
-  // history entry on your way back out to wherever you came from.
+  // But when someone lands STRAIGHT on a shared/Google ?title=/?series=
+  // link and closes it without ever navigating anywhere else first,
+  // hasPushedDetailRoute is still false — there's no Kindred entry behind
+  // this one, only whatever site sent them here. history.back() there
+  // would bounce the visitor off Kindred entirely just for closing a
+  // panel, so that case pushes a plain "closed" entry instead, the same
+  // way it would if history had been unavailable altogether.
   function requestCloseDetail() {
-    closeDetail();
+    if (hasPushedDetailRoute && window.history.state && window.history.state.kindredRoute) window.history.back();
+    else closeDetail();
   }
   document.getElementById("scrim").addEventListener("click", requestCloseDetail);
   document.addEventListener("keydown", function (e) {
@@ -3564,15 +3462,7 @@
         shareOrCopy(shareUrlForSeries(seriesName), seriesName + " — Kindred", "Check out the " + seriesName + " series on Kindred:", shareBtn);
       }
     });
-    var backBtn = el("button", {
-      class: "detail-back-btn",
-      "aria-label": "Back to what you were looking at before",
-      title: "Back",
-      onclick: goBackToPreviousTitle
-    }, [text("←")]);
-    backBtn.hidden = !canGoBackToTitle();
     inner.appendChild(el("div", { class: "detail-head-actions" }, [
-      backBtn,
       shareBtn,
       fsBtn,
       el("button", { class: "detail-close", onclick: requestCloseDetail, "aria-label": "Close" }, [text("✕")])
@@ -3674,15 +3564,7 @@
         shareOrCopy(shareUrlForTitle(t.id), t.title + " — Kindred", "Check out " + t.title + " on Kindred:", shareBtn);
       }
     });
-    var backBtn = el("button", {
-      class: "detail-back-btn",
-      "aria-label": "Back to what you were looking at before",
-      title: "Back",
-      onclick: goBackToPreviousTitle
-    }, [text("←")]);
-    backBtn.hidden = !canGoBackToTitle();
     inner.appendChild(el("div", { class: "detail-head-actions" }, [
-      backBtn,
       shareBtn,
       fsBtn,
       el("button", { class: "detail-close", onclick: requestCloseDetail, "aria-label": "Close" }, [text("✕")])
@@ -3735,14 +3617,7 @@
     var actions = el("div", { class: "detail-actions" });
     getLinks(t).forEach(function (link) {
       var attrs = Object.assign({ class: "btn " + (link.primary ? "btn-primary" : "btn-ghost") }, externalLinkAttrs(link));
-      // externalLinkAttrs sets its own onclick on mobile search links (to
-      // defer navigation past the app-hijack window — see its comment);
-      // chain it with the outbound-click tracker instead of clobbering it.
-      var navHandler = attrs.onclick;
-      attrs.onclick = function (e) {
-        trackEvent("outbound_click", { title_id: t.id, title: t.title, destination: link.label });
-        if (navHandler) navHandler(e);
-      };
+      attrs.onclick = function () { trackEvent("outbound_click", { title_id: t.id, title: t.title, destination: link.label }); };
       actions.appendChild(el("a", attrs, [text(link.label)]));
     });
     var favCount = favCountCache[t.id] || 0;
@@ -3766,9 +3641,10 @@
     });
     actions.appendChild(favBtn);
     inner.appendChild(actions);
-    if (AMAZON_ASSOCIATE_TAG && (t.type === "book" || t.type === "manhwa" || t.type === "anime")) {
-      inner.appendChild(el("div", { class: "affiliate-note" }, [
-        text("As an Amazon Associate, Kindred earns from qualifying purchases and free-trial sign-ups (Amazon, Audible, Prime Video) made through the links above.")
+
+    if (AMAZON_ASSOCIATE_TAG && (t.type === "book" || t.type === "manhwa")) {
+      inner.appendChild(el("p", { class: "detail-year", style: "margin-top:6px;" }, [
+        text("As an Amazon Associate I earn from qualifying purchases.")
       ]));
     }
 
