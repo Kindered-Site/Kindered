@@ -2806,7 +2806,7 @@
                 e.stopPropagation();
                 hasRealSeries(m.title) ? openSeriesPage(m.title.series) : openDetail(m.title.id);
               }
-            }, [text(hasRealSeries(m.title) ? m.title.series : m.title.title)])
+            }, [text(m.title.title)])
           ]),
           el("div", { class: "card-creator" }, [
             text(m.title.creator), m.title.year ? el("span", { class: "card-year" }, [text(" · " + m.title.year)]) : null
