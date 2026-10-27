@@ -67,7 +67,7 @@
   :root {
     --paper: #F6ECDD;
     --ink: #2E2013;
-    --ink-soft: #7C6A56;
+    --ink-soft: #715F4B;
     --line: #E3D2B9;
     --card-bg: #FCF6E9;
     --gilt: #C17F3E;
@@ -145,7 +145,7 @@
     line-height: 1.55;
   }
   .series-book-row:focus-visible, [role="button"]:focus-visible, button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible {
-    outline: 3px solid color-mix(in srgb, var(--gilt) 72%, transparent);
+    outline: 3px solid var(--gilt-deep);
     outline-offset: 3px;
   }
 
@@ -219,7 +219,7 @@
   }
   .site-nav button svg { width: 14px; height: 14px; flex-shrink: 0; }
   .site-nav button:hover, .site-nav button:focus-visible { color: var(--gilt-deep); }
-  .site-nav button:focus-visible { outline: 2px solid var(--gilt); outline-offset: 3px; border-radius: 3px; }
+  .site-nav button:focus-visible { outline: 2px solid var(--gilt-deep); outline-offset: 3px; border-radius: 3px; }
   .site-nav button.active-fav { color: var(--ember); }
 
   /* ---------- Capability strip ---------- */
@@ -306,7 +306,7 @@
   .tab-btn[data-type="book"].active { border-color: var(--gilt); }
   .tab-btn[data-type="anime"].active { border-color: var(--jade); }
   .tab-btn[data-type="manhwa"].active { border-color: var(--bloom); }
-  .tab-btn:focus-visible { outline: 2px solid var(--gilt); outline-offset: 2px; border-radius: 3px; }
+  .tab-btn:focus-visible { outline: 2px solid var(--gilt-deep); outline-offset: 2px; border-radius: 3px; }
 
   /* ---------- Start Here: the hero trope-matching experience ---------- */
   .start-here {
@@ -357,6 +357,8 @@
     max-height: 280px; overflow-y: auto; padding-right: 2px;
   }
   .chip-disabled { opacity: 0.35; pointer-events: none; }
+  .sync-note { font-size: 0.86rem; color: var(--ink-soft); }
+  .detail-tags + .sync-note { margin-top: 10px; }
   .btn-large { font-size: 1.02rem; padding: 13px 26px; font-weight: 800; }
   .btn-small { font-size: 0.8rem; padding: 8px 14px; }
 
@@ -387,7 +389,7 @@
     gap: 5px;
     line-height: 1;
     border-radius: 999px;
-    padding: 5px 9px 4px;
+    padding: 6px 12px 5px;
     /* Tinted from the match's own --accent (set inline per badge — gilt for
        a book match, jade for anime, bloom for manhwa) rather than a fixed
        gilt tone, so the badge reads as one piece with the kicker/trope tags
@@ -396,8 +398,8 @@
        from the same --accent for the same reason — a plain --ink number
        next to a --gilt-deep word used to read as two unrelated colors stuck
        together, regardless of which type's card the badge was actually on. */
-    background: color-mix(in srgb, var(--accent, var(--gilt)) 14%, var(--paper));
-    border: 1px solid color-mix(in srgb, var(--accent, var(--gilt)) 45%, var(--line));
+    background: color-mix(in srgb, var(--accent, var(--gilt)) 18%, var(--paper));
+    border: 1px solid color-mix(in srgb, var(--accent, var(--gilt)) 55%, var(--line));
     box-shadow: none;
     font-family: "Cormorant Garamond", ui-serif, Georgia, serif;
     font-size: .98rem;
@@ -406,29 +408,29 @@
   }
   .kindred-score-badge:focus-visible { outline: 2px solid var(--accent, var(--gilt)); outline-offset: 3px; }
   .kindred-score-number {
-    font-size: .98rem;
+    font-size: 1.22rem;
     line-height: 1;
     font-weight: 700;
     letter-spacing: .01em;
     font-variant-numeric: tabular-nums;
-    color: var(--accent, var(--gilt-deep));
+    color: color-mix(in srgb, var(--accent, var(--gilt-deep)) 50%, var(--ink));
   }
   .kindred-score-word {
     margin-top: 0;
-    font: 600 .54rem/1 "Cormorant Garamond", ui-serif, Georgia, serif;
-    letter-spacing: .13em;
-    color: color-mix(in srgb, var(--accent, var(--gilt-deep)) 72%, var(--ink));
+    font: 700 .7rem/1 "Cormorant Garamond", ui-serif, Georgia, serif;
+    letter-spacing: .1em;
+    color: color-mix(in srgb, var(--accent, var(--gilt-deep)) 55%, var(--ink));
   }
   /* The grouped-series row inside a match card packs an index label, the
      title, and the score onto one line, so its badge runs a size smaller
      than the standalone match card's. */
-  .series-book-name-line .kindred-score-badge { font-size: .64rem; min-width: 72px; padding: 7px 10px 6px; border-radius: 12px; }
-  .series-book-name-line .kindred-score-number { font-size: 1.08rem; line-height: 1.05; }
-  .series-book-name-line .kindred-score-word { font-size: .46rem; margin-top: 3px; }
+  .series-book-name-line .kindred-score-badge { padding: 5px 11px 4px; }
+  .series-book-name-line .kindred-score-number { font-size: 1.12rem; }
+  .series-book-name-line .kindred-score-word { font-size: .66rem; }
   @media (max-width: 560px) {
-    .kindred-score-badge { padding: 4px 8px 3px; }
-    .kindred-score-number { font-size: .9rem; }
-    .kindred-score-word { font-size: .5rem; }
+    .kindred-score-badge, .series-book-name-line .kindred-score-badge { padding: 5px 10px 4px; }
+    .kindred-score-number, .series-book-name-line .kindred-score-number { font-size: 1.08rem; }
+    .kindred-score-word, .series-book-name-line .kindred-score-word { font-size: .64rem; }
   }
   .kindred-match-label { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-soft); width: 100%; margin-bottom: 1px; }
 
@@ -437,10 +439,10 @@
   .kindred-score-wrap { display: inline-flex; align-items: center; gap: 5px; flex-shrink: 0; margin-left: auto; }
   .score-info { position: relative; display: inline-flex; cursor: help; outline: none; }
   .score-info-icon {
-    width: 14px; height: 14px; flex-shrink: 0;
+    width: 16px; height: 16px; flex-shrink: 0;
     border-radius: 50%; border: 1px solid currentColor;
     color: var(--ink-soft);
-    font: italic 700 9.5px Georgia, "Times New Roman", serif;
+    font: italic 700 10.5px Georgia, "Times New Roman", serif;
     display: flex; align-items: center; justify-content: center;
     opacity: 0.65;
     transition: opacity .12s ease, color .12s ease;
@@ -502,7 +504,7 @@
     font-family: inherit;
     font-size: 0.92rem;
   }
-  .search-box input:focus-visible { outline: 2px solid var(--gilt); outline-offset: 1px; }
+  .search-box input:focus-visible { outline: 2px solid var(--gilt-deep); outline-offset: 1px; }
   .search-box svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; color: var(--ink-soft); }
   .tag-filters {
     display: flex;
@@ -552,13 +554,13 @@
     transition: transform .12s ease;
   }
   .card:hover { transform: translateY(-2px); }
-  .card:focus-visible { outline: 2px solid var(--gilt); outline-offset: 2px; }
+  .card:focus-visible { outline: 2px solid var(--gilt-deep); outline-offset: 2px; }
   .card-kicker {
     font-size: 0.68rem;
     font-weight: 800;
     letter-spacing: 0.09em;
     text-transform: uppercase;
-    color: var(--accent);
+    color: color-mix(in srgb, var(--accent) 55%, var(--ink));
     padding-right: 58px; /* clears both the share and favorite icons up top */
   }
   .fav-btn {
@@ -568,7 +570,7 @@
     border: none;
     background: none;
     cursor: pointer;
-    color: var(--line);
+    color: color-mix(in srgb, var(--ink-soft) 80%, var(--line));
     padding: 0;
     display: flex;
     align-items: center;
@@ -578,6 +580,9 @@
   .fav-btn:hover { color: var(--ember); transform: scale(1.1); }
   .fav-btn.active { color: var(--ember); }
   .fav-btn svg { width: 18px; height: 18px; }
+  /* Not favorited = outline heart, favorited = filled, so the state reads
+     by shape and not only by color. */
+  .fav-btn:not(.active) svg { fill: none; stroke: currentColor; stroke-width: 2; }
   /* Sits just left of the favorite heart, same footprint — copies a direct
      link back to this one title (or hands off to the OS share sheet on a
      phone that supports it). */
@@ -588,7 +593,7 @@
     border: none;
     background: none;
     cursor: pointer;
-    color: var(--line);
+    color: color-mix(in srgb, var(--ink-soft) 75%, var(--line));
     padding: 0;
     display: flex;
     align-items: center;
@@ -640,7 +645,7 @@
   }
   .browse-mode-btn:hover { color: var(--ink); }
   .browse-mode-btn.active { background: var(--gilt); color: #1c1305; }
-  .browse-mode-btn:focus-visible { outline: 2px solid var(--gilt); outline-offset: 2px; }
+  .browse-mode-btn:focus-visible { outline: 2px solid var(--gilt-deep); outline-offset: 2px; }
   .card-title {
     font-size: 1.3rem;
     line-height: 1.15;
@@ -663,7 +668,7 @@
     border-radius: 999px;
     /* --mix rises with net upvotes (see tagMixPercent) — more confirmed = darker, no badge needed */
     background: color-mix(in srgb, var(--accent) var(--mix, 16%), var(--card-bg));
-    color: var(--accent);
+    color: color-mix(in srgb, var(--accent) 55%, var(--ink));
     white-space: nowrap;
     transition: background .15s ease;
   }
@@ -676,7 +681,7 @@
     padding: 4px 4px 4px 10px;
     font-size: 0.7rem;
     font-weight: 700;
-    color: var(--accent);
+    color: color-mix(in srgb, var(--accent) 55%, var(--ink));
     transition: background .15s ease;
   }
   .tagvote-label { white-space: nowrap; margin-right: 3px; }
@@ -722,7 +727,7 @@
     transition: border-color .12s ease, transform .12s ease;
   }
   .series-book-row:hover { border-color: var(--gilt); transform: translateY(-1px); }
-  .series-book-row:focus-visible { outline: 2px solid var(--gilt); outline-offset: 2px; }
+  .series-book-row:focus-visible { outline: 2px solid var(--gilt-deep); outline-offset: 2px; }
   .series-book-cover {
     width: 56px; flex-shrink: 0;
     border-radius: 5px;
@@ -808,7 +813,7 @@
     border: none;
     font-family: inherit;
     background: color-mix(in srgb, var(--accent) 14%, var(--card-bg));
-    color: var(--accent);
+    color: color-mix(in srgb, var(--accent) 55%, var(--ink));
     cursor: pointer;
     transition: background .12s ease;
   }
@@ -865,7 +870,7 @@
   .match-card { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; background: var(--card-bg); }
   .match-head { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
   .match-kicker { font-size: 0.62rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 2px; }
-  .match-title { font-family: "Cormorant Garamond", serif; font-weight: 600; font-size: 1.08rem; cursor: pointer; }
+  .match-title { font-family: "Cormorant Garamond", serif; font-weight: 600; font-size: 1.08rem; cursor: pointer; display: inline-block; line-height: 1.18; }
   .match-title:hover { text-decoration: underline; }
   .match-creator { color: var(--ink-soft); font-size: 0.78rem; }
   .match-reason { font-size: 0.78rem; color: var(--ink-soft); margin-top: 6px; }
@@ -919,7 +924,7 @@
     border: 1px solid var(--line); border-radius: 10px; padding: 11px 13px;
     font-family: inherit; font-size: 0.9rem; background: var(--card-bg); color: var(--ink);
   }
-  .feedback-form textarea:focus, .feedback-form input:focus { outline: none; border-color: var(--gilt); }
+  .feedback-form textarea:focus, .feedback-form input:focus { border-color: var(--gilt); }
   .feedback-form-row { display: flex; gap: 8px; flex-wrap: wrap; }
   .feedback-form-row input {
     flex: 1; min-width: 180px;
@@ -1125,7 +1130,7 @@
     box-shadow: 0 1px 2px rgba(46,32,19,.05), 0 9px 22px -16px rgba(46,32,19,.28);
   }
   .card:hover { transform: translateY(-3px); box-shadow: 0 2px 4px rgba(46,32,19,.06), 0 14px 28px -17px rgba(46,32,19,.34); }
-  .card-kicker { color: var(--accent); }
+  .card-kicker { color: color-mix(in srgb, var(--accent) 55%, var(--ink)); }
   .card-title, .match-title, .series-book-name {
     font-family: "Cormorant Garamond", ui-serif, Georgia, serif;
   }
@@ -1144,6 +1149,15 @@
   .btn { border-radius: 999px; }
   .btn-primary { background: var(--gilt-deep); color: #fff8ed; }
   .btn-primary:hover { background: var(--ink); }
+  /* In dark mode --gilt-deep is a light gold, so the cream label above
+     would sit at ~1.6:1 on it; switch to the same dark ink .browse-mode-btn
+     already uses on its gold active state. */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .btn-primary,
+    :root:not([data-theme="light"]) .chip.active { color: #1c1305; }
+  }
+  :root[data-theme="dark"] .btn-primary,
+  :root[data-theme="dark"] .chip.active { color: #1c1305; }
   .section-label { font-family: "Cormorant Garamond", ui-serif, Georgia, serif; font-size: .9rem; letter-spacing: .08em; color: var(--ink); }
   .match-card, .series-book, .detail, .feedback-form {
     border-color: color-mix(in srgb, var(--gilt) 26%, var(--line));
@@ -1193,6 +1207,23 @@
     .wordmark { font-size: 1.42rem; letter-spacing: .13em; }
     .tagline { display: none; }
     .start-here-inner { padding-top: 24px; }
+    /* The 26px share/heart icons get a 44px-tall invisible hit area; kept
+       narrow sideways so the two neighbours' areas don't overlap. */
+    .fav-btn::after, .share-btn::after { content: ""; position: absolute; inset: -9px -3px; }
+    /* "Manga & Webtoons" and the desktop spacing pushed the third library
+       tab off-screen; shorter label and tighter spacing fit all three. */
+    .tab-label-long { display: none; }
+    .tab-btn { margin-right: 8px; padding-left: 4px; padding-right: 4px; }
+    .tab-btn:last-child { margin-right: 0; }
+    .tab-btn .tab-icon { display: none; }
+    /* The trope list scrolls inside a 280px box; on a phone that cut a
+       third of the tropes off with no sign there was more. Fade the bottom
+       edge so it reads as scrollable (padding lets the last row clear it). */
+    .start-here-trope-grid {
+      padding-bottom: 40px;
+      -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 44px), transparent);
+      mask-image: linear-gradient(to bottom, #000 calc(100% - 44px), transparent);
+    }
   }
 
 </style>
@@ -1399,6 +1430,13 @@
     return "In " + t.series;
   }
 
+  // "You might also like" tab order for a title of each type: its own
+  // medium first, then the others in the order readers of it tend to want.
+  var MATCH_TAB_ORDER = {
+    book:   ["book", "manhwa", "anime"],
+    anime:  ["anime", "manhwa", "book"],
+    manhwa: ["manhwa", "anime", "book"]
+  };
   var HEART_SVG = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.53L12 21.35z"/></svg>';
   var SEARCH_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>';
   var LINK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.07 0l2.83-2.83a5 5 0 0 0-7.07-7.07L11.5 4.5"/><path d="M14 11a5 5 0 0 0-7.07 0L4.1 13.83a5 5 0 0 0 7.07 7.07L12.5 19.5"/></svg>';
@@ -2168,9 +2206,18 @@
         var p = parseColPath(path);
         var orderField = null, orderDesc = false, limitN = null;
         var api = {
-          add: function (obj) {
+          add: function (obj, opts) {
             var row = Object.assign({}, obj);
             if (p.filterCol) row[p.filterCol] = p.filterVal;
+            // Write-only tables (feedback) have no public read policy, and
+            // Postgres refuses to hand back a row the caller can't SELECT,
+            // so those callers pass { returnRow: false } for a plain insert.
+            if (opts && opts.returnRow === false) {
+              return client.from(p.table).insert(row).then(function (res) {
+                if (res.error) throw res.error;
+                return { id: null, data: function () { return null; } };
+              });
+            }
             // .select() so the response includes the row Postgres just
             // generated (its auto id, in particular) — callers that need
             // to remember "which row is mine" (comment deletion) need that
@@ -2408,7 +2455,7 @@
     };
     return dbPromise.then(function (db) {
       if (!db) return { ok: false, reason: "offline" };
-      return db.collection("feedback").add(row).then(function () { return { ok: true }; });
+      return db.collection("feedback").add(row, { returnRow: false }).then(function () { return { ok: true }; });
     }).catch(function (e) {
       console.warn("feedback submit failed", e);
       return { ok: false, reason: "error" };
@@ -2769,11 +2816,18 @@
       ])
     ]));
 
+    // How many results each column shows (3 to start, +3 per "Show more"),
+    // reset whenever the reader's three picks change.
+    var picksKey = picks.join(",");
+    if (!state.startHereShown || state.startHereShown.key !== picksKey) state.startHereShown = { key: picksKey, limits: {} };
+    var shownLimits = state.startHereShown.limits;
+
     var cols = el("div", { class: "start-here-cols" });
     Object.keys(TYPE_META).forEach(function (type) {
       var col = el("div", {});
       col.appendChild(el("div", { class: "start-here-col-label" }, [text(TYPE_META[type].label)]));
-      var matches = startHereMatches(picks, type, 3);
+      var allMatches = startHereMatches(picks, type, TITLES.length);
+      var matches = allMatches.slice(0, shownLimits[type] || 3);
       if (!matches.length) {
         col.appendChild(el("div", { class: "sync-note" }, [text("No strong matches yet in this category.")]));
       }
@@ -2833,6 +2887,17 @@
         card.appendChild(favBtn);
         col.appendChild(card);
       });
+      if (allMatches.length > matches.length) {
+        col.appendChild(el("button", {
+          class: "btn btn-ghost see-more-matches",
+          type: "button",
+          onclick: function () {
+            shownLimits[type] = matches.length + 3;
+            trackEvent("start_here_show_more", { type: type, shown: shownLimits[type] });
+            renderStartHereResultsView();
+          }
+        }, [text("Show more " + TYPE_META[type].label + " (" + (allMatches.length - matches.length) + " more)")]));
+      }
       cols.appendChild(col);
     });
     box.appendChild(cols);
@@ -2911,7 +2976,9 @@
         }
       }, [
         el("span", { class: "tab-icon", html: TAB_ICON_SVG[type] || "" }),
-        text(TYPE_META[type].label + " "),
+        type === "manhwa"
+          ? el("span", {}, [text("Manga"), el("span", { class: "tab-label-long" }, [text(" & Webtoons")]), text(" ")])
+          : text(TYPE_META[type].label + " "),
         el("span", { class: "count" }, [text("(" + count + ")")])
       ]);
       nav.appendChild(btn);
@@ -3259,7 +3326,7 @@
     state.openTitleId = id;
     state.openSeriesName = null;
     var t = TITLE_BY_ID[id];
-    state.openMatchType = Object.keys(TYPE_META).filter(function (ty) { return ty !== t.type; })[0];
+    state.openMatchType = MATCH_TAB_ORDER[t.type][0];
     state.matchLimit = 5;
     document.getElementById("scrim").classList.add("open");
     document.getElementById("detail").classList.add("open");
@@ -3476,7 +3543,7 @@
     var creators = books.map(function (b) { return b.creator; }).filter(function (c, i, arr) { return arr.indexOf(c) === i; });
 
     inner.appendChild(el("div", { class: "detail-head-text series-detail-head" }, [
-      el("div", { class: "detail-kicker", style: "color:" + meta.accent }, [text("Series")]),
+      el("div", { class: "detail-kicker", style: "color:color-mix(in srgb, " + meta.accent + " 55%, var(--ink))" }, [text("Series")]),
       el("h2", { class: "detail-title", id: "detailTitle" }, [text(seriesName)]),
       el("div", { class: "detail-creator" }, [text(creators.join(", "))]),
       el("div", { class: "detail-year" }, [text(mainCount + (mainCount === 1 ? " book" : " books") + (yearRange ? " · " + yearRange : ""))])
@@ -3579,7 +3646,7 @@
     // for (see the code comment on TITLES above) just skip the <img>
     // entirely rather than showing a broken image or a placeholder.
     var headText = el("div", { class: "detail-head-text" }, [
-      el("div", { class: "detail-kicker", style: "color:" + meta.accent }, [text(formatLabel(t))]),
+      el("div", { class: "detail-kicker", style: "color:color-mix(in srgb, " + meta.accent + " 55%, var(--ink))" }, [text(formatLabel(t))]),
       t.series ? el("button", {
         type: "button",
         class: "detail-series-badge",
@@ -3650,19 +3717,13 @@
 
     inner.appendChild(el("div", { class: "section-label" }, [text("You might also like")]));
     var matchTabs = el("div", { class: "match-tabs" });
-    Object.keys(TYPE_META).filter(function (ty) { return ty !== t.type; }).forEach(function (ty) {
+    MATCH_TAB_ORDER[t.type].forEach(function (ty) {
       matchTabs.appendChild(el("button", {
         class: "match-tab" + (state.openMatchType === ty ? " active" : ""),
         "data-type": ty,
         onclick: function () { state.openMatchType = ty; state.matchLimit = 5; renderDetail(); }
-      }, [text(TYPE_META[ty].label)]));
+      }, [text(ty === t.type ? "More " + TYPE_META[ty].label : TYPE_META[ty].label)]));
     });
-    // also allow same-media matches (books -> books etc.) as a third tab
-    matchTabs.appendChild(el("button", {
-      class: "match-tab" + (state.openMatchType === t.type ? " active" : ""),
-      "data-type": t.type,
-      onclick: function () { state.openMatchType = t.type; state.matchLimit = 5; renderDetail(); }
-    }, [text("More " + TYPE_META[t.type].label)]));
     inner.appendChild(matchTabs);
 
     var list = el("div", { class: "match-list" + (state.openMatchType === t.type ? " same-media-matches" : "") });
@@ -3808,7 +3869,7 @@
         var card = el("div", { class: "match-card", "data-match-id": matchId(t.id, m.title.id) });
         card.appendChild(el("div", { class: "match-head" }, [
           el("div", {}, [
-            el("div", { class: "match-kicker", style: "color:" + TYPE_META[m.title.type].accent }, [text(formatLabel(m.title))]),
+            el("div", { class: "match-kicker", style: "color:color-mix(in srgb, " + TYPE_META[m.title.type].accent + " 55%, var(--ink))" }, [text(formatLabel(m.title))]),
             el("a", {
               class: "match-title", href: shareUrlForTitle(m.title.id),
               onclick: function (e) {
@@ -3832,7 +3893,7 @@
       var card = el("div", { class: "match-card series-match-card", "data-match-id": matchId(t.id, g.bestMatch ? g.bestMatch.title.id : g.books[0].title.id) });
       card.appendChild(el("div", { class: "match-head" }, [
         el("div", {}, [
-          el("div", { class: "match-kicker", style: "color:" + TYPE_META[g.books[0].title.type].accent }, [text(formatLabel(g.books[0].title))]),
+          el("div", { class: "match-kicker", style: "color:color-mix(in srgb, " + TYPE_META[g.books[0].title.type].accent + " 55%, var(--ink))" }, [text(formatLabel(g.books[0].title))]),
           el("div", { class: "series-kicker" }, [text("Series match")]),
           el("a", {
             class: "match-title", href: shareUrlForSeries(g.series),
